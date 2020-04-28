@@ -4,6 +4,8 @@
 
 import argparse
 
+from datasets.crust import read_data
+
 
 def set_up_parser():
     """Set up the argument parser.
@@ -23,7 +25,7 @@ def set_up_parser():
 
     # Model subparser
     subparsers = parser.add_subparsers(
-        required=True, help='machine learning model')
+        dest='model', required=True, help='machine learning model')
 
     lstsq_parser = subparsers.add_parser('lstsq', help='least squares')
 
@@ -38,7 +40,7 @@ def main(args):
     Parameters:
         args (argparse.Namespace): command-line arguments
     """
-    pass
+    X, y = read_data(args.data_dir)
 
 
 if __name__ == '__main__':
