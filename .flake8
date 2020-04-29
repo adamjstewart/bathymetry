@@ -1,0 +1,15 @@
+[flake8]
+exclude =
+    # Data
+    data/,
+
+    # Git
+    .git/,
+
+    # Python
+    .cache/,
+    .pytest_cache/,
+    __pycache__/,
+
+    # Spack
+    .spack-env
