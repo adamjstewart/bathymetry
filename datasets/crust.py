@@ -55,13 +55,14 @@ def read_data(data_dir):
     bath = pd.read_table(os.path.join(data_dir, 'xyz-bd3_oprm'), **kwargs)
 
     # Combine data
-    X = pd.concat([bnds, vp, vs, rho, ctype, age], axis=1, keys=[
+    data = pd.concat([bnds, vp, vs, rho, ctype, age, bath], axis=1, keys=[
         'boundary topograpy', 'p-wave velocity', 's-wave velocity',
-        'density', 'crust type', 'age'], sort=False)
-    X.set_index([('age', 'latitude'), ('age', 'longitude')], inplace=True)
-    X.index.rename(['latitude', 'longitude'], inplace=True)
+        'density', 'crust type', 'age', 'bathymetry'], sort=False)
+    data.set_index([('age', 'latitude'), ('age', 'longitude')], inplace=True)
+    data.drop([('bathymetry', 'longitude'), ('bathymetry', 'latitude')],
+              axis=1, inplace=True)
+    data.index.rename(['latitude', 'longitude'], inplace=True)
 
-    y = bath
-    y.set_index(['latitude', 'longitude'], inplace=True)
+    assert isinstance(data, pd.DataFrame)
 
-    return X, y
+    return data

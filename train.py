@@ -40,7 +40,7 @@ def main(args):
     Parameters:
         args (argparse.Namespace): command-line arguments
     """
-    X, y = read_data(args.data_dir)
+    data = read_data(args.data_dir)
 
 
 if __name__ == '__main__':
