@@ -43,8 +43,8 @@ def read_data(data_dir):
     # Crust type
     ctype = np.loadtxt(
         os.path.join(data_dir, 'CNtype1-1.txt'), dtype=np.object)
-    ctype = ctype.flatten(order='F')
-    ctype = pd.DataFrame(ctype)
+    ctype = ctype.flatten()
+    ctype = pd.DataFrame(ctype, columns=['crust type'])
 
     # Age
     kwargs['names'] = ['longitude', 'latitude', 'age']
@@ -54,6 +54,14 @@ def read_data(data_dir):
     kwargs['names'] = ['longitude', 'latitude', 'bathymetry']
     bath = pd.read_table(os.path.join(data_dir, 'xyz-bd3_oprm'), **kwargs)
 
-    # TODO: combine data
+    # Combine data
+    X = pd.concat([bnds, vp, vs, rho, ctype, age], axis=1, keys=[
+        'boundary topograpy', 'p-wave velocity', 's-wave velocity',
+        'density', 'crust type', 'age'], sort=False)
+    X.set_index([('age', 'latitude'), ('age', 'longitude')], inplace=True)
+    X.index.rename(['latitude', 'longitude'], inplace=True)
 
-    return None, None
+    y = bath
+    y.set_index(['latitude', 'longitude'], inplace=True)
+
+    return X, y
