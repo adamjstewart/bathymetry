@@ -7,11 +7,11 @@ import argparse
 from datasets.crust import read_data
 
 
-def set_up_parser():
+def set_up_parser() -> argparse.ArgumentParser:
     """Set up the argument parser.
 
     Returns:
-        argparse.ArgumentParser: the argument parser
+        the argument parser
     """
     # Initialize new parser
     parser = argparse.ArgumentParser(
@@ -32,15 +32,17 @@ def set_up_parser():
     return parser
 
 
-def main(args):
+def main(args: argparse.Namespace):
     """High-level pipeline.
 
     Trains the model and evaluates performance.
 
     Parameters:
-        args (argparse.Namespace): command-line arguments
+        args: command-line arguments
     """
     data = read_data(args.data_dir)
+
+    print(data)
 
 
 if __name__ == '__main__':
