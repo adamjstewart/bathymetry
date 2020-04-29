@@ -44,7 +44,7 @@ def read_data(data_dir):
     ctype = np.loadtxt(
         os.path.join(data_dir, 'CNtype1-1.txt'), dtype=np.object)
     ctype = ctype.flatten()
-    ctype = pd.DataFrame(ctype, columns=['crust type'])
+    ctype = pd.get_dummies(ctype, dtype=np.float32)  # one-hot encoding
 
     # Age
     kwargs['names'] = ['longitude', 'latitude', 'age']
