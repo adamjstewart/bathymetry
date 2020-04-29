@@ -46,7 +46,7 @@ def read_data(data_dir: str) -> pd.DataFrame:
     ctype = np.loadtxt(
         os.path.join(data_dir, 'CNtype1-1.txt'), dtype=np.object)
     ctype = ctype.flatten()
-    ctype = pd.get_dummies(ctype, dtype=np.float32)  # one-hot encoding
+    ctype = pd.DataFrame(ctype, columns=['crust type'])
 
     # Age
     # This file is downsampled from EarthByte
