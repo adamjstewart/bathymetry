@@ -3,6 +3,7 @@
 This process is known as data transformation.
 """
 
+import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
@@ -50,3 +51,25 @@ def standardize(train: pd.DataFrame,
     test = scaler.transform(test)
 
     return train, val, test, scaler
+
+
+def inverse_standardize(train: np.ndarray, val: np.ndarray, test: np.ndarray,
+                        scaler: StandardScaler) -> tuple:
+    """Scale back the predictions to the original representation.
+
+    Parameters:
+        train: the training predictions
+        val: the validation predictions
+        test: the testing predictions
+        scaler: the standardization scaler
+
+    Returns:
+        the scaled training predictions
+        the scaled validation predictions
+        the scaled testing predictions
+    """
+    train = scaler.inverse_transform(train)
+    val = scaler.inverse_transform(val)
+    test = scaler.inverse_transform(test)
+
+    return train, val, test

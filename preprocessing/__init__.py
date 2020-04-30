@@ -1,11 +1,13 @@
 """Tools for preprocessing the dataset."""
 
+import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 
 from .filter import filter_nans, filter_crust_type
 from .reduce import reduce_attributes
-from .transform import boundary_to_thickness, standardize
+from .transform import boundary_to_thickness, standardize, inverse_standardize
 
 
 def preprocess(data: pd.DataFrame) -> pd.DataFrame:
@@ -37,6 +39,24 @@ def preprocess(data: pd.DataFrame) -> pd.DataFrame:
     y_train, y_val, y_test, y_scaler = standardize(y_train, y_val, y_test)
 
     return X_train, X_val, X_test, y_train, y_val, y_test, y_scaler
+
+
+def postprocess(y_train: np.ndarray, y_val: np.ndarray, y_test: np.ndarray,
+                y_scaler: StandardScaler) -> tuple:
+    """Postprocess the predictions.
+
+    Parameters:
+        y_train: the training prediction
+        y_val: the validation prediction
+        y_test: the testing prediction
+        y_scaler: the standardization scaler
+
+    Returns:
+        the scaled training predictions
+        the scaled validation predictions
+        the scaled testing predictions
+    """
+    return inverse_standardize(y_train, y_val, y_test, y_scaler)
 
 
 def train_val_test_split(X: pd.DataFrame, y: pd.DataFrame,

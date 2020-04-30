@@ -6,7 +6,7 @@ import argparse
 
 from datasets.crust import read_data
 from models import get_model
-from preprocessing import preprocess
+from preprocessing import preprocess, postprocess
 
 
 def set_up_parser() -> argparse.ArgumentParser:
@@ -52,10 +52,16 @@ def main(args: argparse.Namespace):
     model = get_model(args)
     model.fit(X_train, y_train)
 
-    print('Evaluating...')
+    print('Predicting...')
     yhat_train = model.predict(X_train)
     yhat_val = model.predict(X_val)
     yhat_test = model.predict(X_test)
+
+    print('Postprocessing...')
+    yhat_train, yhat_val, yhat_test = postprocess(
+        yhat_train, yhat_val, yhat_test, y_scaler)
+
+    print('Evaluating...')
 
 
 if __name__ == '__main__':
