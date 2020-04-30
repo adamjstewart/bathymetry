@@ -6,13 +6,16 @@ This process is known as data cleaning.
 import pandas as pd
 
 
-def filter_nans(data: pd.DataFrame):
+def filter_nans(data: pd.DataFrame) -> pd.DataFrame:
     """Filter out data points containing NaN values.
 
     Parameters:
         data: the entire dataset
+
+    Returns:
+        a subset of the dataset
     """
-    data.dropna(inplace=True)
+    return data.dropna()
 
 
 def filter_crust_type(data: pd.DataFrame) -> pd.DataFrame:
@@ -24,6 +27,9 @@ def filter_crust_type(data: pd.DataFrame) -> pd.DataFrame:
 
     Parameters:
         data: the entire dataset
+
+    Returns:
+        a subset of the dataset
     """
     codes = ['A0', 'A1']
     return data[data['crust type', 'crust type'].isin(codes)]

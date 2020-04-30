@@ -5,6 +5,7 @@
 import argparse
 
 from datasets.crust import read_data
+from preprocessing import preprocess
 
 
 def set_up_parser() -> argparse.ArgumentParser:
@@ -42,7 +43,10 @@ def main(args: argparse.Namespace):
     """
     data = read_data(args.data_dir)
 
-    print(data)
+    X, y = preprocess(data)
+
+    print(X)
+    print(y)
 
 
 if __name__ == '__main__':
