@@ -5,6 +5,7 @@
 import argparse
 
 from datasets.crust import read_data
+from models import get_model
 from preprocessing import preprocess
 
 
@@ -28,7 +29,7 @@ def set_up_parser() -> argparse.ArgumentParser:
     subparsers = parser.add_subparsers(
         dest='model', required=True, help='machine learning model')
 
-    lstsq_parser = subparsers.add_parser('lstsq', help='least squares')
+    subparsers.add_parser('linear', help='linear regression')
 
     return parser
 
@@ -47,13 +48,14 @@ def main(args: argparse.Namespace):
     print('Preprocessing...')
     X_train, X_val, X_test, y_train, y_val, y_test, y_scaler = preprocess(data)
 
-    print(X_train)
-    print(X_val)
-    print(X_test)
+    print('Training...')
+    model = get_model(args)
+    model.fit(X_train, y_train)
 
-    print(y_train)
-    print(y_val)
-    print(y_test)
+    print('Evaluating...')
+    yhat_train = model.predict(X_train)
+    yhat_val = model.predict(X_val)
+    yhat_test = model.predict(X_test)
 
 
 if __name__ == '__main__':
