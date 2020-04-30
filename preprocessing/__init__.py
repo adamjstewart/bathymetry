@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 
 from .filter import filter_nans, filter_crust_type
 from .reduce import reduce_attributes
-from .transform import boundary_to_thickness
+from .transform import boundary_to_thickness, standardize
 
 
 def preprocess(data: pd.DataFrame) -> pd.DataFrame:
@@ -23,6 +23,7 @@ def preprocess(data: pd.DataFrame) -> pd.DataFrame:
 
     # Separate X from y
     X, y = data, data['boundary topograpy', 'upper sediments']
+    y = pd.DataFrame(y)
 
     # Transform and reduce data attributes
     X = boundary_to_thickness(X)
@@ -32,10 +33,10 @@ def preprocess(data: pd.DataFrame) -> pd.DataFrame:
     X_train, X_val, X_test, y_train, y_val, y_test = train_val_test_split(X, y)
 
     # Standardize
-    # Must be trained on train and ran on val/test, so needs to happen after split
-    # Need to keep Scaler for y so scaling can be inverted after prediction and before performance evaluation
+    X_train, X_val, X_test, _ = standardize(X_train, X_val, X_test)
+    y_train, y_val, y_test, y_scaler = standardize(y_train, y_val, y_test)
 
-    return X_train, X_val, X_test, y_train, y_val, y_test
+    return X_train, X_val, X_test, y_train, y_val, y_test, y_scaler
 
 
 def train_val_test_split(X: pd.DataFrame, y: pd.DataFrame,

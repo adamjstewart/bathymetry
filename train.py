@@ -45,7 +45,7 @@ def main(args: argparse.Namespace):
     data = read_data(args.data_dir)
 
     print('Preprocessing...')
-    X_train, X_val, X_test, y_train, y_val, y_test = preprocess(data)
+    X_train, X_val, X_test, y_train, y_val, y_test, y_scaler = preprocess(data)
 
     print(X_train)
     print(X_val)
