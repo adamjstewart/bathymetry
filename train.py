@@ -5,6 +5,7 @@
 import argparse
 
 from datasets.crust import read_data
+from metrics import evaluate
 from models import get_model
 from preprocessing import preprocess, postprocess
 
@@ -58,10 +59,18 @@ def main(args: argparse.Namespace):
     yhat_test = model.predict(X_test)
 
     print('Postprocessing...')
+    y_train, y_val, y_test = postprocess(
+        y_train, y_val, y_test, y_scaler)
     yhat_train, yhat_val, yhat_test = postprocess(
         yhat_train, yhat_val, yhat_test, y_scaler)
 
     print('Evaluating...')
+    print('\nTrain:')
+    evaluate(y_train, yhat_train)
+    print('\nValidation:')
+    evaluate(y_val, yhat_val)
+    print('\nTest:')
+    evaluate(y_test, yhat_test)
 
 
 if __name__ == '__main__':
