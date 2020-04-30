@@ -21,6 +21,7 @@ def read_data(data_dir: str) -> pd.DataFrame:
     assert os.path.isdir(data_dir)
 
     kwargs = {
+        'widths': [7] * 9,
         'header': None,
         'names': [
             'water', 'ice', 'upper sediments', 'middle sediments',
@@ -35,6 +36,7 @@ def read_data(data_dir: str) -> pd.DataFrame:
     bnds = pd.read_fwf(os.path.join(data_dir, 'crust1.bnds'), **kwargs)
 
     # P/S-wave velocity
+    kwargs['widths'] = [6] * 9
     vp = pd.read_fwf(os.path.join(data_dir, 'crust1.vp'), **kwargs)
     vs = pd.read_fwf(os.path.join(data_dir, 'crust1.vs'), **kwargs)
 
@@ -51,6 +53,7 @@ def read_data(data_dir: str) -> pd.DataFrame:
     # Age
     # This file is downsampled from EarthByte
     # TODO: directly use EarthByte dataset with a different data loader
+    kwargs.pop('widths')
     kwargs['names'] = ['longitude', 'latitude', 'age']
     age = pd.read_table(os.path.join(data_dir, 'age1.txt'), **kwargs)
 
