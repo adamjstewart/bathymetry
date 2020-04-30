@@ -16,7 +16,8 @@ def reduce_attributes(data: pd.DataFrame) -> pd.DataFrame:
         a subset of the dataset
     """
     labels = [
-        ('thickness', 'water'),
+        ('thickness', 'water'),  # keeping this would be cheating
+        ('thickness', 'moho'),   # this is all NaNs after the pd.diff
         ('crust type', 'crust type'),
     ]
     return data.drop(labels, axis=1)
