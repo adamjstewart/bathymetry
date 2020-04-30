@@ -41,12 +41,19 @@ def main(args: argparse.Namespace):
     Parameters:
         args: command-line arguments
     """
+    print('Reading dataset...')
     data = read_data(args.data_dir)
 
-    X, y = preprocess(data)
+    print('Preprocessing...')
+    X_train, X_val, X_test, y_train, y_val, y_test = preprocess(data)
 
-    print(X)
-    print(y)
+    print(X_train)
+    print(X_val)
+    print(X_test)
+
+    print(y_train)
+    print(y_val)
+    print(y_test)
 
 
 if __name__ == '__main__':
