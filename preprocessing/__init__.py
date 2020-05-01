@@ -28,7 +28,7 @@ def preprocess(data: pd.DataFrame, args: argparse.Namespace) -> pd.DataFrame:
 
     # Separate X from y
     X, y = data, data['boundary topograpy', 'upper sediments']
-    y = pd.DataFrame(y)
+    y = -pd.DataFrame(y)
 
     # Transform and reduce data attributes
     X = boundary_to_thickness(X)
