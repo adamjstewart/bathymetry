@@ -47,7 +47,7 @@ class GDH1:
     Stein & Stein, Nature, 1992
 
     https://doi.org/10.1038/359123a0
-    http://physics.unm.edu/Courses/Roy/Phys480_581Fa14/papers/Stein_Stein_359123a0.pdf
+    https://physics.unm.edu/Courses/Roy/Phys480_581Fa14/papers/Stein_Stein_359123a0.pdf
     """
     def fit(self, X, y):
         pass
