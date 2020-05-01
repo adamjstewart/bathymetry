@@ -52,5 +52,21 @@ class GDH1:
     def fit(self, X, y):
         pass
 
-    def predict(self, X):
-        pass
+    def predict(self, X: pd.DataFrame) -> np.ndarray:
+        """Predict bathymetry based on age.
+
+        Parameters:
+            X: the dataset
+
+        Returns:
+            the prediction
+        """
+        t = X['age', 'age'].values
+
+        return np.where(
+            t < 20,
+            # Young crust
+            2.6 + 0.365 * t**0.5,
+            # Old crust
+            5.651 - 2.473 * np.exp(-0.0278 * t)
+        )
