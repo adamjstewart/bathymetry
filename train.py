@@ -30,7 +30,12 @@ def set_up_parser() -> argparse.ArgumentParser:
     subparsers = parser.add_subparsers(
         dest='model', required=True, help='machine learning model')
 
+    # Machine learning models
     subparsers.add_parser('linear', help='linear regression')
+
+    # Physical models
+    subparsers.add_parser('psm', help='parsons and sclater model')
+    subparsers.add_parser('gdh1', help='global depth and heat flow model')
 
     return parser
 
@@ -47,7 +52,8 @@ def main(args: argparse.Namespace):
     data = read_data(args.data_dir)
 
     print('Preprocessing...')
-    X_train, X_val, X_test, y_train, y_val, y_test, y_scaler = preprocess(data)
+    X_train, X_val, X_test, y_train, y_val, y_test, y_scaler = preprocess(
+        data, args)
 
     print('Training...')
     model = get_model(args)

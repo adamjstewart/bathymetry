@@ -1,5 +1,7 @@
 """Tools for preprocessing the dataset."""
 
+import argparse
+
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -10,11 +12,12 @@ from .reduce import reduce_attributes
 from .transform import boundary_to_thickness, standardize, inverse_standardize
 
 
-def preprocess(data: pd.DataFrame) -> pd.DataFrame:
+def preprocess(data: pd.DataFrame, args: argparse.Namespace) -> pd.DataFrame:
     """Preprocess the dataset.
 
     Parameters:
         data: the entire dataset
+        args: the command-line arguments
 
     Returns:
         a subset of the dataset
@@ -33,6 +36,9 @@ def preprocess(data: pd.DataFrame) -> pd.DataFrame:
 
     # Split train-validation-test sets
     X_train, X_val, X_test, y_train, y_val, y_test = train_val_test_split(X, y)
+
+    if args.model in ['psm', 'gdh1']:
+        return X_train, X_val, X_test, y_train, y_val, y_test, None
 
     # Standardize
     X_train, X_val, X_test, _ = standardize(X_train, X_val, X_test)

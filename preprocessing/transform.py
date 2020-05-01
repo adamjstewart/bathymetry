@@ -68,6 +68,9 @@ def inverse_standardize(train: np.ndarray, val: np.ndarray, test: np.ndarray,
         the scaled validation predictions
         the scaled testing predictions
     """
+    if scaler is None:
+        return train, val, test
+
     train = scaler.inverse_transform(train)
     val = scaler.inverse_transform(val)
     test = scaler.inverse_transform(test)
