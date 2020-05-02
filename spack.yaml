@@ -1,0 +1,9 @@
+spack:
+  specs:
+  - 'python@3.7:'
+  - py-cartopy
+  - py-matplotlib
+  - py-numpy
+  - py-pandas
+  - py-scikit-learn
+  concretization: together
