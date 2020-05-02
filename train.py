@@ -33,6 +33,27 @@ def set_up_parser() -> argparse.ArgumentParser:
     # Machine learning models
     subparsers.add_parser('linear', help='linear regression')
 
+    svr_parser = subparsers.add_parser('svr', help='support vector regression')
+    svr_parser.add_argument(
+        '--kernel', default='rbf',
+        choices=['linear', 'poly', 'rbf', 'sigmoid', 'precomputed'],
+        help='kernel type')
+    svr_parser.add_argument(
+        '--degree', default=3, type=int, help='degree of poly kernel')
+    svr_parser.add_argument(
+        '--gamma', default='scale', help='rbf/poly/sigmoid kernel coefficient')
+    svr_parser.add_argument(
+        '--coef0', default=0, type=float,
+        help='independent term in poly/sigmoid kernel')
+    svr_parser.add_argument(
+        '--tol', default=1e-3, type=float,
+        help='tolerance for stopping criterion')
+    svr_parser.add_argument(
+        '--c', default=1, type=float, help='regularization parameter')
+    svr_parser.add_argument(
+        '--epsilon', default=0.1, type=float,
+        help='epsilon in the epsilon-SVR model')
+
     # Physical models
     subparsers.add_parser('psm', help='parsons and sclater model')
     subparsers.add_parser('gdh1', help='global depth and heat flow model')
