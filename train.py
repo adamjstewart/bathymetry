@@ -4,6 +4,8 @@
 
 import argparse
 
+import pandas as pd
+
 from datasets.crust import read_data
 from metrics import evaluate
 from models import get_model
@@ -83,8 +85,11 @@ def main(args: argparse.Namespace):
 
     print('Predicting...')
     yhat_train = model.predict(X_train)
+    yhat_train = pd.Series(yhat_train, index=y_train.index)
     yhat_val = model.predict(X_val)
+    yhat_val = pd.Series(yhat_val, index=y_val.index)
     yhat_test = model.predict(X_test)
+    yhat_test = pd.Series(yhat_test, index=y_test.index)
 
     print('Postprocessing...')
     y_train, y_val, y_test = postprocess(

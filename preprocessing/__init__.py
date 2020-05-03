@@ -2,7 +2,6 @@
 
 import argparse
 
-import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -22,13 +21,15 @@ def preprocess(data: pd.DataFrame, args: argparse.Namespace) -> pd.DataFrame:
     Returns:
         a subset of the dataset
     """
+    assert isinstance(data, pd.DataFrame)
+
     # Filter out data we don't want to train on
     data = filter_nans(data)
     data = filter_crust_type(data)
 
     # Separate X from y
     X, y = data, data['boundary topograpy', 'upper sediments']
-    y = -pd.DataFrame(y)
+    y = -y
 
     # Transform and reduce data attributes
     X = boundary_to_thickness(X)
@@ -37,6 +38,13 @@ def preprocess(data: pd.DataFrame, args: argparse.Namespace) -> pd.DataFrame:
     # Split train-validation-test sets
     X_train, X_val, X_test, y_train, y_val, y_test = train_val_test_split(X, y)
 
+    assert isinstance(X_train, pd.DataFrame)
+    assert isinstance(X_val, pd.DataFrame)
+    assert isinstance(X_test, pd.DataFrame)
+    assert isinstance(y_train, pd.Series)
+    assert isinstance(y_val, pd.Series)
+    assert isinstance(y_test, pd.Series)
+
     if args.model in ['psm', 'gdh1']:
         return X_train, X_val, X_test, y_train, y_val, y_test, None
 
@@ -44,10 +52,17 @@ def preprocess(data: pd.DataFrame, args: argparse.Namespace) -> pd.DataFrame:
     X_train, X_val, X_test, _ = standardize(X_train, X_val, X_test)
     y_train, y_val, y_test, y_scaler = standardize(y_train, y_val, y_test)
 
+    assert isinstance(X_train, pd.DataFrame)
+    assert isinstance(X_val, pd.DataFrame)
+    assert isinstance(X_test, pd.DataFrame)
+    assert isinstance(y_train, pd.Series)
+    assert isinstance(y_val, pd.Series)
+    assert isinstance(y_test, pd.Series)
+
     return X_train, X_val, X_test, y_train, y_val, y_test, y_scaler
 
 
-def postprocess(y_train: np.ndarray, y_val: np.ndarray, y_test: np.ndarray,
+def postprocess(y_train: pd.Series, y_val: pd.Series, y_test: pd.Series,
                 y_scaler: StandardScaler) -> tuple:
     """Postprocess the predictions.
 
@@ -62,10 +77,21 @@ def postprocess(y_train: np.ndarray, y_val: np.ndarray, y_test: np.ndarray,
         the scaled validation predictions
         the scaled testing predictions
     """
-    return inverse_standardize(y_train, y_val, y_test, y_scaler)
+    assert isinstance(y_train, pd.Series)
+    assert isinstance(y_val, pd.Series)
+    assert isinstance(y_test, pd.Series)
+
+    y_train, y_val, y_test = inverse_standardize(
+        y_train, y_val, y_test, y_scaler)
+
+    assert isinstance(y_train, pd.Series)
+    assert isinstance(y_val, pd.Series)
+    assert isinstance(y_test, pd.Series)
+
+    return y_train, y_val, y_test
 
 
-def train_val_test_split(X: pd.DataFrame, y: pd.DataFrame,
+def train_val_test_split(X: pd.DataFrame, y: pd.Series,
                          train_size: int = 60,
                          val_size: int = 20,
                          test_size: int = 20) -> tuple:
@@ -86,6 +112,11 @@ def train_val_test_split(X: pd.DataFrame, y: pd.DataFrame,
         validation labels
         test labels
     """
+    assert isinstance(X, pd.DataFrame)
+    assert isinstance(y, pd.Series)
+    assert isinstance(train_size, int)
+    assert isinstance(val_size, int)
+    assert isinstance(test_size, int)
     assert len(X) == len(y)
     assert train_size + val_size + test_size == 100
 
@@ -101,10 +132,15 @@ def train_val_test_split(X: pd.DataFrame, y: pd.DataFrame,
     X_train, X_val, y_train, y_val = train_test_split(
         X_train_val, y_train_val, test_size=val_size)
 
+    assert isinstance(X_train, pd.DataFrame)
+    assert isinstance(X_val, pd.DataFrame)
+    assert isinstance(X_test, pd.DataFrame)
+    assert isinstance(y_train, pd.Series)
+    assert isinstance(y_val, pd.Series)
+    assert isinstance(y_test, pd.Series)
     assert len(X_train) == train_size
     assert len(X_val) == val_size
     assert len(X_test) == test_size
-
     assert len(y_train) == train_size
     assert len(y_val) == val_size
     assert len(y_test) == test_size

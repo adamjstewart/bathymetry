@@ -15,7 +15,13 @@ def filter_nans(data: pd.DataFrame) -> pd.DataFrame:
     Returns:
         a subset of the dataset
     """
-    return data.dropna()
+    assert isinstance(data, pd.DataFrame)
+
+    data = data.dropna()
+
+    assert isinstance(data, pd.DataFrame)
+
+    return data
 
 
 def filter_crust_type(data: pd.DataFrame) -> pd.DataFrame:
@@ -31,5 +37,11 @@ def filter_crust_type(data: pd.DataFrame) -> pd.DataFrame:
     Returns:
         a subset of the dataset
     """
+    assert isinstance(data, pd.DataFrame)
+
     codes = ['A0', 'A1']
-    return data[data['crust type', 'crust type'].isin(codes)]
+    data = data[data['crust type', 'crust type'].isin(codes)]
+
+    assert isinstance(data, pd.DataFrame)
+
+    return data

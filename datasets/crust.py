@@ -64,4 +64,6 @@ def read_data(data_dir: str) -> pd.DataFrame:
     data.set_index([('age', 'latitude'), ('age', 'longitude')], inplace=True)
     data.index.rename(['latitude', 'longitude'], inplace=True)
 
+    assert isinstance(data, pd.DataFrame)
+
     return data
