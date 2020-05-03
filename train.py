@@ -8,6 +8,7 @@ from datasets.crust import read_data
 from metrics import evaluate
 from models import get_model
 from preprocessing import preprocess, postprocess
+from utils.plotting import plot_world
 
 
 def set_up_parser() -> argparse.ArgumentParser:
@@ -98,6 +99,9 @@ def main(args: argparse.Namespace):
     evaluate(y_val, yhat_val)
     print('\nTest:')
     evaluate(y_test, yhat_test)
+
+    print('Plotting...')
+    plot_world(y_train)
 
 
 if __name__ == '__main__':
