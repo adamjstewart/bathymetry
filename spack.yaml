@@ -2,7 +2,9 @@ spack:
   specs:
   - 'python@3.7:'
   - py-cartopy
+  - py-flake8
   - py-matplotlib
+  - py-mypy
   - py-numpy
   - py-pandas
   - py-scikit-learn

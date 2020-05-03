@@ -1,5 +1,7 @@
 cartopy
+flake8
 matplotlib
+mypy
 numpy
 matplotlib
 scikit-learn
