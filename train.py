@@ -106,7 +106,9 @@ def main(args: argparse.Namespace):
     evaluate(y_test, yhat_test)
 
     print('Plotting...')
-    plot_world(y_train)
+    y = pd.concat([y_train, y_val, y_test])
+    yhat = pd.concat([yhat_train, yhat_val, yhat_test])
+    plot_world(y - yhat)
 
 
 if __name__ == '__main__':
