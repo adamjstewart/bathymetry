@@ -104,6 +104,7 @@ def main(args: argparse.Namespace):
     evaluate(y_val, yhat_val)
     print('\nTest:')
     evaluate(y_test, yhat_test)
+    print()
 
     print('Plotting...')
     y = pd.concat([y_train, y_val, y_test])

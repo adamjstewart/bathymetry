@@ -2,6 +2,7 @@
 
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 
 
@@ -13,14 +14,22 @@ def plot_world(data: pd.Series):
     """
     assert isinstance(data, pd.Series)
 
-    # Convert from MultiIndex Series to Index DataFrame
-    data = data.reset_index()
-    lat = data['latitude']
-    lon = data['longitude']
-    z = data[0]
+    lat = np.linspace(-90, 90, 181)
+    lon = np.linspace(-180, 180, 361)
+    X, Y = np.meshgrid(lon, lat)
 
+    C = np.full((180, 360), np.nan, dtype=np.float32)
+    for i in range(180):
+        for j in range(360):
+            idx = (i - 89.5, j - 179.5)
+            try:
+                C[i, j] = data[idx]
+            except KeyError:
+                pass
+
+    fig = plt.figure()
     ax = plt.axes(projection=ccrs.Mollweide())
-    ax.stock_img()
     ax.coastlines()
-    plt.contourf(lon, lat, z, 60, transform=ccrs.Mollweide())
+    z = ax.pcolormesh(X, Y, C, transform=ccrs.PlateCarree())
+    fig.colorbar(z)
     plt.show()
