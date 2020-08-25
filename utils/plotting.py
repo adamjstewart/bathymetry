@@ -30,6 +30,7 @@ def plot_world(data: pd.Series):
     fig = plt.figure()
     ax = plt.axes(projection=ccrs.Mollweide())
     ax.coastlines()
-    z = ax.pcolormesh(X, Y, C, transform=ccrs.PlateCarree())
-    fig.colorbar(z)
+    z = ax.pcolormesh(X, Y, C, cmap='bwr', vmin=-1, vmax=1,
+                      transform=ccrs.PlateCarree())
+    fig.colorbar(z, ax=ax)
     plt.show()

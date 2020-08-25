@@ -59,13 +59,14 @@ def main(args: argparse.Namespace):
 
     print('Plotting...')
     plt.figure()
-    plt.plot(x, y, '.')
-    plt.plot(x_psm_gdh1, y_psm)
-    plt.plot(x_psm_gdh1, y_gdh1)
+    plt.scatter(x, y, s=1)
+    psm, = plt.plot(x_psm_gdh1, y_psm, 'm-')
+    gdh1, = plt.plot(x_psm_gdh1, y_gdh1, 'y-')
     plt.title('Comparison of PSM and GDH1 models')
     plt.xlabel('Age (Ma)')
     plt.ylabel('Depth (km)')
     plt.gca().invert_yaxis()
+    plt.legend([psm, gdh1], ['PSM', 'GDH1'])
     plt.show()
 
 
