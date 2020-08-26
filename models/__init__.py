@@ -21,8 +21,9 @@ def get_model(args: argparse.Namespace):
         return LinearRegression(
             fit_intercept=False, normalize=False, copy_X=True, n_jobs=-1)
     elif args.model == 'svr':
-        return SVR(args.kernel, args.degree, args.gamma, args.coef0,
-                   args.tol, args.c, args.epsilon, verbose=True)
+        return SVR(kernel=args.kernel, degree=args.degree, gamma=args.gamma,
+                   coef0=args.coef0, tol=args.tol, C=args.c,
+                   epsilon=args.epsilon, verbose=True)
     elif args.model == 'psm':
         return PSM()
     elif args.model == 'gdh1':
