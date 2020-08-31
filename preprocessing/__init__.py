@@ -28,7 +28,7 @@ def preprocess(data: pd.DataFrame, args: argparse.Namespace) -> pd.DataFrame:
     data = filter_crust_type(data)
 
     # Separate X from y
-    X, y = data, data['boundary topograpy', 'upper sediments']
+    X, y = data, data['boundary topograpy', 'upper crystalline crust']
     y = -y
 
     # Transform and reduce data attributes
