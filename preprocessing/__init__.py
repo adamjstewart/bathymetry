@@ -45,7 +45,7 @@ def preprocess(data: pd.DataFrame, args: argparse.Namespace) -> pd.DataFrame:
     assert isinstance(y_val, pd.Series)
     assert isinstance(y_test, pd.Series)
 
-    if args.model in ['psm', 'gdh1']:
+    if args.model in ['psm', 'gdh1', 'isostasy']:
         return X_train, X_val, X_test, y_train, y_val, y_test, None
 
     # Standardize

@@ -10,7 +10,7 @@ from datasets.crust import read_data
 from metrics import evaluate
 from models import get_model
 from preprocessing import preprocess, postprocess
-from utils.plotting import plot_world
+#from utils.plotting import plot_world
 
 
 def set_up_parser() -> argparse.ArgumentParser:
@@ -60,6 +60,7 @@ def set_up_parser() -> argparse.ArgumentParser:
     # Physical models
     subparsers.add_parser('psm', help='parsons and sclater model')
     subparsers.add_parser('gdh1', help='global depth and heat flow model')
+    subparsers.add_parser('isostasy', help='pure isostasy prediction')
 
     return parser
 
@@ -78,6 +79,10 @@ def main(args: argparse.Namespace):
     print('Preprocessing...')
     X_train, X_val, X_test, y_train, y_val, y_test, y_scaler = preprocess(
         data, args)
+
+    #with pd.option_context('display.max_columns', 999):
+    #    print(X_train.columns)
+    #    print(X_train.describe(include='all'))
 
     print('Training...')
     model = get_model(args)
@@ -106,10 +111,10 @@ def main(args: argparse.Namespace):
     evaluate(y_test, yhat_test)
     print()
 
-    print('Plotting...')
-    y = pd.concat([y_train, y_val, y_test])
-    yhat = pd.concat([yhat_train, yhat_val, yhat_test])
-    plot_world(y - yhat)
+    #print('Plotting...')
+    #y = pd.concat([y_train, y_val, y_test])
+    #yhat = pd.concat([yhat_train, yhat_val, yhat_test])
+    #plot_world(y - yhat)
 
 
 if __name__ == '__main__':
