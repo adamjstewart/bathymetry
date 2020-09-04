@@ -2,6 +2,7 @@
 
 import numpy as np
 import pandas as pd
+import scipy.optimize as opt
 
 
 class PSM:
@@ -96,7 +97,7 @@ class Isostasy:
         self.w = y.mean() - self.s1 - self.s2 - self.s3
 
         # Densities
-        self.rho_i = X['density', 'ice'].values
+        self.rho_i = X['density', 'ice']
         self.rho_i = np.ma.masked_values(self.rho_i, 0).mean()
 
         self.rho_w = X['density', 'water']
@@ -180,3 +181,72 @@ class Isostasy:
         w = numerator / denominator
 
         return w + s1 + s2 + s3
+
+
+class Isostasy2:
+    """Simple model based on isostasy."""
+
+    def fit(self, X: pd.DataFrame, y: pd.Series):
+        """Record average values of thickness and density.
+
+        Parameters:
+            X: the dataset
+            y: the depths
+        """
+        p0 = np.array([0.0, 0.0])
+        self.popt, _ = opt.curve_fit(isostasy, X, y, p0)
+
+    def predict(self, X: pd.DataFrame) -> np.ndarray:
+        """Predict bathymetry based on isostasy.
+
+        Parameters:
+            X: the dataset
+
+        Returns:
+            the prediction
+        """
+        return isostasy(X, *self.popt)
+
+
+def isostasy(X: pd.DataFrame, a: float, b: float) -> np.ndarray:
+    """Predict y based on X, a, and b.
+
+    Parameters:
+        X: the dataset
+        a: the total mass constant
+        b: the total thickness constant
+
+    Returns:
+        y: predictions
+    """
+    # Thicknesses
+    i = X['thickness', 'ice'].values
+
+    s1 = X['thickness', 'upper sediments'].values
+    s2 = X['thickness', 'middle sediments'].values
+    s3 = X['thickness', 'lower sediments'].values
+
+    c1 = X['thickness', 'upper crystalline crust'].values
+    c2 = X['thickness', 'middle crystalline crust'].values
+    c3 = X['thickness', 'lower crystalline crust'].values
+
+    # Densities
+    rho_i = X['density', 'ice'].values
+
+    rho_w = X['density', 'water'].values
+
+    rho_s1 = X['density', 'upper sediments'].values
+    rho_s2 = X['density', 'middle sediments'].values
+    rho_s3 = X['density', 'lower sediments'].values
+
+    rho_c1 = X['density', 'upper crystalline crust'].values
+    rho_c2 = X['density', 'middle crystalline crust'].values
+    rho_c3 = X['density', 'lower crystalline crust'].values
+
+    rho_m = X['density', 'moho'].values
+
+    # Calculations
+    return ((a + rho_m * c1 + rho_m * c2 + rho_m * c3 - rho_i * i - rho_w * s1
+             - rho_w * s2 - rho_w * s3 - rho_s1 * s1 - rho_s2 * s2 - rho_s3 *
+             s3 - rho_c1 * c1 - rho_c2 * c2 - rho_c3 * c3 - rho_m * b) /
+            (rho_w - rho_m))

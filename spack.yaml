@@ -8,4 +8,5 @@ spack:
   - py-numpy
   - py-pandas
   - py-scikit-learn
+  - py-scipy
   concretization: together
