@@ -46,7 +46,7 @@ def main(args: argparse.Namespace):
     print('Preprocessing...')
     data = filter_nans(data)
     data = filter_crust_type(data)
-    X, y = data, -data['boundary topograpy', 'upper sediments']
+    X, y = data, -data['boundary topograpy', 'upper crystalline crust']
 
     print('Predicting...')
     x = X['age', 'age']
