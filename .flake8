@@ -1,6 +1,7 @@
 [flake8]
 exclude =
     # Data
+    checkpoints/,
     data/,
 
     # Git

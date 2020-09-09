@@ -10,7 +10,7 @@ from datasets.crust import read_data
 from metrics import evaluate
 from models import get_model
 from preprocessing import preprocess, postprocess
-#from utils.plotting import plot_world
+from utils.io import save_pickle
 
 
 def set_up_parser() -> argparse.ArgumentParser:
@@ -28,6 +28,9 @@ def set_up_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         '-d', '--data-dir', default='data/CRUST1.0',
         help='directory containing CRUST1.0 dataset', metavar='DIR')
+    parser.add_argument(
+        '-c', '--checkpoint-dir', default='checkpoints',
+        help='directory to save checkpoints to', metavar='DIR')
 
     # Model subparser
     subparsers = parser.add_subparsers(
@@ -81,10 +84,6 @@ def main(args: argparse.Namespace):
     X_train, X_val, X_test, y_train, y_val, y_test, y_scaler = preprocess(
         data, args)
 
-    #with pd.option_context('display.max_columns', 999):
-    #    print(X_train.columns)
-    #    print(X_train.describe(include='all'))
-
     print('Training...')
     model = get_model(args)
     model.fit(X_train, y_train)
@@ -112,10 +111,11 @@ def main(args: argparse.Namespace):
     evaluate(y_test, yhat_test)
     print()
 
-    #print('Plotting...')
-    #y = pd.concat([y_train, y_val, y_test])
-    #yhat = pd.concat([yhat_train, yhat_val, yhat_test])
-    #plot_world(y - yhat)
+    print('Saving...')
+    y = pd.concat([y_train, y_val, y_test])
+    yhat = pd.concat([yhat_train, yhat_val, yhat_test])
+    save_pickle(y, args.checkpoint_dir, 'truth')
+    save_pickle(yhat, args.checkpoint_dir, args.model)
 
 
 if __name__ == '__main__':
