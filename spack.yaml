@@ -2,6 +2,7 @@ spack:
   specs:
   - 'python@3.7:'
   - py-cartopy
+  - py-cmocean
   - py-flake8
   - py-matplotlib
   - py-mypy

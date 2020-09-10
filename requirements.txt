@@ -1,4 +1,5 @@
 cartopy
+cmocean
 flake8
 matplotlib
 mypy

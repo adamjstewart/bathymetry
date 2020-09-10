@@ -1,16 +1,19 @@
 """Collection of plotting utilities."""
 
 import cartopy.crs as ccrs
+import cmocean
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
 
-def plot_world(data: pd.Series):
+def plot_world(data: pd.Series, title: str, legend: str):
     """Plot a world map with data.
 
     Parameters:
         data: the data to display
+        title: the figure title
+        legend: the legend label
     """
     assert isinstance(data, pd.Series)
 
@@ -27,10 +30,28 @@ def plot_world(data: pd.Series):
             except KeyError:
                 pass
 
+    if 'difference' in legend:
+        # Plotting the difference
+        std = data.std()
+        kwargs = {
+            'cmap': cmocean.cm.balance,
+            'vmin': -std,
+            'vmax': +std,
+        }
+    elif 'bathymetry' in legend:
+        # Plotting the absolute bathymetry
+        kwargs = {
+            'cmap': cmocean.cm.deep,
+            'vmin': 0,
+            'vmax': 10,
+        }
+
+    # Plotting
     fig = plt.figure()
     ax = plt.axes(projection=ccrs.Mollweide())
     ax.coastlines()
-    z = ax.pcolormesh(X, Y, C, cmap='bwr', vmin=-1, vmax=1,
-                      transform=ccrs.PlateCarree())
-    fig.colorbar(z, ax=ax)
+    z = ax.pcolormesh(X, Y, C, transform=ccrs.PlateCarree(), **kwargs)
+    cbar = fig.colorbar(z, ax=ax)
+    ax.set_title(title)
+    cbar.ax.set_ylabel(legend)
     plt.show()
