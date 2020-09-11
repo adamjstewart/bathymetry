@@ -1,5 +1,7 @@
 """Collection of plotting utilities."""
 
+import os
+
 import cartopy.crs as ccrs
 import cmocean
 import matplotlib.pyplot as plt
@@ -8,10 +10,11 @@ import numpy as np
 import pandas as pd
 
 
-def plot_world(data: pd.Series, title: str, legend: str):
+def plot_world(directory: str, data: pd.Series, title: str, legend: str):
     """Plot a world map with data.
 
     Parameters:
+        directory: the directory to save the file to
         data: the data to display
         title: the figure title
         legend: the legend label
@@ -62,4 +65,8 @@ def plot_world(data: pd.Series, title: str, legend: str):
     # Add labels
     ax.set_title(title)
     cbar.ax.set_ylabel(legend)
-    plt.show()
+
+    # Save figure
+    os.makedirs(directory, exist_ok=True)
+    filename = os.path.join(directory, title.replace(' ', '') + '.png')
+    plt.savefig(filename, dpi=300, bbox_inches='tight')

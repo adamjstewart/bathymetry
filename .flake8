@@ -3,6 +3,7 @@ exclude =
     # Data
     checkpoints/,
     data/,
+    results/,
 
     # Git
     .git/,

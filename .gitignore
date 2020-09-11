@@ -1,6 +1,7 @@
 # Dataset
 checkpoints/
 data/
+results/
 
 # Spack
 .spack-env/

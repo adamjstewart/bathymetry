@@ -35,6 +35,9 @@ def set_up_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         '-c', '--checkpoint-dir', default='checkpoints',
         help='directory to save checkpoints to', metavar='DIR')
+    parser.add_argument(
+        '-r', '--results-dir', default='results',
+        help='directory to save results to', metavar='DIR')
 
     # Style subparser
     subparsers = parser.add_subparsers(
@@ -108,7 +111,7 @@ def main_world(args: argparse.Namespace):
     data = reduce(operator.sub, layers)
 
     print('Plotting...')
-    plot_world(data, title, legend)
+    plot_world(args.results_dir, data, title, legend)
 
 
 if __name__ == '__main__':
