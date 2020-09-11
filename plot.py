@@ -45,7 +45,8 @@ def set_up_parser() -> argparse.ArgumentParser:
 
     world_parser = subparsers.add_parser('world', help='world map')
     world_parser.add_argument(
-        'layers', nargs='+', choices=['truth', 'psm', 'gdh1', 'linear', 'svr'],
+        'layers', nargs='+', choices=[
+            'truth', 'psm', 'gdh1', 'linear', 'svr', 'isostasy', 'isostasy2'],
         help='layers to subtract')
 
     return parser

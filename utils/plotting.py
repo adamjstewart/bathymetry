@@ -3,6 +3,7 @@
 import cartopy.crs as ccrs
 import cmocean
 import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 import numpy as np
 import pandas as pd
 
@@ -43,15 +44,22 @@ def plot_world(data: pd.Series, title: str, legend: str):
         kwargs = {
             'cmap': cmocean.cm.deep,
             'vmin': 0,
-            'vmax': 10,
+            'vmax': 7.5,
         }
 
     # Plotting
     fig = plt.figure()
     ax = plt.axes(projection=ccrs.Mollweide())
-    ax.coastlines()
     z = ax.pcolormesh(X, Y, C, transform=ccrs.PlateCarree(), **kwargs)
-    cbar = fig.colorbar(z, ax=ax)
+    ax.coastlines()
+
+    # Add colorbar (with correct size)
+    divider = make_axes_locatable(ax)
+    ax_cb = divider.new_horizontal(size="5%", pad=0.1, axes_class=plt.Axes)
+    fig.add_axes(ax_cb)
+    cbar = fig.colorbar(z, cax=ax_cb)
+
+    # Add labels
     ax.set_title(title)
     cbar.ax.set_ylabel(legend)
     plt.show()
