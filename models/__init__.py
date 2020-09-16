@@ -5,7 +5,7 @@ import argparse
 from sklearn.linear_model import LinearRegression
 from sklearn.svm import SVR
 
-from .physics import PSM, GDH1, Isostasy, Isostasy2
+from .physics import PSM, GDH1, H13, Isostasy, Isostasy2
 
 
 def get_model(args: argparse.Namespace):
@@ -28,6 +28,8 @@ def get_model(args: argparse.Namespace):
         return PSM()
     elif args.model == 'gdh1':
         return GDH1()
+    elif args.model == 'h13':
+        return H13()
     elif args.model == 'isostasy':
         return Isostasy()
     elif args.model == 'isostasy2':

@@ -4,6 +4,7 @@
 
 import argparse
 import operator
+import os
 from functools import partial, reduce
 
 import matplotlib.pyplot as plt
@@ -11,7 +12,7 @@ import numpy as np
 import pandas as pd
 
 from datasets.crust import read_data
-from models.physics import PSM, GDH1
+from models.physics import PSM, GDH1, H13
 from preprocessing.filter import filter_nans, filter_crust_type
 from utils.io import load_pickle
 from utils.plotting import plot_world
@@ -49,7 +50,9 @@ def set_up_parser() -> argparse.ArgumentParser:
     world_parser = subparsers.add_parser('world', help='world map')
     world_parser.add_argument(
         'layers', nargs='+', choices=[
-            'truth', 'psm', 'gdh1', 'linear', 'svr', 'isostasy', 'isostasy2'],
+            'truth', 'psm', 'gdh1', 'h13',
+            'linear', 'svr', 'isostasy', 'isostasy2'
+        ],
         help='layers to subtract')
 
     return parser
@@ -71,24 +74,30 @@ def main_2d(args: argparse.Namespace):
 
     print('Predicting...')
     x = X['age', 'age']
-    x_psm_gdh1 = np.linspace(0, np.max(x))
-    x_psm_gdh1 = pd.DataFrame(
-        x_psm_gdh1, columns=pd.MultiIndex.from_product([['age'], ['age']]))
-    y_psm = PSM().predict(x_psm_gdh1)
-    y_gdh1 = GDH1().predict(x_psm_gdh1)
-    x_psm_gdh1 = x_psm_gdh1.values
+    x_all = np.linspace(0, np.max(x))
+    x_all = pd.DataFrame(
+        x_all, columns=pd.MultiIndex.from_product([['age'], ['age']]))
+    y_psm = PSM().predict(x_all)
+    y_gdh1 = GDH1().predict(x_all)
+    y_h13 = H13().predict(x_all)
+    x_all = x_all.values
 
     print('Plotting...')
     plt.figure()
     plt.scatter(x, y, s=1)
-    psm, = plt.plot(x_psm_gdh1, y_psm, 'm-')
-    gdh1, = plt.plot(x_psm_gdh1, y_gdh1, 'y-')
-    plt.title('Comparison of PSM and GDH1 models')
+    psm, = plt.plot(x_all, y_psm, 'm-')
+    gdh1, = plt.plot(x_all, y_gdh1, 'y-')
+    h13, = plt.plot(x_all, y_h13, 'c-')
+    plt.title('Comparison of physical models')
     plt.xlabel('Age (Ma)')
     plt.ylabel('Depth (km)')
     plt.gca().invert_yaxis()
-    plt.legend([psm, gdh1], ['PSM', 'GDH1'])
-    plt.show()
+    plt.legend([psm, gdh1, h13], ['PSM', 'GDH1', 'H13'])
+
+    # Save figure
+    os.makedirs(args.results_dir, exist_ok=True)
+    filename = os.path.join(args.results_dir, '2d.png')
+    plt.savefig(filename, dpi=300, bbox_inches='tight')
 
 
 def main_world(args: argparse.Namespace):

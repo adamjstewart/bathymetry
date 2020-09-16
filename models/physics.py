@@ -73,6 +73,40 @@ class GDH1:
         )
 
 
+class H13:
+    """Hasterok model.
+
+    A heat flow based cooling model for tectonic plates.
+
+    Hasterok, Earth and Planetary Science Letters, 2013
+
+    https://doi.org/10.1016/j.epsl.2012.10.036
+    https://www.academia.edu/download/50241193/Hasterok2013.pdf
+    """
+    def fit(self, X: pd.DataFrame, y: pd.Series):
+        pass
+
+    def predict(self, X: pd.DataFrame) -> np.ndarray:
+        """Predict bathymetry based on age.
+
+        Parameters:
+            X: the dataset
+
+        Returns:
+            the prediction
+        """
+        t = X['age', 'age'].values
+
+        # Ridge depth is average of 2.424 and 2.514 km
+        return 2.469 + np.where(
+            t <= 17.4,
+            # Young crust
+            0.4145 * t**0.5,
+            # Old crust
+            3.109 - 2.520 * np.exp(-0.034607 * t)
+        )
+
+
 class Isostasy:
     """Simple model based on isostasy."""
 
