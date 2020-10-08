@@ -39,7 +39,9 @@ def set_up_parser() -> argparse.ArgumentParser:
     # Machine learning models
     subparsers.add_parser('linear', help='linear regression')
 
-    svr_parser = subparsers.add_parser('svr', help='support vector regression')
+    svr_parser = subparsers.add_parser(
+        'svr', help='support vector regression',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     svr_parser.add_argument(
         '--kernel', default='rbf',
         choices=['linear', 'poly', 'rbf', 'sigmoid', 'precomputed'],
@@ -59,6 +61,17 @@ def set_up_parser() -> argparse.ArgumentParser:
     svr_parser.add_argument(
         '--epsilon', default=0.1, type=float,
         help='epsilon in the epsilon-SVR model')
+
+    mlp_parser = subparsers.add_parser(
+        'mlp', help='multi-layer perceptron',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    mlp_parser.add_argument(
+        '--hidden-layers', default=3, type=int, help='number of hidden layers')
+    mlp_parser.add_argument(
+        '--hidden-size', default=16, type=int, help='size of hidden units')
+    mlp_parser.add_argument(
+        '--learning-rate', default=0.001, type=float,
+        help='initial learning rate')
 
     # Physical models
     subparsers.add_parser('psm', help='parsons and sclater model')
