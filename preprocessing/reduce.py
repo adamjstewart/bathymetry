@@ -43,8 +43,14 @@ def ablation_study(data: pd.DataFrame, labels: Sequence) -> pd.DataFrame:
     """
     assert isinstance(data, pd.DataFrame)
 
-    if labels:
-        data = data.drop(columns=labels)
+    for label in labels.split(','):
+        if label in [
+            'thickness', 'p-wave velocity', 's-wave velocity', 'density', 'age'
+        ]:
+            level = 0
+        else:
+            level = 1
+        data = data.drop(columns=label, level=level)
 
     assert isinstance(data, pd.DataFrame)
 

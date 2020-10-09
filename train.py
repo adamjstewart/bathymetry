@@ -32,9 +32,8 @@ def set_up_parser() -> argparse.ArgumentParser:
         '-c', '--checkpoint-dir', default='checkpoints',
         help='directory to save checkpoints to', metavar='DIR')
     parser.add_argument(
-        '-a', '--ablation', choices=[
-            'thickness', 'p-wave velocity', 's-wave velocity', 'density',
-        ], help='data to drop during ablation study')
+        '-a', '--ablation',
+        help='comma-separated list of columns to drop during ablation study')
 
     # Model subparser
     subparsers = parser.add_subparsers(
