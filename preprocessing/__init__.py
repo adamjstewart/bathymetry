@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
 from .filter import filter_nans, filter_crust_type
-from .reduce import reduce_attributes
+from .reduce import ablation_study, reduce_attributes
 from .transform import boundary_to_thickness, standardize, inverse_standardize
 
 
@@ -34,6 +34,7 @@ def preprocess(data: pd.DataFrame, args: argparse.Namespace) -> pd.DataFrame:
     # Transform and reduce data attributes
     X = boundary_to_thickness(X)
     X = reduce_attributes(X)
+    X = ablation_study(X, args.ablation)
 
     # Split train-validation-test sets
     X_train, X_val, X_test, y_train, y_val, y_test = train_val_test_split(X, y)
