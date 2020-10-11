@@ -86,4 +86,8 @@ def save_checkpoint(
         'accuracies': accuracies,
     }
 
-    save_pickle(data, args.checkpoint_dir, str(model))
+    values = [value for (key, value) in sorted(model.get_params().items())]
+    values = ['checkpoint', args.model] + values
+    filename = '-'.join([str(value) for value in values])
+
+    save_pickle(data, args.checkpoint_dir, filename)
