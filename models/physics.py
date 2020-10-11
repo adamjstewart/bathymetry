@@ -3,9 +3,10 @@
 import numpy as np
 import pandas as pd
 import scipy.optimize as opt
+from sklearn.base import BaseEstimator, RegressorMixin
 
 
-class PSM:
+class PSM(BaseEstimator, RegressorMixin):
     """Parsons and Sclater Model (PSM).
 
     An analysis of the variation of ocean floor bathymetry and
@@ -16,16 +17,8 @@ class PSM:
     https://doi.org/10.1029/JB082i005p00803
     https://pdfs.semanticscholar.org/a67e/9d46e6b1cd7a956e8e5976d87b64b5f1f7df.pdf
     """
-    def __str__(self) -> str:
-        """The string representation of an instance of the class.
-
-        Returns:
-            the string representation of the object
-        """
-        return self.__class__.__name__ + '()'
-
     def fit(self, X: pd.DataFrame, y: pd.Series):
-        pass
+        return self
 
     def predict(self, X: pd.DataFrame) -> np.ndarray:
         """Predict bathymetry based on age.
@@ -47,7 +40,7 @@ class PSM:
         )
 
 
-class GDH1:
+class GDH1(BaseEstimator, RegressorMixin):
     """Global Depth and Heat Flow (GDH1) model.
 
     A model for the global variation in oceanic depth and
@@ -58,16 +51,8 @@ class GDH1:
     https://doi.org/10.1038/359123a0
     https://physics.unm.edu/Courses/Roy/Phys480_581Fa14/papers/Stein_Stein_359123a0.pdf
     """
-    def __str__(self) -> str:
-        """The string representation of an instance of the class.
-
-        Returns:
-            the string representation of the object
-        """
-        return self.__class__.__name__ + '()'
-
     def fit(self, X: pd.DataFrame, y: pd.Series):
-        pass
+        return self
 
     def predict(self, X: pd.DataFrame) -> np.ndarray:
         """Predict bathymetry based on age.
@@ -89,7 +74,7 @@ class GDH1:
         )
 
 
-class H13:
+class H13(BaseEstimator, RegressorMixin):
     """Hasterok model.
 
     A heat flow based cooling model for tectonic plates.
@@ -99,16 +84,8 @@ class H13:
     https://doi.org/10.1016/j.epsl.2012.10.036
     https://www.academia.edu/download/50241193/Hasterok2013.pdf
     """
-    def __str__(self) -> str:
-        """The string representation of an instance of the class.
-
-        Returns:
-            the string representation of the object
-        """
-        return self.__class__.__name__ + '()'
-
     def fit(self, X: pd.DataFrame, y: pd.Series):
-        pass
+        return self
 
     def predict(self, X: pd.DataFrame) -> np.ndarray:
         """Predict bathymetry based on age.
@@ -131,16 +108,8 @@ class H13:
         )
 
 
-class Isostasy:
+class Isostasy(BaseEstimator, RegressorMixin):
     """Simple model based on isostasy."""
-
-    def __str__(self) -> str:
-        """The string representation of an instance of the class.
-
-        Returns:
-            the string representation of the object
-        """
-        return self.__class__.__name__ + '()'
 
     def fit(self, X: pd.DataFrame, y: pd.Series):
         """Record average values of thickness and density.
@@ -249,16 +218,8 @@ class Isostasy:
         return w + s1 + s2 + s3
 
 
-class Isostasy2:
+class Isostasy2(BaseEstimator, RegressorMixin):
     """Simple model based on isostasy."""
-
-    def __str__(self) -> str:
-        """The string representation of an instance of the class.
-
-        Returns:
-            the string representation of the object
-        """
-        return self.__class__.__name__ + '()'
 
     def fit(self, X: pd.DataFrame, y: pd.Series):
         """Record average values of thickness and density.

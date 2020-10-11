@@ -2,6 +2,7 @@
 
 import argparse
 
+from sklearn.base import BaseEstimator
 from sklearn.linear_model import LinearRegression
 from sklearn.neural_network import MLPRegressor
 from sklearn.svm import SVR
@@ -9,7 +10,7 @@ from sklearn.svm import SVR
 from .physics import PSM, GDH1, H13, Isostasy, Isostasy2
 
 
-def get_model(args: argparse.Namespace):
+def get_model(args: argparse.Namespace) -> BaseEstimator:
     """Initialize a new regression model.
 
     Parameters:
