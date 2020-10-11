@@ -1,4 +1,7 @@
-"""A collection of physical models."""
+"""A collection of physical models.
+
+https://scikit-learn.org/stable/developers/develop.html
+"""
 
 import numpy as np
 import pandas as pd
