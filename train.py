@@ -11,7 +11,7 @@ from datasets.crust import read_data
 from metrics import evaluate
 from models import get_model
 from preprocessing import preprocess, postprocess
-from utils.io import save_pickle
+from utils.io import save_pickle, save_checkpoint
 
 
 def set_up_parser() -> argparse.ArgumentParser:
@@ -124,12 +124,13 @@ def main(args: argparse.Namespace):
         yhat_train, yhat_val, yhat_test, y_scaler)
 
     print('Evaluating...')
+    accuracies = {}
     print('\nTrain:')
-    evaluate(y_train, yhat_train)
+    accuracies['train'] = evaluate(y_train, yhat_train)
     print('\nValidation:')
-    evaluate(y_val, yhat_val)
+    accuracies['validation'] = evaluate(y_val, yhat_val)
     print('\nTest:')
-    evaluate(y_test, yhat_test)
+    accuracies['test'] = evaluate(y_test, yhat_test)
     print()
 
     print('Saving...')
@@ -137,6 +138,7 @@ def main(args: argparse.Namespace):
     yhat = pd.concat([yhat_train, yhat_val, yhat_test])
     save_pickle(y, args.checkpoint_dir, 'truth')
     save_pickle(yhat, args.checkpoint_dir, args.model)
+    save_checkpoint(model, args, accuracies)
 
 
 if __name__ == '__main__':

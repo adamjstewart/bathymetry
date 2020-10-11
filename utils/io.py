@@ -1,10 +1,12 @@
 """Collection of input/output utilities."""
 
+import argparse
 import os
 import pickle
-from typing import Any
+from typing import Any, Dict
 
 import pandas as pd
+from sklearn.base import BaseEstimator
 
 
 def save_pickle(data: Any, directory: str, filename: str):
@@ -65,3 +67,23 @@ def load_csv(directory: str, filename: str) -> pd.Series:
     path = os.path.join(directory, filename + '.csv')
     print(f'Reading {path}...')
     return pd.read_csv(path)
+
+
+def save_checkpoint(
+        model: BaseEstimator,
+        args: argparse.Namespace,
+        accuracies: Dict[str, Dict[str, float]],
+):
+    """Save a checkpoint for hyperparameter tuning.
+
+    Parameters:
+        model: the trained model
+        args: the hyperparameters
+        accuracies: the performance metrics
+    """
+    data = {
+        'args': args,
+        'accuracies': accuracies,
+    }
+
+    save_pickle(data, args.checkpoint_dir, str(model))
