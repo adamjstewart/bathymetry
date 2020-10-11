@@ -4,6 +4,7 @@
 
 import argparse
 
+import numpy as np
 import pandas as pd
 
 from datasets.crust import read_data
@@ -34,6 +35,9 @@ def set_up_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         '-a', '--ablation',
         help='comma-separated list of columns to drop during ablation study')
+    parser.add_argument(
+        '-s', '--seed', default=1, type=int,
+        help='seed for random number generation')
 
     # Model subparser
     subparsers = parser.add_subparsers(
@@ -139,5 +143,8 @@ if __name__ == '__main__':
     # Parse supplied arguments
     parser = set_up_parser()
     args = parser.parse_args()
+
+    # Set random seed for reproducibility
+    np.random.seed(args.seed)
 
     main(args)
