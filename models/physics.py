@@ -16,6 +16,14 @@ class PSM:
     https://doi.org/10.1029/JB082i005p00803
     https://pdfs.semanticscholar.org/a67e/9d46e6b1cd7a956e8e5976d87b64b5f1f7df.pdf
     """
+    def __str__(self) -> str:
+        """The string representation of an instance of the class.
+
+        Returns:
+            the string representation of the object
+        """
+        return self.__class__.__name__ + '()'
+
     def fit(self, X: pd.DataFrame, y: pd.Series):
         pass
 
@@ -50,6 +58,14 @@ class GDH1:
     https://doi.org/10.1038/359123a0
     https://physics.unm.edu/Courses/Roy/Phys480_581Fa14/papers/Stein_Stein_359123a0.pdf
     """
+    def __str__(self) -> str:
+        """The string representation of an instance of the class.
+
+        Returns:
+            the string representation of the object
+        """
+        return self.__class__.__name__ + '()'
+
     def fit(self, X: pd.DataFrame, y: pd.Series):
         pass
 
@@ -83,6 +99,14 @@ class H13:
     https://doi.org/10.1016/j.epsl.2012.10.036
     https://www.academia.edu/download/50241193/Hasterok2013.pdf
     """
+    def __str__(self) -> str:
+        """The string representation of an instance of the class.
+
+        Returns:
+            the string representation of the object
+        """
+        return self.__class__.__name__ + '()'
+
     def fit(self, X: pd.DataFrame, y: pd.Series):
         pass
 
@@ -109,6 +133,14 @@ class H13:
 
 class Isostasy:
     """Simple model based on isostasy."""
+
+    def __str__(self) -> str:
+        """The string representation of an instance of the class.
+
+        Returns:
+            the string representation of the object
+        """
+        return self.__class__.__name__ + '()'
 
     def fit(self, X: pd.DataFrame, y: pd.Series):
         """Record average values of thickness and density.
@@ -219,6 +251,14 @@ class Isostasy:
 
 class Isostasy2:
     """Simple model based on isostasy."""
+
+    def __str__(self) -> str:
+        """The string representation of an instance of the class.
+
+        Returns:
+            the string representation of the object
+        """
+        return self.__class__.__name__ + '()'
 
     def fit(self, X: pd.DataFrame, y: pd.Series):
         """Record average values of thickness and density.
