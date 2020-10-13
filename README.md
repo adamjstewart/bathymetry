@@ -10,6 +10,7 @@ $ cd bathymetry
 ```
 Then, install the Python dependencies:
 ```console
+$ spack env activate .
 $ spack install  # if you prefer Spack
 $ pip install requirements.txt  # if you prefer pip
 ```
