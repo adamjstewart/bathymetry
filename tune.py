@@ -3,6 +3,7 @@
 """script for hyperparameter tuning"""
 
 import argparse
+import json
 import os
 
 from utils.io import load_pickle
@@ -52,11 +53,11 @@ def main(args: argparse.Namespace):
 
     print('\nBest validation RMSE:\n')
     print(best_rmse_dict['args'])
-    print(best_rmse_dict['accuracies'])
+    print(json.dumps(best_rmse_dict['accuracies'], indent=4))
 
     print('\nBest validation R^2:\n')
     print(best_r2_dict['args'])
-    print(best_r2_dict['accuracies'])
+    print(json.dumps(best_r2_dict['accuracies'], indent=4))
 
 
 if __name__ == '__main__':
