@@ -29,7 +29,9 @@ def get_model(args: argparse.Namespace) -> BaseEstimator:
     elif args.model == 'mlp':
         return MLPRegressor(
             hidden_layer_sizes=[args.hidden_size] * (args.hidden_layers - 2),
-            learning_rate_init=args.learning_rate, verbose=True)
+            activation=args.activation, solver=args.solver, alpha=args.alpha,
+            batch_size=args.batch_size, learning_rate_init=args.learning_rate,
+            verbose=True)
     elif args.model == 'psm':
         return PSM()
     elif args.model == 'gdh1':

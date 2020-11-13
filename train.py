@@ -73,6 +73,17 @@ def set_up_parser() -> argparse.ArgumentParser:
         'mlp', help='multi-layer perceptron',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     mlp_parser.add_argument(
+        '--activation', default='relu',
+        choices=['identity', 'logistic', 'tanh', 'relu'],
+        help='activation function for the hidden layer')
+    mlp_parser.add_argument(
+        '--solver', default='adam', choices=['lbfgs', 'sgd', 'adam'],
+        help='solver for weight optimization')
+    mlp_parser.add_argument(
+        '--alpha', default=0.0001, type=float, help='L2 penalty parameter')
+    mlp_parser.add_argument(
+        '--batch-size', default=200, type=int, help='size of minibatches')
+    mlp_parser.add_argument(
         '--hidden-layers', default=3, type=int, help='number of hidden layers')
     mlp_parser.add_argument(
         '--hidden-size', default=16, type=int, help='size of hidden units')
