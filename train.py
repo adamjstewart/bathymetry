@@ -84,11 +84,11 @@ def set_up_parser() -> argparse.ArgumentParser:
     mlp_parser.add_argument(
         '--batch-size', default=200, type=int, help='size of minibatches')
     mlp_parser.add_argument(
-        '--hidden-layers', default=3, type=int, help='number of hidden layers')
+        '--hidden-layers', default=7, type=int, help='number of hidden layers')
     mlp_parser.add_argument(
-        '--hidden-size', default=16, type=int, help='size of hidden units')
+        '--hidden-size', default=512, type=int, help='size of hidden units')
     mlp_parser.add_argument(
-        '--learning-rate', default=0.001, type=float,
+        '--learning-rate', default=0.0001, type=float,
         help='initial learning rate')
 
     # Physical models
