@@ -46,9 +46,11 @@ def main(args: argparse.Namespace):
         r2 = data['accuracies']['validation']['R^2']
 
         if rmse < best_rmse:
+            best_rmse = rmse
             best_rmse_dict = data
 
         if r2 > best_r2:
+            best_r2 = r2
             best_r2_dict = data
 
     print('\nBest validation RMSE:\n')
