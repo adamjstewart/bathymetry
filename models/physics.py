@@ -9,6 +9,43 @@ import scipy.optimize as opt
 from sklearn.base import BaseEstimator, RegressorMixin
 
 
+class HS(BaseEstimator, RegressorMixin):
+    """Half-Space cooling model (HS).
+
+    Fundamentals of Ridge Crest Topography.
+
+    Davis & Lister, Earth and Planetary Science Letters, 1974
+
+    https://doi.org/10.1016/0012-821X(74)90180-0
+    http://osu-wams-blogs-uploads.s3.amazonaws.com/blogs.dir/2281/files/2015/08/DavisLister_EPSL74.pdf
+    """
+    def fit(self, X: pd.DataFrame, y: pd.Series):
+        return self
+
+    def predict(self, X: pd.DataFrame) -> np.ndarray:
+        """Predict bathymetry based on age.
+
+        Parameters:
+            X: the dataset
+
+        Returns:
+            the prediction
+        """
+        t = X['age', 'age'].values * 3.154e13
+        rho_0 = 3300
+        rho_w = 1000
+        alpha = 4e-5
+        kappa = 8e-7
+        T_1 = 1220 #+ 273.2
+
+        return 2.5 + (
+            (2 * rho_0 * alpha * T_1)
+            / (rho_0 - rho_w)
+            * np.sqrt(kappa * t / np.pi)
+            / 1000
+        )
+
+
 class PSM(BaseEstimator, RegressorMixin):
     """Parsons and Sclater Model (PSM).
 

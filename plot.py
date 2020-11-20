@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 
 from datasets.crust import read_data
-from models.physics import PSM, GDH1, H13
+from models.physics import HS, PSM, GDH1, H13
 from preprocessing.filter import filter_nans, filter_crust_type
 from utils.io import load_pickle
 from utils.plotting import plot_world
@@ -50,7 +50,7 @@ def set_up_parser() -> argparse.ArgumentParser:
     world_parser = subparsers.add_parser('world', help='world map')
     world_parser.add_argument(
         'layers', nargs='+', choices=[
-            'truth', 'psm', 'gdh1', 'h13',
+            'truth', 'hs', 'psm', 'gdh1', 'h13',
             'linear', 'svr', 'mlp', 'isostasy', 'isostasy2'
         ],
         help='layers to subtract')
@@ -77,6 +77,7 @@ def main_2d(args: argparse.Namespace):
     x_all = np.linspace(0, np.max(x))
     x_all = pd.DataFrame(
         x_all, columns=pd.MultiIndex.from_product([['age'], ['age']]))
+    y_hs = HS().predict(x_all)
     y_psm = PSM().predict(x_all)
     y_gdh1 = GDH1().predict(x_all)
     y_h13 = H13().predict(x_all)
@@ -84,15 +85,18 @@ def main_2d(args: argparse.Namespace):
 
     print('Plotting...')
     plt.figure()
+    plt.xlim(0, 185)
+    plt.ylim(0, 14)
     plt.scatter(x, y, s=1)
-    psm, = plt.plot(x_all, y_psm, 'm-')
-    gdh1, = plt.plot(x_all, y_gdh1, 'y-')
-    h13, = plt.plot(x_all, y_h13, 'c-')
+    hs, = plt.plot(x_all, y_hs, 'tab:orange')
+    psm, = plt.plot(x_all, y_psm, 'tab:green')
+    gdh1, = plt.plot(x_all, y_gdh1, 'tab:red')
+    h13, = plt.plot(x_all, y_h13, 'tab:purple')
     plt.title('Comparison of physical models')
     plt.xlabel('Age (Ma)')
     plt.ylabel('Depth (km)')
     plt.gca().invert_yaxis()
-    plt.legend([psm, gdh1, h13], ['PSM', 'GDH1', 'H13'])
+    plt.legend([hs, psm, gdh1, h13], ['HS', 'PSM', 'GDH1', 'H13'])
 
     # Save figure
     os.makedirs(args.results_dir, exist_ok=True)

@@ -92,6 +92,7 @@ def set_up_parser() -> argparse.ArgumentParser:
         help='initial learning rate')
 
     # Physical models
+    subparsers.add_parser('hs', help='half-space cooling model')
     subparsers.add_parser('psm', help='parsons and sclater model')
     subparsers.add_parser('gdh1', help='global depth and heat flow model')
     subparsers.add_parser('h13', help='hasterok model')
