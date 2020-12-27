@@ -36,7 +36,7 @@ class HS(BaseEstimator, RegressorMixin):
         rho_w = 1000
         alpha = 4e-5
         kappa = 8e-7
-        T_1 = 1220 #+ 273.2
+        T_1 = 1220
 
         return 2.5 + (
             (2 * rho_0 * alpha * T_1)
