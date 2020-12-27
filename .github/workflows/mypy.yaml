@@ -1,0 +1,27 @@
+name: mypy
+on:
+  push:
+    paths:
+    - '**.py'
+    - 'mypy.ini'
+    - '.github/workflows/mypy.yaml'
+  pull_request:
+    paths:
+    - '**.py'
+    - 'mypy.ini'
+    - '.github/workflows/mypy.yaml'
+jobs:
+  mypy:
+    name: mypy
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone repo
+      uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: pip install mypy
+    - name: Run mypy checks
+      run: mypy .
