@@ -13,11 +13,14 @@ First, clone this project:
 $ git clone https://github.com/adamjstewart/bathymetry.git
 $ cd bathymetry
 ```
-Then, install the Python dependencies:
+Then, install the Python dependencies. This can be done with Spack:
 ```console
 $ spack env activate .
-$ spack install  # if you prefer Spack
-$ pip install requirements.txt  # if you prefer pip
+$ spack install
+```
+or with pip:
+```console
+$ pip install -r requirements.txt
 ```
 
 ## Data
