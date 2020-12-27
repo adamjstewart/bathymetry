@@ -20,7 +20,7 @@ class HS(BaseEstimator, RegressorMixin):
     http://osu-wams-blogs-uploads.s3.amazonaws.com/blogs.dir/2281/files/2015/08/DavisLister_EPSL74.pdf
     """
 
-    def fit(self, X: pd.DataFrame, y: pd.Series) -> HS:
+    def fit(self, X: pd.DataFrame, y: pd.Series) -> BaseEstimator:
         return self
 
     def predict(self, X: pd.DataFrame) -> np.ndarray:
@@ -59,7 +59,7 @@ class PSM(BaseEstimator, RegressorMixin):
     https://pdfs.semanticscholar.org/a67e/9d46e6b1cd7a956e8e5976d87b64b5f1f7df.pdf
     """
 
-    def fit(self, X: pd.DataFrame, y: pd.Series) -> PSM:
+    def fit(self, X: pd.DataFrame, y: pd.Series) -> BaseEstimator:
         return self
 
     def predict(self, X: pd.DataFrame) -> np.ndarray:
@@ -94,7 +94,7 @@ class GDH1(BaseEstimator, RegressorMixin):
     https://physics.unm.edu/Courses/Roy/Phys480_581Fa14/papers/Stein_Stein_359123a0.pdf
     """
 
-    def fit(self, X: pd.DataFrame, y: pd.Series) -> GDH1:
+    def fit(self, X: pd.DataFrame, y: pd.Series) -> BaseEstimator:
         return self
 
     def predict(self, X: pd.DataFrame) -> np.ndarray:
@@ -128,7 +128,7 @@ class H13(BaseEstimator, RegressorMixin):
     https://www.academia.edu/download/50241193/Hasterok2013.pdf
     """
 
-    def fit(self, X: pd.DataFrame, y: pd.Series) -> H13:
+    def fit(self, X: pd.DataFrame, y: pd.Series) -> BaseEstimator:
         return self
 
     def predict(self, X: pd.DataFrame) -> np.ndarray:
@@ -155,7 +155,7 @@ class H13(BaseEstimator, RegressorMixin):
 class Isostasy(BaseEstimator, RegressorMixin):
     """Simple model based on isostasy."""
 
-    def fit(self, X: pd.DataFrame, y: pd.Series) -> Isostasy:
+    def fit(self, X: pd.DataFrame, y: pd.Series) -> BaseEstimator:
         """Record average values of thickness and density.
 
         Parameters:
@@ -271,7 +271,7 @@ class Isostasy(BaseEstimator, RegressorMixin):
 class Isostasy2(BaseEstimator, RegressorMixin):
     """Simple model based on isostasy."""
 
-    def fit(self, X: pd.DataFrame, y: pd.Series) -> Isostasy2:
+    def fit(self, X: pd.DataFrame, y: pd.Series) -> BaseEstimator:
         """Record average values of thickness and density.
 
         Parameters:
