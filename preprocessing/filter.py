@@ -39,8 +39,8 @@ def filter_crust_type(data: pd.DataFrame) -> pd.DataFrame:
     """
     assert isinstance(data, pd.DataFrame)
 
-    codes = ['A0', 'A1']
-    data = data[data['crust type', 'crust type'].isin(codes)]
+    codes = ["A0", "A1"]
+    data = data[data["crust type", "crust type"].isin(codes)]
 
     assert isinstance(data, pd.DataFrame)
 

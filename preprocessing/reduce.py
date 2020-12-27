@@ -18,9 +18,9 @@ def reduce_attributes(data: pd.DataFrame) -> pd.DataFrame:
     assert isinstance(data, pd.DataFrame)
 
     labels = [
-        ('thickness', 'water'),  # keeping this would be cheating
-        ('thickness', 'moho'),   # this is all NaNs after the pd.diff
-        ('crust type', 'crust type'),
+        ("thickness", "water"),  # keeping this would be cheating
+        ("thickness", "moho"),  # this is all NaNs after the pd.diff
+        ("crust type", "crust type"),
     ]
     data = data.drop(columns=labels)
 
@@ -42,10 +42,13 @@ def ablation_study(data: pd.DataFrame, labels: str) -> pd.DataFrame:
     assert isinstance(data, pd.DataFrame)
 
     if labels is not None:
-        for label in labels.split(','):
+        for label in labels.split(","):
             if label in [
-                'thickness', 'p-wave velocity', 's-wave velocity',
-                'density', 'age'
+                "thickness",
+                "p-wave velocity",
+                "s-wave velocity",
+                "density",
+                "age",
             ]:
                 level = 0
             else:

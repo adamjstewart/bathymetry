@@ -24,10 +24,7 @@ def evaluate(labels: pd.Series, predictions: pd.Series) -> Dict[str, float]:
     rmse = math.sqrt(mse)
     r2 = r2_score(labels, predictions)
 
-    print('RMSE:', rmse)
-    print('R^2: ', r2)
+    print("RMSE:", rmse)
+    print("R^2: ", r2)
 
-    return {
-        'RMSE': rmse,
-        'R^2': r2,
-    }
+    return {"RMSE": rmse, "R^2": r2}

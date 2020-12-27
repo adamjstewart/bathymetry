@@ -34,21 +34,13 @@ def plot_world(directory: str, data: pd.Series, title: str, legend: str) -> None
             except KeyError:
                 pass
 
-    if 'difference' in legend:
+    if "difference" in legend:
         # Plotting the difference
         std = data.std()
-        kwargs = {
-            'cmap': cmocean.cm.balance,
-            'vmin': -std,
-            'vmax': +std,
-        }
-    elif 'bathymetry' in legend:
+        kwargs = {"cmap": cmocean.cm.balance, "vmin": -std, "vmax": +std}
+    elif "bathymetry" in legend:
         # Plotting the absolute bathymetry
-        kwargs = {
-            'cmap': cmocean.cm.deep,
-            'vmin': 0,
-            'vmax': 7.5,
-        }
+        kwargs = {"cmap": cmocean.cm.deep, "vmin": 0, "vmax": 7.5}
 
     # Plotting
     fig = plt.figure()
@@ -68,5 +60,5 @@ def plot_world(directory: str, data: pd.Series, title: str, legend: str) -> None
 
     # Save figure
     os.makedirs(directory, exist_ok=True)
-    filename = os.path.join(directory, title.replace(' ', '') + '.png')
-    plt.savefig(filename, dpi=300, bbox_inches='tight')
+    filename = os.path.join(directory, title.replace(" ", "") + ".png")
+    plt.savefig(filename, dpi=300, bbox_inches="tight")

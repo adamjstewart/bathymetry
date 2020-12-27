@@ -20,9 +20,9 @@ def boundary_to_thickness(data: pd.DataFrame) -> pd.DataFrame:
     """
     assert isinstance(data, pd.DataFrame)
 
-    bnds = data.pop('boundary topograpy')
+    bnds = data.pop("boundary topograpy")
     thickness = bnds.diff(periods=-1, axis=1)
-    thickness = pd.concat([thickness], axis=1, keys=['thickness'], sort=False)
+    thickness = pd.concat([thickness], axis=1, keys=["thickness"], sort=False)
     data = pd.concat([thickness, data], axis=1, sort=False)
 
     assert isinstance(data, pd.DataFrame)
@@ -30,9 +30,16 @@ def boundary_to_thickness(data: pd.DataFrame) -> pd.DataFrame:
     return data
 
 
-def standardize(train: Union[pd.DataFrame, pd.Series],
-                val: Union[pd.DataFrame, pd.Series],
-                test: Union[pd.DataFrame, pd.Series]) -> Tuple[Union[pd.DataFrame, pd.Series], Union[pd.DataFrame, pd.Series], Union[pd.DataFrame, pd.Series], StandardScaler]:
+def standardize(
+    train: Union[pd.DataFrame, pd.Series],
+    val: Union[pd.DataFrame, pd.Series],
+    test: Union[pd.DataFrame, pd.Series],
+) -> Tuple[
+    Union[pd.DataFrame, pd.Series],
+    Union[pd.DataFrame, pd.Series],
+    Union[pd.DataFrame, pd.Series],
+    StandardScaler,
+]:
     """Standardize the dataset by subtracting the mean and dividing by the
     standard deviation.
 
@@ -87,8 +94,9 @@ def standardize(train: Union[pd.DataFrame, pd.Series],
     return train, val, test, scaler
 
 
-def inverse_standardize(train: pd.Series, val: pd.Series, test: pd.Series,
-                        scaler: StandardScaler) -> Tuple[pd.Series, pd.Series, pd.Series]:
+def inverse_standardize(
+    train: pd.Series, val: pd.Series, test: pd.Series, scaler: StandardScaler
+) -> Tuple[pd.Series, pd.Series, pd.Series]:
     """Scale back the predictions to the original representation.
 
     Parameters:

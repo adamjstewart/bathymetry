@@ -29,7 +29,7 @@ def preprocess(data: pd.DataFrame, args: argparse.Namespace) -> pd.DataFrame:
     data = filter_crust_type(data)
 
     # Separate X from y
-    X, y = data, data['boundary topograpy', 'upper crystalline crust']
+    X, y = data, data["boundary topograpy", "upper crystalline crust"]
     y = -y
 
     # Transform and reduce data attributes
@@ -47,7 +47,7 @@ def preprocess(data: pd.DataFrame, args: argparse.Namespace) -> pd.DataFrame:
     assert isinstance(y_val, pd.Series)
     assert isinstance(y_test, pd.Series)
 
-    if args.model in ['hs', 'psm', 'gdh1', 'h13', 'isostasy', 'isostasy2']:
+    if args.model in ["hs", "psm", "gdh1", "h13", "isostasy", "isostasy2"]:
         return X_train, X_val, X_test, y_train, y_val, y_test, None
 
     # Standardize
@@ -64,8 +64,9 @@ def preprocess(data: pd.DataFrame, args: argparse.Namespace) -> pd.DataFrame:
     return X_train, X_val, X_test, y_train, y_val, y_test, y_scaler
 
 
-def postprocess(y_train: pd.Series, y_val: pd.Series, y_test: pd.Series,
-                y_scaler: StandardScaler) -> Tuple[pd.Series, pd.Series, pd.Series]:
+def postprocess(
+    y_train: pd.Series, y_val: pd.Series, y_test: pd.Series, y_scaler: StandardScaler
+) -> Tuple[pd.Series, pd.Series, pd.Series]:
     """Postprocess the predictions.
 
     Parameters:
@@ -83,8 +84,7 @@ def postprocess(y_train: pd.Series, y_val: pd.Series, y_test: pd.Series,
     assert isinstance(y_val, pd.Series)
     assert isinstance(y_test, pd.Series)
 
-    y_train, y_val, y_test = inverse_standardize(
-        y_train, y_val, y_test, y_scaler)
+    y_train, y_val, y_test = inverse_standardize(y_train, y_val, y_test, y_scaler)
 
     assert isinstance(y_train, pd.Series)
     assert isinstance(y_val, pd.Series)
@@ -93,10 +93,13 @@ def postprocess(y_train: pd.Series, y_val: pd.Series, y_test: pd.Series,
     return y_train, y_val, y_test
 
 
-def train_val_test_split(X: pd.DataFrame, y: pd.Series,
-                         train_size: int = 60,
-                         val_size: int = 20,
-                         test_size: int = 20) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.Series, pd.Series, pd.Series]:
+def train_val_test_split(
+    X: pd.DataFrame,
+    y: pd.Series,
+    train_size: int = 60,
+    val_size: int = 20,
+    test_size: int = 20,
+) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.Series, pd.Series, pd.Series]:
     """Split dataset into train/validation/test subsets.
 
     Parameters:
@@ -130,9 +133,11 @@ def train_val_test_split(X: pd.DataFrame, y: pd.Series,
     assert train_size + val_size + test_size == total_len
 
     X_train_val, X_test, y_train_val, y_test = train_test_split(
-        X, y, test_size=test_size)
+        X, y, test_size=test_size
+    )
     X_train, X_val, y_train, y_val = train_test_split(
-        X_train_val, y_train_val, test_size=val_size)
+        X_train_val, y_train_val, test_size=val_size
+    )
 
     assert isinstance(X_train, pd.DataFrame)
     assert isinstance(X_val, pd.DataFrame)
