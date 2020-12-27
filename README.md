@@ -22,3 +22,5 @@ This model is trained on the [CRUST 1.0](https://igppweb.ucsd.edu/~gabi/crust1.h
 The ground truth labels for this model come from [EarthByte](https://www.earthbyte.org/category/resources/data-models/seafloor-age/). The `age1.txt` file is downsampled from this dataset.
 
 TODO: provide script to directly read and downsample EarthByte seafloor age data.
+
+The plate boundaries KMZ file can be downloaded from the [USGS website](https://www.usgs.gov/media/files/plate-boundaries-kmz-file).
