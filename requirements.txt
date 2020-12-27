@@ -1,9 +1,10 @@
+black
 cartopy
 cmocean
 flake8
 matplotlib
 mypy
 numpy
-matplotlib
+pandas
 scikit-learn
 scipy

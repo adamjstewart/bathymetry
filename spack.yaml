@@ -1,6 +1,8 @@
 spack:
   specs:
+  - gdal+libkml+python
   - 'python@3.7:'
+  - py-black
   - py-cartopy
   - py-cmocean
   - py-flake8
