@@ -102,7 +102,7 @@ def set_up_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main(args: argparse.Namespace):
+def main(args: argparse.Namespace) -> None:
     """High-level pipeline.
 
     Trains the model and evaluates performance.

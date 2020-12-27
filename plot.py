@@ -58,7 +58,7 @@ def set_up_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main_2d(args: argparse.Namespace):
+def main_2d(args: argparse.Namespace) -> None:
     """Plot a 2d cross-section.
 
     Parameters:
@@ -104,7 +104,7 @@ def main_2d(args: argparse.Namespace):
     plt.savefig(filename, dpi=300, bbox_inches='tight')
 
 
-def main_world(args: argparse.Namespace):
+def main_world(args: argparse.Namespace) -> None:
     """Plot a world map.
 
     Parameters:

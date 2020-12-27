@@ -9,7 +9,7 @@ import pandas as pd
 from sklearn.base import BaseEstimator
 
 
-def save_pickle(data: Any, directory: str, filename: str):
+def save_pickle(data: Any, directory: str, filename: str) -> None:
     """Write the pickled representation of data to filename.
 
     Parameters:
@@ -40,7 +40,7 @@ def load_pickle(directory: str, filename: str) -> Any:
         return pickle.load(f)
 
 
-def save_csv(data: pd.Series, directory: str, filename: str):
+def save_csv(data: pd.Series, directory: str, filename: str) -> None:
     """Save a pandas Series as a CSV file.
 
     Parameters:
@@ -73,7 +73,7 @@ def save_checkpoint(
         model: BaseEstimator,
         args: argparse.Namespace,
         accuracies: Dict[str, Dict[str, float]],
-):
+) -> None:
     """Save a checkpoint for hyperparameter tuning.
 
     Parameters:

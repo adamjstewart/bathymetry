@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 
 
-def plot_world(directory: str, data: pd.Series, title: str, legend: str):
+def plot_world(directory: str, data: pd.Series, title: str, legend: str) -> None:
     """Plot a world map with data.
 
     Parameters:

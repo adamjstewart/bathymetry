@@ -5,6 +5,7 @@
 import argparse
 import json
 import os
+from typing import Dict
 
 from utils.io import load_pickle
 
@@ -24,7 +25,7 @@ def set_up_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main(args: argparse.Namespace):
+def main(args: argparse.Namespace) -> None:
     """High-level pipeline.
 
     Compare hyperparameter performance.
@@ -35,8 +36,8 @@ def main(args: argparse.Namespace):
     best_rmse = float('inf')
     best_r2 = 0
 
-    best_rmse_dict: dict = {}
-    best_r2_dict: dict = {}
+    best_rmse_dict: Dict[str, float] = {}
+    best_r2_dict: Dict[str, float] = {}
 
     for filename in args.files:
         basename = os.path.splitext(os.path.basename(filename))[0]

@@ -1,6 +1,7 @@
 """Tools for preprocessing the dataset."""
 
 import argparse
+from typing import Tuple
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -64,7 +65,7 @@ def preprocess(data: pd.DataFrame, args: argparse.Namespace) -> pd.DataFrame:
 
 
 def postprocess(y_train: pd.Series, y_val: pd.Series, y_test: pd.Series,
-                y_scaler: StandardScaler) -> tuple:
+                y_scaler: StandardScaler) -> Tuple[pd.Series, pd.Series, pd.Series]:
     """Postprocess the predictions.
 
     Parameters:
@@ -95,7 +96,7 @@ def postprocess(y_train: pd.Series, y_val: pd.Series, y_test: pd.Series,
 def train_val_test_split(X: pd.DataFrame, y: pd.Series,
                          train_size: int = 60,
                          val_size: int = 20,
-                         test_size: int = 20) -> tuple:
+                         test_size: int = 20) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.Series, pd.Series, pd.Series]:
     """Split dataset into train/validation/test subsets.
 
     Parameters:

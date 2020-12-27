@@ -19,7 +19,7 @@ class HS(BaseEstimator, RegressorMixin):
     https://doi.org/10.1016/0012-821X(74)90180-0
     http://osu-wams-blogs-uploads.s3.amazonaws.com/blogs.dir/2281/files/2015/08/DavisLister_EPSL74.pdf
     """
-    def fit(self, X: pd.DataFrame, y: pd.Series):
+    def fit(self, X: pd.DataFrame, y: pd.Series) -> HS:
         return self
 
     def predict(self, X: pd.DataFrame) -> np.ndarray:
@@ -57,7 +57,7 @@ class PSM(BaseEstimator, RegressorMixin):
     https://doi.org/10.1029/JB082i005p00803
     https://pdfs.semanticscholar.org/a67e/9d46e6b1cd7a956e8e5976d87b64b5f1f7df.pdf
     """
-    def fit(self, X: pd.DataFrame, y: pd.Series):
+    def fit(self, X: pd.DataFrame, y: pd.Series) -> PSM:
         return self
 
     def predict(self, X: pd.DataFrame) -> np.ndarray:
@@ -91,7 +91,7 @@ class GDH1(BaseEstimator, RegressorMixin):
     https://doi.org/10.1038/359123a0
     https://physics.unm.edu/Courses/Roy/Phys480_581Fa14/papers/Stein_Stein_359123a0.pdf
     """
-    def fit(self, X: pd.DataFrame, y: pd.Series):
+    def fit(self, X: pd.DataFrame, y: pd.Series) -> GDH1:
         return self
 
     def predict(self, X: pd.DataFrame) -> np.ndarray:
@@ -124,7 +124,7 @@ class H13(BaseEstimator, RegressorMixin):
     https://doi.org/10.1016/j.epsl.2012.10.036
     https://www.academia.edu/download/50241193/Hasterok2013.pdf
     """
-    def fit(self, X: pd.DataFrame, y: pd.Series):
+    def fit(self, X: pd.DataFrame, y: pd.Series) -> H13:
         return self
 
     def predict(self, X: pd.DataFrame) -> np.ndarray:
@@ -151,7 +151,7 @@ class H13(BaseEstimator, RegressorMixin):
 class Isostasy(BaseEstimator, RegressorMixin):
     """Simple model based on isostasy."""
 
-    def fit(self, X: pd.DataFrame, y: pd.Series):
+    def fit(self, X: pd.DataFrame, y: pd.Series) -> Isostasy:
         """Record average values of thickness and density.
 
         Parameters:
@@ -204,6 +204,8 @@ class Isostasy(BaseEstimator, RegressorMixin):
             + self.c1 * (self.rho_c1 - self.rho_m) \
             + self.c2 * (self.rho_c2 - self.rho_m) \
             + self.c3 * (self.rho_c3 - self.rho_m)
+
+        return self
 
     def predict(self, X: pd.DataFrame) -> np.ndarray:
         """Predict bathymetry based on isostasy.
@@ -261,7 +263,7 @@ class Isostasy(BaseEstimator, RegressorMixin):
 class Isostasy2(BaseEstimator, RegressorMixin):
     """Simple model based on isostasy."""
 
-    def fit(self, X: pd.DataFrame, y: pd.Series):
+    def fit(self, X: pd.DataFrame, y: pd.Series) -> Isostasy2:
         """Record average values of thickness and density.
 
         Parameters:
@@ -270,6 +272,8 @@ class Isostasy2(BaseEstimator, RegressorMixin):
         """
         p0 = np.array([0.0, 0.0])
         self.popt, _ = opt.curve_fit(isostasy, X, y, p0)
+
+        return self
 
     def predict(self, X: pd.DataFrame) -> np.ndarray:
         """Predict bathymetry based on isostasy.

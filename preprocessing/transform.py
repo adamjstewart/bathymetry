@@ -3,7 +3,7 @@
 This process is known as data transformation.
 """
 
-from typing import Union
+from typing import Tuple, Union
 
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
@@ -32,7 +32,7 @@ def boundary_to_thickness(data: pd.DataFrame) -> pd.DataFrame:
 
 def standardize(train: Union[pd.DataFrame, pd.Series],
                 val: Union[pd.DataFrame, pd.Series],
-                test: Union[pd.DataFrame, pd.Series]) -> tuple:
+                test: Union[pd.DataFrame, pd.Series]) -> Tuple[Union[pd.DataFrame, pd.Series], Union[pd.DataFrame, pd.Series], Union[pd.DataFrame, pd.Series], StandardScaler]:
     """Standardize the dataset by subtracting the mean and dividing by the
     standard deviation.
 
@@ -88,7 +88,7 @@ def standardize(train: Union[pd.DataFrame, pd.Series],
 
 
 def inverse_standardize(train: pd.Series, val: pd.Series, test: pd.Series,
-                        scaler: StandardScaler) -> tuple:
+                        scaler: StandardScaler) -> Tuple[pd.Series, pd.Series, pd.Series]:
     """Scale back the predictions to the original representation.
 
     Parameters:
