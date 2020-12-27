@@ -111,10 +111,10 @@ def main_2d(args: argparse.Namespace) -> None:
     plt.xlim(0, 185)
     plt.ylim(0, 14)
     plt.scatter(x, y, s=1)
-    hs, = plt.plot(x_all, y_hs, "tab:orange")
-    psm, = plt.plot(x_all, y_psm, "tab:green")
-    gdh1, = plt.plot(x_all, y_gdh1, "tab:red")
-    h13, = plt.plot(x_all, y_h13, "tab:purple")
+    hs = plt.plot(x_all, y_hs, "tab:orange")[0]
+    psm = plt.plot(x_all, y_psm, "tab:green")[0]
+    gdh1 = plt.plot(x_all, y_gdh1, "tab:red")[0]
+    h13 = plt.plot(x_all, y_h13, "tab:purple")[0]
     plt.title("Comparison of physical models")
     plt.xlabel("Age (Ma)")
     plt.ylabel("Depth (km)")
