@@ -3,8 +3,6 @@
 This process is known as data reduction.
 """
 
-from typing import Sequence
-
 import pandas as pd
 
 
@@ -31,7 +29,7 @@ def reduce_attributes(data: pd.DataFrame) -> pd.DataFrame:
     return data
 
 
-def ablation_study(data: pd.DataFrame, labels: Sequence) -> pd.DataFrame:
+def ablation_study(data: pd.DataFrame, labels: str) -> pd.DataFrame:
     """Remove attributes to perform an ablation study.
 
     Parameters:

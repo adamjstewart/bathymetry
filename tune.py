@@ -35,8 +35,8 @@ def main(args: argparse.Namespace):
     best_rmse = float('inf')
     best_r2 = 0
 
-    best_rmse_dict = {}
-    best_r2_dict = {}
+    best_rmse_dict: dict = {}
+    best_r2_dict: dict = {}
 
     for filename in args.files:
         basename = os.path.splitext(os.path.basename(filename))[0]
