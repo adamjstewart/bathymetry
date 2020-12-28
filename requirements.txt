@@ -1,10 +1,12 @@
 black
+numpy
 cartopy
 cmocean
+fiona
 flake8
 matplotlib
 mypy
-numpy
 pandas
+rasterio
 scikit-learn
 scipy

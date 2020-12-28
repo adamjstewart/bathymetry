@@ -5,11 +5,13 @@ spack:
   - py-black
   - py-cartopy
   - py-cmocean
+  - py-fiona
   - py-flake8
   - py-matplotlib
   - py-mypy
   - py-numpy
   - py-pandas
+  - py-rasterio
   - py-scikit-learn
   - py-scipy
   concretization: together
