@@ -5,6 +5,7 @@ import os
 import pickle
 from typing import Any, Dict
 
+import geopandas
 import pandas as pd
 from sklearn.base import BaseEstimator
 
@@ -67,6 +68,21 @@ def load_csv(directory: str, filename: str) -> pd.Series:
     path = os.path.join(directory, filename + ".csv")
     print(f"Reading {path}...")
     return pd.read_csv(path)
+
+
+def load_shp(directory: str, filename: str) -> geopandas.GeoDataFrame:
+    """Load a shapefile as a data frame.
+
+    Parameters:
+        directory: the directory to load from
+        filename: the filename to load from
+
+    Returns:
+        the data frame
+    """
+    path = os.path.join(directory, filename + ".shp")
+    print(f"Reading {path}...")
+    return geopandas.read_file(path)
 
 
 def save_checkpoint(
