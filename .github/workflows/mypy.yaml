@@ -25,6 +25,7 @@ jobs:
         python-version: 3.9
     - name: Install dependencies
       run: |
+        sudo apt-get install geos proj
         # https://github.com/SciTools/cartopy/issues/1552
         pip install numpy
         pip install -r requirements.txt
