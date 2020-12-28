@@ -24,6 +24,9 @@ jobs:
       with:
         python-version: 3.9
     - name: Install dependencies
-      run: pip install -r requirements.txt
+      run: |
+        # https://github.com/SciTools/cartopy/issues/1552
+        pip install numpy
+        pip install -r requirements.txt
     - name: Run mypy checks
       run: mypy .
