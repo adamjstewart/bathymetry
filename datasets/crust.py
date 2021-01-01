@@ -5,19 +5,21 @@ https://igppweb.ucsd.edu/~gabi/crust1.html
 
 import os
 
+import geopandas
 import numpy as np
 import pandas as pd
 
 
-def read_data(data_dir: str) -> pd.DataFrame:
+def read_crust(data_dir: str) -> geopandas.GeoDataFrame:
     """Read CRUST 1.0 dataset.
 
     Parameters:
-        data_dir: directory containing dataset
+        data_dir: directory containing datasets
 
     Returns:
         the data
     """
+    data_dir = os.path.join(data_dir, "CRUST1.0")
     assert os.path.isdir(data_dir)
 
     kwargs = {
@@ -39,19 +41,30 @@ def read_data(data_dir: str) -> pd.DataFrame:
 
     # Boundary topography
     # These files come with the CRUST 1.0 base model
-    bnds = pd.read_fwf(os.path.join(data_dir, "crust1.bnds"), **kwargs)
+    fname = os.path.join(data_dir, "crust1.bnds")
+    print(f"Reading {fname}...")
+    bnds = pd.read_fwf(fname, **kwargs)
 
     # P/S-wave velocity
     kwargs["widths"] = [6] * 9
-    vp = pd.read_fwf(os.path.join(data_dir, "crust1.vp"), **kwargs)
-    vs = pd.read_fwf(os.path.join(data_dir, "crust1.vs"), **kwargs)
+    fname = os.path.join(data_dir, "crust1.vp")
+    print(f"Reading {fname}...")
+    vp = pd.read_fwf(fname, **kwargs)
+
+    fname = os.path.join(data_dir, "crust1.vs")
+    print(f"Reading {fname}...")
+    vs = pd.read_fwf(fname, **kwargs)
 
     # Density
-    rho = pd.read_fwf(os.path.join(data_dir, "crust1.rho"), **kwargs)
+    fname = os.path.join(data_dir, "crust1.rho")
+    print(f"Reading {fname}...")
+    rho = pd.read_fwf(fname, **kwargs)
 
     # Crust type
     # This file comes with the CRUST 1.0 add-on
-    ctype = np.loadtxt(os.path.join(data_dir, "CNtype1-1.txt"), dtype=np.object)
+    fname = os.path.join(data_dir, "CNtype1-1.txt")
+    print(f"Reading {fname}...")
+    ctype = np.loadtxt(fname, dtype=np.object)
     ctype = ctype.flatten()
     ctype = pd.DataFrame(ctype, columns=["crust type"])
 
@@ -60,7 +73,9 @@ def read_data(data_dir: str) -> pd.DataFrame:
     # TODO: directly use EarthByte dataset with a different data loader
     kwargs.pop("widths")
     kwargs["names"] = ["longitude", "latitude", "age"]
-    age = pd.read_table(os.path.join(data_dir, "age1.txt"), **kwargs)
+    fname = os.path.join(data_dir, "age1.txt")
+    print(f"Reading {fname}...")
+    age = pd.read_table(fname, **kwargs)
 
     # Combine data
     data = pd.concat(
@@ -76,9 +91,20 @@ def read_data(data_dir: str) -> pd.DataFrame:
         ],
         sort=False,
     )
-    data.set_index([("age", "latitude"), ("age", "longitude")], inplace=True)
-    data.index.rename(["latitude", "longitude"], inplace=True)
 
-    assert isinstance(data, pd.DataFrame)
+    # Convert to GeoDataFrame
+    # TODO: this is slow, might be faster if we filter and reduce first
+    # https://github.com/geopandas/geopandas/issues/1763
+    data["geom"] = geopandas.points_from_xy(
+        data["age", "longitude"], data["age", "latitude"]
+    )
+    data = geopandas.GeoDataFrame(
+        data,
+        crs="EPSG:4326",
+        geometry="geom",
+    )
+    data.drop(columns=[("age", "longitude"), ("age", "latitude")], inplace=True)
+
+    assert isinstance(data, geopandas.GeoDataFrame)
 
     return data

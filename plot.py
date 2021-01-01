@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from datasets.crust import read_data
+from datasets.crust import read_crust
 from models.physics import HS, PSM, GDH1, H13
 from preprocessing.filter import filter_nans, filter_crust_type
 from utils.io import load_pickle
@@ -33,8 +33,8 @@ def set_up_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "-d",
         "--data-dir",
-        default="data/CRUST1.0",
-        help="directory containing CRUST1.0 dataset",
+        default="data",
+        help="directory containing datasets",
         metavar="DIR",
     )
     parser.add_argument(
@@ -89,7 +89,7 @@ def main_2d(args: argparse.Namespace) -> None:
         args: command-line arguments
     """
     print("Reading dataset...")
-    data = read_data(args.data_dir)
+    data = read_crust(args.data_dir)
 
     print("Preprocessing...")
     data = filter_nans(data)

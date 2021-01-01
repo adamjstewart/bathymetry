@@ -4,14 +4,11 @@
 
 import argparse
 
+import geopandas
 import numpy as np
-import pandas as pd
 
-from datasets.crust import read_data
-from metrics import evaluate
-from models import get_model
-from preprocessing import preprocess, postprocess
-from utils.io import save_pickle, save_checkpoint
+from datasets.crust import read_crust
+from datasets.plate import read_plate
 
 
 def set_up_parser() -> argparse.ArgumentParser:
@@ -29,8 +26,8 @@ def set_up_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "-d",
         "--data-dir",
-        default="data/CRUST1.0",
-        help="directory containing CRUST1.0 dataset",
+        default="data",
+        help="directory containing datasets",
         metavar="DIR",
     )
     parser.add_argument(
@@ -142,46 +139,23 @@ def main(args: argparse.Namespace) -> None:
     Parameters:
         args: command-line arguments
     """
-    print("Reading dataset...")
-    data = read_data(args.data_dir)
+    print("\nReading datasets...")
+    data = read_crust(args.data_dir)
+    plate = read_plate(args.data_dir)
 
-    print("Preprocessing...")
-    X_train, X_val, X_test, y_train, y_val, y_test, y_scaler = preprocess(data, args)
+    geopandas.sjoin(data, plate, how="inner", op="within")
 
-    print("Training...")
-    model = get_model(args)
-    model.fit(X_train, y_train)
+    # read crust
+    # read plate
 
-    print("Predicting...")
-    yhat_train = model.predict(X_train)
-    yhat_train = pd.Series(yhat_train, index=y_train.index)
-    yhat_val = model.predict(X_val)
-    yhat_val = pd.Series(yhat_val, index=y_val.index)
-    yhat_test = model.predict(X_test)
-    yhat_test = pd.Series(yhat_test, index=y_test.index)
+    # preprocess (filter, reduce)
+    # compute groups
+    # save index, pop geometry
 
-    print("Postprocessing...")
-    y_train, y_val, y_test = postprocess(y_train, y_val, y_test, y_scaler)
-    yhat_train, yhat_val, yhat_test = postprocess(
-        yhat_train, yhat_val, yhat_test, y_scaler
-    )
-
-    print("Evaluating...")
-    accuracies = {}
-    print("\nTrain:")
-    accuracies["train"] = evaluate(y_train, yhat_train)
-    print("\nValidation:")
-    accuracies["validation"] = evaluate(y_val, yhat_val)
-    print("\nTest:")
-    accuracies["test"] = evaluate(y_test, yhat_test)
-    print()
-
-    print("Saving...")
-    y = pd.concat([y_train, y_val, y_test])
-    yhat = pd.concat([yhat_train, yhat_val, yhat_test])
-    save_pickle(y, args.checkpoint_dir, "truth")
-    save_pickle(yhat, args.checkpoint_dir, args.model)
-    save_checkpoint(model, args, accuracies)
+    # use sklearn.pipeline.Pipeline to combine StandardScaler transformer
+    # and Model estimator:
+    # https://stackoverflow.com/a/44447786/5828163
+    # TODO: how to postprocess and evaluate? Just add another entry?
 
 
 if __name__ == "__main__":
