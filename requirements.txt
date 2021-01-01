@@ -7,5 +7,6 @@ matplotlib
 mypy
 numpy
 pandas
+pygeos
 scikit-learn
 scipy

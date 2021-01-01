@@ -10,6 +10,7 @@ spack:
   - py-mypy
   - py-numpy
   - py-pandas
+  - py-pygeos
   - py-scikit-learn
   - py-scipy
   concretization: together
