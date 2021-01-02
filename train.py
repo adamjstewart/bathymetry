@@ -6,6 +6,8 @@ import argparse
 
 import geopandas
 import numpy as np
+import pandas as pd
+from sklearn.model_selection import GroupKFold
 
 from datasets.crust import read_crust
 from datasets.plate import read_plate
@@ -143,7 +145,14 @@ def main(args: argparse.Namespace) -> None:
     data = read_crust(args.data_dir)
     plate = read_plate(args.data_dir)
 
-    geopandas.sjoin(data, plate, how="inner", op="within")
+    data.columns = data.columns.to_flat_index()
+    data = data.set_geometry(("geom", ""))
+    groups = geopandas.sjoin(data, plate, how="inner", op="within")
+    data.columns = pd.MultiIndex.from_tuples(data.columns)
+
+    kfold = GroupKFold(n_splits=2)
+    for train_index, test_index in kfold.split(groups, groups, groups["Code"]):
+        pass
 
     # read crust
     # read plate
