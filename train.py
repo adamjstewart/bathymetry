@@ -151,7 +151,7 @@ def main(args: argparse.Namespace) -> None:
     X = X.set_geometry(("geom", ""))
     groups = geopandas.sjoin(X, plate, how="inner", op="within")["Code"]
 
-    print(X, y, groups)
+    print(groups.value_counts())
 
     kfold = GroupKFold(n_splits=5)
     for train_index, test_index in kfold.split(X, y, groups):
