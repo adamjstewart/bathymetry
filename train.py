@@ -6,7 +6,7 @@ import argparse
 
 import geopandas
 import numpy as np
-from sklearn.model_selection import GroupKFold
+from sklearn.model_selection import GroupKFold, LeaveOneGroupOut
 
 from datasets.crust import read_crust
 from datasets.plate import read_plate
@@ -147,22 +147,29 @@ def main(args: argparse.Namespace) -> None:
 
     print("\nPreprocessing...")
     X, y = preprocess(data, args)
+
+    # Group dataset by tectonic plate
     X.columns = X.columns.to_flat_index()
     X = X.set_geometry(("geom", ""))
-    groups = geopandas.sjoin(X, plate, how="inner", op="within")["Code"]
+    combined = geopandas.sjoin(X, plate, how="inner", op="within").sort_index()
+    groups = combined["index_right"]
 
-    print(groups.value_counts())
+    print("\nCross validation...")
+    # Outer cross-validation loop
+    outer_cv = LeaveOneGroupOut()
+    for trainval_idx, test_idx in outer_cv.split(X, y, groups):
+        X_trainval = X[trainval_idx]
+        y_trainval = y[trainval_idx]
+        groups_trainval = groups[trainval_idx]
 
-    kfold = GroupKFold(n_splits=5)
-    for train_index, test_index in kfold.split(X, y, groups):
-        pass
+        # Inner cross-validation loop
+        inner_cv = GroupKFold(n_splits=5)
+        for train_idx, val_idx in inner_cv.split(
+            X_trainval, y_trainval, groups_trainval
+        ):
+            pass
 
-    # save index, pop geometry
-
-    # use sklearn.pipeline.Pipeline to combine StandardScaler transformer
-    # and Model estimator:
-    # https://stackoverflow.com/a/44447786/5828163
-    # TODO: how to postprocess and evaluate? Just add another entry?
+    # print(combined.value_counts(['Code', 'PlateName']))
 
 
 if __name__ == "__main__":
