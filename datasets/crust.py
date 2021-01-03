@@ -93,7 +93,6 @@ def read_crust(data_dir: str) -> geopandas.GeoDataFrame:
     )
 
     # Convert to GeoDataFrame
-    # TODO: this is slow, might be faster if we filter and reduce first
     # https://github.com/geopandas/geopandas/issues/1763
     data["geom"] = geopandas.points_from_xy(
         data["age", "longitude"], data["age", "latitude"]

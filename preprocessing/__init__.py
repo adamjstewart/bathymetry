@@ -37,4 +37,7 @@ def preprocess(
     X = reduce_attributes(X)
     X = ablation_study(X, args.ablation)
 
+    assert isinstance(X, pd.DataFrame)
+    assert isinstance(y, pd.Series)
+
     return X, y

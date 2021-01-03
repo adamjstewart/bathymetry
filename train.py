@@ -6,11 +6,11 @@ import argparse
 
 import geopandas
 import numpy as np
-import pandas as pd
 from sklearn.model_selection import GroupKFold
 
 from datasets.crust import read_crust
 from datasets.plate import read_plate
+from preprocessing import preprocess
 
 
 def set_up_parser() -> argparse.ArgumentParser:
@@ -145,20 +145,18 @@ def main(args: argparse.Namespace) -> None:
     data = read_crust(args.data_dir)
     plate = read_plate(args.data_dir)
 
-    data.columns = data.columns.to_flat_index()
-    data = data.set_geometry(("geom", ""))
-    groups = geopandas.sjoin(data, plate, how="inner", op="within")
-    data.columns = pd.MultiIndex.from_tuples(data.columns)
+    print("\nPreprocessing...")
+    X, y = preprocess(data, args)
+    X.columns = X.columns.to_flat_index()
+    X = X.set_geometry(("geom", ""))
+    groups = geopandas.sjoin(X, plate, how="inner", op="within")["Code"]
 
-    kfold = GroupKFold(n_splits=2)
-    for train_index, test_index in kfold.split(groups, groups, groups["Code"]):
+    print(X, y, groups)
+
+    kfold = GroupKFold(n_splits=5)
+    for train_index, test_index in kfold.split(X, y, groups):
         pass
 
-    # read crust
-    # read plate
-
-    # preprocess (filter, reduce)
-    # compute groups
     # save index, pop geometry
 
     # use sklearn.pipeline.Pipeline to combine StandardScaler transformer

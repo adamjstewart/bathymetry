@@ -21,12 +21,4 @@ def read_plate(data_dir: str) -> geopandas.GeoDataFrame:
     assert os.path.exists(path)
 
     print(f"Reading {path}...")
-    data = geopandas.read_file(path)
-
-    # Some plates, like AU and PA, are coded as MULTIPOLYGONs,
-    # while others, like KE and BR, have two separate POLYGON entries.
-    # Merge these so that there is a single entry per plate.
-    # https://geopandas.org/aggregation_with_dissolve.html
-    data = data.dissolve(by="Code", as_index=False)
-
-    return data
+    return geopandas.read_file(path)
