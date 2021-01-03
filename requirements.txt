@@ -6,7 +6,7 @@ geopandas
 matplotlib
 mypy
 numpy
-pandas
+pandas>=0.24
 pygeos
 scikit-learn>=0.18
 scipy
