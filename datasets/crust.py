@@ -64,7 +64,7 @@ def read_crust(data_dir: str) -> geopandas.GeoDataFrame:
     # This file comes with the CRUST 1.0 add-on
     fname = os.path.join(data_dir, "CNtype1-1.txt")
     print(f"Reading {fname}...")
-    ctype = np.loadtxt(fname, dtype=np.object)
+    ctype = np.loadtxt(fname, dtype=object)
     ctype = ctype.flatten()
     ctype = pd.DataFrame(ctype, columns=["crust type"])
 
@@ -103,7 +103,5 @@ def read_crust(data_dir: str) -> geopandas.GeoDataFrame:
         geometry="geom",
     )
     data.drop(columns=[("age", "longitude"), ("age", "latitude")], inplace=True)
-
-    assert isinstance(data, geopandas.GeoDataFrame)
 
     return data

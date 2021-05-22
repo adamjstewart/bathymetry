@@ -1,12 +1,35 @@
-"""Preprocessing utilities that transform data attributes.
+"""Preprocessing utilities that map data attributes.
 
 This process is known as data transformation.
 """
 
 from typing import Tuple, Union
 
+import geopandas as gpd
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
+
+
+def groupby_plate(data: gpd.GeoDataFrame, plate: gpd.GeoDataFrame) -> pd.DataFrame:
+    """Group dataset by tectonic plate.
+
+    Parameters:
+        data: crust data
+        plate: plate boundaries
+
+    Returns:
+        the dataset grouped by plate
+    """
+    # https://github.com/geopandas/geopandas/issues/1764
+    data.columns = data.columns.to_flat_index()
+    data = data.set_geometry(("geom", ""))
+
+    combined = gpd.sjoin(data, plate, how="inner", op="within")  # .sort_index()
+    print(combined)
+
+    print(combined.value_counts(["Code", "PlateName"]))
+
+    return combined
 
 
 def boundary_to_thickness(data: pd.DataFrame) -> pd.DataFrame:
@@ -18,16 +41,10 @@ def boundary_to_thickness(data: pd.DataFrame) -> pd.DataFrame:
     Returns:
         the modified dataset
     """
-    assert isinstance(data, pd.DataFrame)
-
     bnds = data.pop("boundary topograpy")
     thickness = bnds.diff(periods=-1, axis=1)
     thickness = pd.concat([thickness], axis=1, keys=["thickness"], sort=False)
-    data = pd.concat([thickness, data], axis=1, sort=False)
-
-    assert isinstance(data, pd.DataFrame)
-
-    return data
+    return pd.concat([thickness, data], axis=1, sort=False)
 
 
 def standardize(
@@ -54,10 +71,6 @@ def standardize(
         standardized testing data
         standardization scaler
     """
-    assert isinstance(train, (pd.DataFrame, pd.Series))
-    assert isinstance(val, (pd.DataFrame, pd.Series))
-    assert isinstance(test, (pd.DataFrame, pd.Series))
-
     is_series = isinstance(train, pd.Series)
 
     if is_series:
@@ -87,10 +100,6 @@ def standardize(
         val = pd.DataFrame(arr_val, index=val.index)
         test = pd.DataFrame(arr_test, index=test.index)
 
-    assert isinstance(train, (pd.DataFrame, pd.Series))
-    assert isinstance(val, (pd.DataFrame, pd.Series))
-    assert isinstance(test, (pd.DataFrame, pd.Series))
-
     return train, val, test, scaler
 
 
@@ -110,10 +119,6 @@ def inverse_standardize(
         the scaled validation predictions
         the scaled testing predictions
     """
-    assert isinstance(train, pd.Series)
-    assert isinstance(val, pd.Series)
-    assert isinstance(test, pd.Series)
-
     if scaler is None:
         return train, val, test
 
@@ -124,9 +129,5 @@ def inverse_standardize(
     train = pd.Series(arr_train, index=train.index)
     val = pd.Series(arr_val, index=val.index)
     test = pd.Series(arr_test, index=test.index)
-
-    assert isinstance(train, pd.Series)
-    assert isinstance(val, pd.Series)
-    assert isinstance(test, pd.Series)
 
     return train, val, test

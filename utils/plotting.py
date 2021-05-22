@@ -19,8 +19,6 @@ def plot_world(directory: str, data: pd.Series, title: str, legend: str) -> None
         title: the figure title
         legend: the legend label
     """
-    assert isinstance(data, pd.Series)
-
     lat = np.linspace(-90, 90, 181)
     lon = np.linspace(-180, 180, 361)
     X, Y = np.meshgrid(lon, lat)

@@ -15,18 +15,12 @@ def reduce_attributes(data: pd.DataFrame) -> pd.DataFrame:
     Returns:
         a subset of the dataset
     """
-    assert isinstance(data, pd.DataFrame)
-
     labels = [
         ("thickness", "water"),  # keeping this would be cheating
         ("thickness", "moho"),  # this is all NaNs after the pd.diff
         ("crust type", "crust type"),
     ]
-    data = data.drop(columns=labels)
-
-    assert isinstance(data, pd.DataFrame)
-
-    return data
+    return data.drop(columns=labels)
 
 
 def ablation_study(data: pd.DataFrame, labels: str) -> pd.DataFrame:
@@ -39,8 +33,6 @@ def ablation_study(data: pd.DataFrame, labels: str) -> pd.DataFrame:
     Returns:
         a subset of the dataset
     """
-    assert isinstance(data, pd.DataFrame)
-
     if labels is not None:
         for label in labels.split(","):
             if label in [
@@ -54,7 +46,5 @@ def ablation_study(data: pd.DataFrame, labels: str) -> pd.DataFrame:
             else:
                 level = 1
             data = data.drop(columns=label, level=level)
-
-    assert isinstance(data, pd.DataFrame)
 
     return data

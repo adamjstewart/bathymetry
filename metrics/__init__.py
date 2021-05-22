@@ -17,9 +17,6 @@ def evaluate(labels: pd.Series, predictions: pd.Series) -> Dict[str, float]:
     Returns:
         dictionary containing RMSE and R^2
     """
-    assert isinstance(labels, pd.Series)
-    assert isinstance(predictions, pd.Series)
-
     mse = mean_squared_error(labels, predictions)
     rmse = math.sqrt(mse)
     r2 = r2_score(labels, predictions)

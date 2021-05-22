@@ -4,7 +4,6 @@
 
 import argparse
 
-import geopandas
 import numpy as np
 from sklearn.model_selection import GroupKFold, LeaveOneGroupOut
 
@@ -146,13 +145,7 @@ def main(args: argparse.Namespace) -> None:
     plate = read_plate(args.data_dir)
 
     print("\nPreprocessing...")
-    X, y = preprocess(data, args)
-
-    # Group dataset by tectonic plate
-    X.columns = X.columns.to_flat_index()
-    X = X.set_geometry(("geom", ""))
-    combined = geopandas.sjoin(X, plate, how="inner", op="within").sort_index()
-    groups = combined["index_right"]
+    X, y, groups = preprocess(data, plate, args)
 
     print("\nCross validation...")
     # Outer cross-validation loop
@@ -168,8 +161,6 @@ def main(args: argparse.Namespace) -> None:
             X_trainval, y_trainval, groups_trainval
         ):
             pass
-
-    # print(combined.value_counts(['Code', 'PlateName']))
 
 
 if __name__ == "__main__":
