@@ -13,7 +13,7 @@ from .map import boundary_to_thickness, groupby_plate, merge_plates
 
 def preprocess(
     data: gpd.GeoDataFrame, plate: gpd.GeoDataFrame, args: argparse.Namespace
-) -> Tuple[pd.DataFrame, pd.Series, pd.Series]:
+) -> Tuple[pd.DataFrame, pd.Series, pd.Series, pd.Series]:
     """Preprocess the dataset.
 
     Parameters:
@@ -33,16 +33,14 @@ def preprocess(
     data = merge_plates(data)
 
     # Separate X from y
-    X, y, groups = (
-        data,
-        data["boundary topograpy", "upper crystalline crust"],
-        data["plate"],
-    )
-    y = -y
+    X = data
+    y = -data["boundary topograpy", "upper crystalline crust"]
+    geom = data["geom"]
+    groups = data["plate number"]
 
     # Transform and reduce data attributes
     X = boundary_to_thickness(X)
     X = reduce_attributes(X)
     X = ablation_study(X, args.ablation)
 
-    return X, y, groups
+    return X, y, geom, groups

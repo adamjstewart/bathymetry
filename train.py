@@ -145,7 +145,7 @@ def main(args: argparse.Namespace) -> None:
     plate = read_plate(args.data_dir)
 
     print("\nPreprocessing...")
-    X, y, groups = preprocess(data, plate, args)
+    X, y, geom, groups = preprocess(data, plate, args)
 
     print("\nCross-validation...")
     # Outer cross-validation loop
