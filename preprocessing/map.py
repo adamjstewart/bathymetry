@@ -3,7 +3,8 @@
 This process is known as data transformation.
 """
 
-from typing import Tuple, Union
+import argparse
+from typing import Tuple
 
 import geopandas as gpd
 import numpy as np
@@ -32,7 +33,7 @@ def groupby_plate(data: gpd.GeoDataFrame, plate: gpd.GeoDataFrame) -> pd.DataFra
     # Reconstruct multi-index
     combined = combined.rename(
         columns={
-            "index_right": ("plate number", ""),
+            "index_right": ("plate index", ""),
             "LAYER": ("layer", ""),
             "Code": ("code", ""),
             "PlateName": ("plate name", ""),
@@ -40,7 +41,7 @@ def groupby_plate(data: gpd.GeoDataFrame, plate: gpd.GeoDataFrame) -> pd.DataFra
     )
     combined.columns = pd.MultiIndex.from_tuples(combined.columns)
 
-    # print(combined.value_counts(["plate number", "code", "plate name"]))
+    # print(combined.value_counts(["plate index", "code", "plate name"]))
 
     return combined
 
@@ -115,9 +116,9 @@ def merge_plates(data: pd.DataFrame) -> pd.DataFrame:
         ]
     )
 
-    data["plate number"] = all_to_subset[data["plate number"]]
+    data["plate index"] = all_to_subset[data["plate index"]]
 
-    # print(data.value_counts(["plate number"]))
+    # print(data.value_counts(["plate index"]))
 
     return data
 
@@ -138,86 +139,55 @@ def boundary_to_thickness(data: pd.DataFrame) -> pd.DataFrame:
 
 
 def standardize(
-    train: Union[pd.DataFrame, pd.Series],
-    val: Union[pd.DataFrame, pd.Series],
-    test: Union[pd.DataFrame, pd.Series],
-) -> Tuple[
-    Union[pd.DataFrame, pd.Series],
-    Union[pd.DataFrame, pd.Series],
-    Union[pd.DataFrame, pd.Series],
-    StandardScaler,
-]:
+    train: np.ndarray,
+    test: np.ndarray,
+    args: argparse.Namespace,
+) -> Tuple[np.ndarray, np.ndarray, StandardScaler]:
     """Standardize the dataset by subtracting the mean and dividing by the
     standard deviation.
 
     Parameters:
         train: training data
-        val: validation data
         test: testing data
+        args: command-line arguments
 
     Returns:
         standardized training data
-        standardized validation data
         standardized testing data
         standardization scaler
     """
-    is_series = isinstance(train, pd.Series)
-
-    if is_series:
-        # Must be a 2D array, pd.Series won't work
-        train = pd.DataFrame(train)
-        val = pd.DataFrame(val)
-        test = pd.DataFrame(test)
+    if args.model in ["linear", "svr", "mlp"]:
+        return train, test, None
 
     scaler = StandardScaler()
 
     # Compute the mean and std dev of the training set
     scaler.fit(train)
 
-    # Transform the train/val/test sets
-    arr_train = scaler.transform(train)
-    arr_val = scaler.transform(val)
-    arr_test = scaler.transform(test)
+    # Transform the train/test sets
+    train = scaler.transform(train)
+    test = scaler.transform(test)
 
-    if is_series:
-        # Convert back to pd.Series
-        train = pd.Series(arr_train.flatten(), index=train.index)
-        val = pd.Series(arr_val.flatten(), index=val.index)
-        test = pd.Series(arr_test.flatten(), index=test.index)
-    else:
-        # Convert back to pd.DataFrame
-        train = pd.DataFrame(arr_train, index=train.index)
-        val = pd.DataFrame(arr_val, index=val.index)
-        test = pd.DataFrame(arr_test, index=test.index)
-
-    return train, val, test, scaler
+    return train, test, scaler
 
 
 def inverse_standardize(
-    train: pd.Series, val: pd.Series, test: pd.Series, scaler: StandardScaler
-) -> Tuple[pd.Series, pd.Series, pd.Series]:
-    """Scale back the predictions to the original representation.
+    test: np.ndarray, predict: np.ndarray, scaler: StandardScaler
+) -> pd.Series:
+    """Scale the predictions back to the original representation.
 
     Parameters:
-        train: the training predictions
-        val: the validation predictions
-        test: the testing predictions
+        test: testing data
+        predict: predicted data
         scaler: the standardization scaler
 
     Returns:
-        the scaled training predictions
-        the scaled validation predictions
         the scaled testing predictions
     """
     if scaler is None:
-        return train, val, test
+        return test, predict
 
-    arr_train = scaler.inverse_transform(train)
-    arr_val = scaler.inverse_transform(val)
-    arr_test = scaler.inverse_transform(test)
+    test = scaler.inverse_transform(test)
+    predict = scaler.inverse_transform(predict)
 
-    train = pd.Series(arr_train, index=train.index)
-    val = pd.Series(arr_val, index=val.index)
-    test = pd.Series(arr_test, index=test.index)
-
-    return train, val, test
+    return test, predict

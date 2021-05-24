@@ -4,12 +4,17 @@
 
 import argparse
 
+import geopandas as gpd
 import numpy as np
-from sklearn.model_selection import GroupKFold, LeaveOneGroupOut
+from sklearn.model_selection import LeaveOneGroupOut
 
 from datasets.crust import read_crust
 from datasets.plate import read_plate
+from metrics import evaluate
+from models import get_model
 from preprocessing import preprocess
+from preprocessing.map import inverse_standardize, standardize
+from utils.io import save_checkpoint
 
 
 def set_up_parser() -> argparse.ArgumentParser:
@@ -148,19 +153,42 @@ def main(args: argparse.Namespace) -> None:
     X, y, geom, groups = preprocess(data, plate, args)
 
     print("\nCross-validation...")
-    # Outer cross-validation loop
-    outer_cv = LeaveOneGroupOut()
-    for trainval_idx, test_idx in outer_cv.split(X, y, groups):
-        X_trainval = X[trainval_idx]
-        y_trainval = y[trainval_idx]
-        groups_trainval = groups[trainval_idx]
+    cv = LeaveOneGroupOut()
+    i = 1
+    y_pred = gpd.GeoDataFrame()
+    y_true = gpd.GeoDataFrame()
+    for train_idx, test_idx in cv.split(X, y, groups):
+        print(f"Group {i}")
+        i += 1
 
-        # Inner cross-validation loop
-        inner_cv = GroupKFold(n_splits=5)
-        for train_idx, val_idx in inner_cv.split(
-            X_trainval, y_trainval, groups_trainval
-        ):
-            pass
+        # Split data
+        X_train = X[train_idx]
+        y_train = y[train_idx]
+        X_test = X[test_idx]
+        y_test = y[test_idx]
+        geom_test = geom[test_idx]
+
+        # Standardize data
+        X_train, X_test, _ = standardize(X_train, X_test, args)
+        y_train, y_test, y_scaler = standardize(y_train, y_test, args)
+
+        # Train model
+        model = get_model(args)
+        model.fit(X_train, y_train)
+
+        # Make predictions
+        y_pred_test = model.predict(X_test)
+        y_test, y_pred_test = inverse_standardize(y_test, y_pred_test, y_scaler)
+        y_test = gpd.GeoDataFrame(y_test, geometry=geom_test)
+        y_pred_test = gpd.GeoDataFrame(y_pred_test, geometry=geom_test)
+        y_true = y_true.append(y_test)
+        y_pred = y_pred.append(y_pred_test)
+
+    print("\nEvaluating...")
+    accuracies = evaluate(y_true[0], y_pred[0])
+
+    print("\nSaving predictions...")
+    save_checkpoint(model, args, accuracies)
 
 
 if __name__ == "__main__":

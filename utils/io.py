@@ -72,7 +72,7 @@ def load_csv(directory: str, filename: str) -> pd.Series:
 def save_checkpoint(
     model: BaseEstimator,
     args: argparse.Namespace,
-    accuracies: Dict[str, Dict[str, float]],
+    accuracies: Dict[str, float],
 ) -> None:
     """Save a checkpoint for hyperparameter tuning.
 

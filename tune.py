@@ -44,8 +44,8 @@ def main(args: argparse.Namespace) -> None:
         basename = os.path.splitext(os.path.basename(filename))[0]
         data = load_pickle(os.path.dirname(filename), basename)
 
-        rmse = data["accuracies"]["validation"]["RMSE"]
-        r2 = data["accuracies"]["validation"]["R^2"]
+        rmse = data["accuracies"]["RMSE"]
+        r2 = data["accuracies"]["R^2"]
 
         if rmse < best_rmse:
             best_rmse = rmse
@@ -55,11 +55,11 @@ def main(args: argparse.Namespace) -> None:
             best_r2 = r2
             best_r2_dict = data
 
-    print("\nBest validation RMSE:\n")
+    print("\nBest RMSE:\n")
     print(best_rmse_dict["args"])
     print(json.dumps(best_rmse_dict["accuracies"], indent=4))
 
-    print("\nBest validation R^2:\n")
+    print("\nBest R^2:\n")
     print(best_r2_dict["args"])
     print(json.dumps(best_r2_dict["accuracies"], indent=4))
 

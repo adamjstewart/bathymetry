@@ -4,7 +4,7 @@ import argparse
 from typing import Tuple
 
 import geopandas as gpd
-import pandas as pd
+import numpy as np
 
 from .filter import filter_nans, filter_crust_type
 from .reduce import ablation_study, reduce_attributes
@@ -13,7 +13,7 @@ from .map import boundary_to_thickness, groupby_plate, merge_plates
 
 def preprocess(
     data: gpd.GeoDataFrame, plate: gpd.GeoDataFrame, args: argparse.Namespace
-) -> Tuple[pd.DataFrame, pd.Series, pd.Series, pd.Series]:
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """Preprocess the dataset.
 
     Parameters:
@@ -36,11 +36,11 @@ def preprocess(
     X = data
     y = -data["boundary topograpy", "upper crystalline crust"]
     geom = data["geom"]
-    groups = data["plate number"]
+    groups = data["plate index"]
 
     # Transform and reduce data attributes
     X = boundary_to_thickness(X)
     X = reduce_attributes(X)
     X = ablation_study(X, args.ablation)
 
-    return X, y, geom, groups
+    return X.values, y.values, geom.values, groups.values

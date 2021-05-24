@@ -19,11 +19,11 @@ def reduce_attributes(data: pd.DataFrame) -> pd.DataFrame:
         ("thickness", "water"),  # keeping this would be cheating
         ("thickness", "moho"),  # this is all NaNs after the pd.diff
         ("crust type", "crust type"),
-        "plate number",
-        "layer",
-        "code",
-        "plate name",
-        "geom",
+        ("plate index", ""),
+        ("layer", ""),
+        ("code", ""),
+        ("plate name", ""),
+        ("geom", ""),
     ]
     return data.drop(columns=labels)
 
