@@ -8,7 +8,7 @@ import pandas as pd
 
 from .filter import filter_nans, filter_crust_type
 from .reduce import ablation_study, reduce_attributes
-from .map import boundary_to_thickness, groupby_plate
+from .map import boundary_to_thickness, groupby_plate, merge_plates
 
 
 def preprocess(
@@ -30,12 +30,13 @@ def preprocess(
 
     # Group by tectonic plate
     data = groupby_plate(data, plate)
+    data = merge_plates(data)
 
     # Separate X from y
     X, y, groups = (
         data,
         data["boundary topograpy", "upper crystalline crust"],
-        data["index_right"],
+        data["plate"],
     )
     y = -y
 

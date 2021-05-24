@@ -147,7 +147,7 @@ def main(args: argparse.Namespace) -> None:
     print("\nPreprocessing...")
     X, y, groups = preprocess(data, plate, args)
 
-    print("\nCross validation...")
+    print("\nCross-validation...")
     # Outer cross-validation loop
     outer_cv = LeaveOneGroupOut()
     for trainval_idx, test_idx in outer_cv.split(X, y, groups):
