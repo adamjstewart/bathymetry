@@ -39,12 +39,14 @@ class HS(BaseEstimator, RegressorMixin):
         kappa = 8e-7
         T_1 = 1220
 
-        return 2.5 + (
+        depth: np.ndarray = 2.5 + (
             (2 * rho_0 * alpha * T_1)
             / (rho_0 - rho_w)
             * np.sqrt(kappa * t / np.pi)
             / 1000
         )
+
+        return depth
 
 
 class PSM(BaseEstimator, RegressorMixin):
@@ -73,13 +75,15 @@ class PSM(BaseEstimator, RegressorMixin):
         """
         t = X["age", "age"].values
 
-        return np.where(
+        depth: np.ndarray = np.where(
             t < 70,
             # Young crust
             2.5 + 0.35 * t ** 0.5,
             # Old crust
             6.4 - 3.2 * np.exp(-t / 62.8),
         )
+
+        return depth
 
 
 class GDH1(BaseEstimator, RegressorMixin):
@@ -108,13 +112,15 @@ class GDH1(BaseEstimator, RegressorMixin):
         """
         t = X["age", "age"].values
 
-        return np.where(
+        depth: np.ndarray = np.where(
             t < 20,
             # Young crust
             2.6 + 0.365 * t ** 0.5,
             # Old crust
             5.651 - 2.473 * np.exp(-0.0278 * t),
         )
+
+        return depth
 
 
 class H13(BaseEstimator, RegressorMixin):
@@ -143,13 +149,15 @@ class H13(BaseEstimator, RegressorMixin):
         t = X["age", "age"].values
 
         # Ridge depth is average of 2.424 and 2.514 km
-        return 2.469 + np.where(
+        depth: np.ndarray = 2.469 + np.where(
             t <= 17.4,
             # Young crust
             0.4145 * t ** 0.5,
             # Old crust
             3.109 - 2.520 * np.exp(-0.034607 * t),
         )
+
+        return depth
 
 
 class Isostasy(BaseEstimator, RegressorMixin):
@@ -223,28 +231,28 @@ class Isostasy(BaseEstimator, RegressorMixin):
             the prediction
         """
         # Thicknesses
-        i = X["thickness", "ice"]
+        i = X["thickness", "ice"].values
 
-        s1 = X["thickness", "upper sediments"]
-        s2 = X["thickness", "middle sediments"]
-        s3 = X["thickness", "lower sediments"]
+        s1 = X["thickness", "upper sediments"].values
+        s2 = X["thickness", "middle sediments"].values
+        s3 = X["thickness", "lower sediments"].values
 
-        c1 = X["thickness", "upper crystalline crust"]
-        c2 = X["thickness", "middle crystalline crust"]
-        c3 = X["thickness", "lower crystalline crust"]
+        c1 = X["thickness", "upper crystalline crust"].values
+        c2 = X["thickness", "middle crystalline crust"].values
+        c3 = X["thickness", "lower crystalline crust"].values
 
         # Densities
-        rho_i = X["density", "ice"]
+        rho_i = X["density", "ice"].values
 
-        rho_w = X["density", "water"]
+        rho_w = X["density", "water"].values
 
-        rho_s1 = X["density", "upper sediments"]
-        rho_s2 = X["density", "middle sediments"]
-        rho_s3 = X["density", "lower sediments"]
+        rho_s1 = X["density", "upper sediments"].values
+        rho_s2 = X["density", "middle sediments"].values
+        rho_s3 = X["density", "lower sediments"].values
 
-        rho_c1 = X["density", "upper crystalline crust"]
-        rho_c2 = X["density", "middle crystalline crust"]
-        rho_c3 = X["density", "lower crystalline crust"]
+        rho_c1 = X["density", "upper crystalline crust"].values
+        rho_c2 = X["density", "middle crystalline crust"].values
+        rho_c3 = X["density", "lower crystalline crust"].values
 
         # Pre-condition: assume that mantle density is a constant,
         # otherwise the problem is underconstrained
@@ -265,7 +273,9 @@ class Isostasy(BaseEstimator, RegressorMixin):
 
         w = numerator / denominator
 
-        return w + s1 + s2 + s3
+        depth: np.ndarray = w + s1 + s2 + s3
+
+        return depth
 
 
 class Isostasy2(BaseEstimator, RegressorMixin):
@@ -333,7 +343,7 @@ def isostasy(X: pd.DataFrame, a: float, b: float) -> np.ndarray:
     rho_m = X["density", "moho"].values
 
     # Calculations
-    return (
+    depth: np.ndarray = (
         a
         + rho_m * c1
         + rho_m * c2
@@ -350,3 +360,5 @@ def isostasy(X: pd.DataFrame, a: float, b: float) -> np.ndarray:
         - rho_c3 * c3
         - rho_m * b
     ) / (rho_w - rho_m)
+
+    return depth
