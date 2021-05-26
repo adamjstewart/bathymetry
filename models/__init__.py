@@ -7,7 +7,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.neural_network import MLPRegressor
 from sklearn.svm import SVR
 
-from .physics import HS, PSM, GDH1, H13, Isostasy, Isostasy2
+from .physics import GDH1, H13, HS, Isostasy, Isostasy2, PSM
 
 
 def get_model(args: argparse.Namespace) -> BaseEstimator:

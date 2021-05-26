@@ -2,6 +2,7 @@ black
 cartopy
 cmocean
 flake8
+flake8-import-order
 geopandas
 matplotlib
 mypy

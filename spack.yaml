@@ -5,6 +5,7 @@ spack:
   - py-cartopy
   - py-cmocean
   - py-flake8
+  - py-flake8-import-order
   - py-geopandas
   - py-matplotlib
   - py-mypy

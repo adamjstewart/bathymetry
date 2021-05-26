@@ -3,17 +3,17 @@
 """plotting tools for visualizing models."""
 
 import argparse
+from functools import partial, reduce
 import operator
 import os
-from functools import partial, reduce
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
 from datasets.crust import read_crust
-from models.physics import HS, PSM, GDH1, H13
-from preprocessing.filter import filter_nans, filter_crust_type
+from models.physics import GDH1, H13, HS, PSM
+from preprocessing.filter import filter_crust_type, filter_nans
 from utils.io import load_pickle
 from utils.plotting import plot_world
 

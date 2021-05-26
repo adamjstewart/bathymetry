@@ -6,9 +6,9 @@ from typing import Tuple
 import geopandas as gpd
 import numpy as np
 
-from .filter import filter_nans, filter_crust_type
-from .reduce import ablation_study, reduce_attributes
+from .filter import filter_crust_type, filter_nans
 from .map import boundary_to_thickness, groupby_plate, merge_plates
+from .reduce import ablation_study, reduce_attributes
 
 
 def preprocess(
