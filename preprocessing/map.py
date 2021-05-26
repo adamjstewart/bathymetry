@@ -156,17 +156,25 @@ def standardize(
         standardized testing data
         standardization scaler
     """
-    if args.model in ["linear", "svr", "mlp"]:
+    if args.model not in ["linear", "svr", "mlp"]:
         return train, test, None
 
-    scaler = StandardScaler()
+    # If array is 1D, need to expand to 2D
+    if train.ndim == 1:
+        train = np.expand_dims(train, axis=1)
+        test = np.expand_dims(test, axis=1)
 
     # Compute the mean and std dev of the training set
+    scaler = StandardScaler()
     scaler.fit(train)
 
     # Transform the train/test sets
     train = scaler.transform(train)
     test = scaler.transform(test)
+
+    # Reduce back down to 1D if possible
+    train = np.squeeze(train)
+    test = np.squeeze(test)
 
     return train, test, scaler
 
