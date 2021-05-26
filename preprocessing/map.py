@@ -4,7 +4,7 @@ This process is known as data transformation.
 """
 
 import argparse
-from typing import Tuple
+from typing import Tuple, Union
 
 import geopandas as gpd
 import numpy as np
@@ -139,10 +139,12 @@ def boundary_to_thickness(data: pd.DataFrame) -> pd.DataFrame:
 
 
 def standardize(
-    train: np.ndarray,
-    test: np.ndarray,
+    train: Union[pd.DataFrame, pd.Series],
+    test: Union[pd.DataFrame, pd.Series],
     args: argparse.Namespace,
-) -> Tuple[np.ndarray, np.ndarray, StandardScaler]:
+) -> Tuple[
+    Union[pd.DataFrame, pd.Series], Union[pd.DataFrame, pd.Series], StandardScaler
+]:
     """Standardize the dataset by subtracting the mean and dividing by the
     standard deviation.
 
@@ -159,28 +161,35 @@ def standardize(
     if args.model not in ["linear", "svr", "mlp"]:
         return train, test, None
 
-    # If array is 1D, need to expand to 2D
-    if train.ndim == 1:
-        train = np.expand_dims(train, axis=1)
-        test = np.expand_dims(test, axis=1)
+    is_series = isinstance(train, pd.Series)
+
+    if is_series:
+        # Must be a 2D array, pd.Series won't work
+        train = train.to_frame()
+        test = test.to_frame()
 
     # Compute the mean and std dev of the training set
     scaler = StandardScaler()
     scaler.fit(train)
 
     # Transform the train/test sets
-    train = scaler.transform(train)
-    test = scaler.transform(test)
+    train_arr = scaler.transform(train)
+    test_arr = scaler.transform(test)
 
-    # Reduce back down to 1D if possible
-    train = np.squeeze(train)
-    test = np.squeeze(test)
+    if is_series:
+        # Convert back to pd.Series
+        train = pd.Series(train_arr.flatten(), index=train.index)
+        test = pd.Series(test_arr.flatten(), index=test.index)
+    else:
+        # Convert back to pd.DataFrame
+        train = pd.DataFrame(train_arr, index=train.index, columns=train.columns)
+        test = pd.DataFrame(test_arr, index=test.index, columns=test.columns)
 
     return train, test, scaler
 
 
 def inverse_standardize(
-    test: np.ndarray, predict: np.ndarray, scaler: StandardScaler
+    test: pd.Series, predict: pd.Series, scaler: StandardScaler
 ) -> pd.Series:
     """Scale the predictions back to the original representation.
 
@@ -195,7 +204,10 @@ def inverse_standardize(
     if scaler is None:
         return test, predict
 
-    test = scaler.inverse_transform(test)
-    predict = scaler.inverse_transform(predict)
+    test_arr = scaler.inverse_transform(test)
+    predict_arr = scaler.inverse_transform(predict)
+
+    test = pd.Series(test_arr, index=test.index)
+    predict = pd.Series(predict_arr, index=predict.index)
 
     return test, predict

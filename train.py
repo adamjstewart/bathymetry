@@ -6,6 +6,7 @@ import argparse
 
 import geopandas as gpd
 import numpy as np
+import pandas as pd
 from sklearn.model_selection import LeaveOneGroupOut
 
 from datasets.crust import read_crust
@@ -162,11 +163,11 @@ def main(args: argparse.Namespace) -> None:
         i += 1
 
         # Split data
-        X_train = X[train_idx]
-        y_train = y[train_idx]
-        X_test = X[test_idx]
-        y_test = y[test_idx]
-        geom_test = geom[test_idx]
+        X_train = X.iloc[train_idx]
+        y_train = y.iloc[train_idx]
+        X_test = X.iloc[test_idx]
+        y_test = y.iloc[test_idx]
+        geom_test = geom.iloc[test_idx]
 
         # Standardize data
         X_train, X_test, _ = standardize(X_train, X_test, args)
@@ -177,10 +178,10 @@ def main(args: argparse.Namespace) -> None:
         model.fit(X_train, y_train)
 
         # Make predictions
-        y_pred_test = model.predict(X_test)
+        y_pred_test = pd.Series(model.predict(X_test), index=y_test.index)
         y_test, y_pred_test = inverse_standardize(y_test, y_pred_test, y_scaler)
-        y_test = gpd.GeoDataFrame(y_test, geometry=geom_test)
-        y_pred_test = gpd.GeoDataFrame(y_pred_test, geometry=geom_test)
+        y_test = gpd.GeoDataFrame(y_test.values, geometry=geom_test)
+        y_pred_test = gpd.GeoDataFrame(y_pred_test.values, geometry=geom_test)
         y_true = y_true.append(y_test)
         y_pred = y_pred.append(y_pred_test)
 
