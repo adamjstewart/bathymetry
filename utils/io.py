@@ -1,11 +1,15 @@
 """Collection of input/output utilities."""
 
 import argparse
+import json
 import os
 import pickle
 from typing import Any, Dict
 
+from geocube.api.core import make_geocube
+import geopandas as gpd
 import pandas as pd
+from shapely.geometry import box, mapping
 from sklearn.base import BaseEstimator
 
 
@@ -88,3 +92,20 @@ def save_checkpoint(
     filename = "-".join([str(value) for value in values])
 
     save_pickle(data, args.checkpoint_dir, filename)
+
+
+def save_prediction(
+    prediction: gpd.GeoDataFrame, args: argparse.Namespace, filename: str
+) -> None:
+    """Save prediction to a CSV file.
+
+    Parameters:
+        prediction: predicted bathymetry
+        args: command-line arguments
+        filename: filename to save to
+    """
+    data = make_geocube(
+        vector_data=prediction,
+        resolution=(-1, 1),
+        geom=json.dumps(mapping(box(-180, -90, 180, 90))),
+    )

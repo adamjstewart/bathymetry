@@ -15,7 +15,7 @@ from metrics import evaluate
 from models import get_model
 from preprocessing import preprocess
 from preprocessing.map import inverse_standardize, standardize
-from utils.io import save_checkpoint
+from utils.io import save_checkpoint, save_prediction
 
 
 def set_up_parser() -> argparse.ArgumentParser:
@@ -180,8 +180,8 @@ def main(args: argparse.Namespace) -> None:
         # Make predictions
         y_pred_test = pd.Series(model.predict(X_test), index=y_test.index)
         y_test, y_pred_test = inverse_standardize(y_test, y_pred_test, y_scaler)
-        y_test = gpd.GeoDataFrame(y_test.values, geometry=geom_test)
-        y_pred_test = gpd.GeoDataFrame(y_pred_test.values, geometry=geom_test)
+        y_test = gpd.GeoDataFrame(y_test.values, geometry=geom_test.values)
+        y_pred_test = gpd.GeoDataFrame(y_pred_test.values, geometry=geom_test.values)
         y_true = y_true.append(y_test)
         y_pred = y_pred.append(y_pred_test)
 
@@ -190,6 +190,8 @@ def main(args: argparse.Namespace) -> None:
 
     print("\nSaving predictions...")
     save_checkpoint(model, args, accuracies)
+    save_prediction(y_true, args, "truth")
+    save_prediction(y_pred, args, args.model)
 
 
 if __name__ == "__main__":
