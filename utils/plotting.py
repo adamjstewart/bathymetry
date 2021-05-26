@@ -7,10 +7,10 @@ import cmocean
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import numpy as np
-import pandas as pd
+import xarray as xr
 
 
-def plot_world(directory: str, data: pd.Series, title: str, legend: str) -> None:
+def plot_world(directory: str, data: xr.Dataset, title: str, legend: str) -> None:
     """Plot a world map with data.
 
     Parameters:
@@ -19,22 +19,9 @@ def plot_world(directory: str, data: pd.Series, title: str, legend: str) -> None
         title: the figure title
         legend: the legend label
     """
-    lat = np.linspace(-90, 90, 181)
-    lon = np.linspace(-180, 180, 361)
-    X, Y = np.meshgrid(lon, lat)
-
-    C = np.full((180, 360), np.nan, dtype=np.float32)
-    for i in range(180):
-        for j in range(360):
-            idx = (i - 89.5, j - 179.5)
-            try:
-                C[i, j] = data[idx]
-            except KeyError:
-                pass
-
     if "difference" in legend:
         # Plotting the difference
-        std = data.std()
+        std = np.nanstd(data["depth"].values)
         kwargs = {"cmap": cmocean.cm.balance, "vmin": -std, "vmax": +std}
     elif "bathymetry" in legend:
         # Plotting the absolute bathymetry
@@ -43,7 +30,7 @@ def plot_world(directory: str, data: pd.Series, title: str, legend: str) -> None
     # Plotting
     fig = plt.figure()
     ax = plt.axes(projection=ccrs.Mollweide())
-    z = ax.pcolormesh(X, Y, C, transform=ccrs.PlateCarree(), **kwargs)
+    z = ax.imshow(data["depth"], transform=ccrs.PlateCarree(), **kwargs)
     ax.coastlines()
 
     # Add colorbar (with correct size)
@@ -59,4 +46,5 @@ def plot_world(directory: str, data: pd.Series, title: str, legend: str) -> None
     # Save figure
     os.makedirs(directory, exist_ok=True)
     filename = os.path.join(directory, title.replace(" ", "") + ".png")
+    print(f"Writing {filename}...")
     plt.savefig(filename, dpi=300, bbox_inches="tight")

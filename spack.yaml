@@ -10,7 +10,7 @@ spack:
   - py-geopandas
   - py-matplotlib
   - py-mypy
-  - py-numpy
+  - 'py-numpy@1.8:'
   - 'py-pandas@0.24:'
   - py-pygeos
   - 'py-scikit-learn@0.18:'

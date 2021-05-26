@@ -14,7 +14,7 @@ import pandas as pd
 from datasets.crust import read_crust
 from models.physics import GDH1, H13, HS, PSM
 from preprocessing.filter import filter_crust_type, filter_nans
-from utils.io import load_pickle
+from utils.io import load_netcdf
 from utils.plotting import plot_world
 
 
@@ -88,15 +88,15 @@ def main_2d(args: argparse.Namespace) -> None:
     Parameters:
         args: command-line arguments
     """
-    print("Reading dataset...")
+    print("\nReading dataset...")
     data = read_crust(args.data_dir)
 
-    print("Preprocessing...")
+    print("\nPreprocessing...")
     data = filter_nans(data)
     data = filter_crust_type(data)
     X, y = data, -data["boundary topograpy", "upper crystalline crust"]
 
-    print("Predicting...")
+    print("\nPredicting...")
     x = X["age", "age"]
     x_all = np.linspace(0, np.max(x))
     x_all = pd.DataFrame(x_all, columns=pd.MultiIndex.from_product([["age"], ["age"]]))
@@ -105,7 +105,7 @@ def main_2d(args: argparse.Namespace) -> None:
     y_gdh1 = GDH1().predict(x_all)
     y_h13 = H13().predict(x_all)
 
-    print("Plotting...")
+    print("\nPlotting...")
     plt.figure()
     plt.xlim(0, 185)
     plt.ylim(0, 14)
@@ -123,6 +123,7 @@ def main_2d(args: argparse.Namespace) -> None:
     # Save figure
     os.makedirs(args.results_dir, exist_ok=True)
     filename = os.path.join(args.results_dir, "2d.png")
+    print(f"Writing {filename}...")
     plt.savefig(filename, dpi=300, bbox_inches="tight")
 
 
@@ -138,14 +139,12 @@ def main_world(args: argparse.Namespace) -> None:
     else:
         legend = "bathymetry (km)"
 
-    print("Reading layer(s)...")
-    load_pickles = partial(load_pickle, args.checkpoint_dir)
-    layers = map(load_pickles, args.layers)
-
-    print("Processing...")
+    print("\nReading layer(s)...")
+    load_netcdfs = partial(load_netcdf, args.checkpoint_dir)
+    layers = map(load_netcdfs, args.layers)
     data = reduce(operator.sub, layers)
 
-    print("Plotting...")
+    print("\nPlotting...")
     plot_world(args.results_dir, data, title, legend)
 
 
