@@ -180,13 +180,15 @@ def main(args: argparse.Namespace) -> None:
         # Make predictions
         y_pred_test = pd.Series(model.predict(X_test), index=y_test.index)
         y_test, y_pred_test = inverse_standardize(y_test, y_pred_test, y_scaler)
-        y_test = gpd.GeoDataFrame({'depth': y_test.values}, geometry=geom_test.values)
-        y_pred_test = gpd.GeoDataFrame({'depth': y_pred_test.values}, geometry=geom_test.values)
+        y_test = gpd.GeoDataFrame({"depth": y_test.values}, geometry=geom_test.values)
+        y_pred_test = gpd.GeoDataFrame(
+            {"depth": y_pred_test.values}, geometry=geom_test.values
+        )
         y_true = y_true.append(y_test)
         y_pred = y_pred.append(y_pred_test)
 
     print("\nEvaluating...")
-    accuracies = evaluate(y_true['depth'], y_pred['depth'])
+    accuracies = evaluate(y_true["depth"], y_pred["depth"])
 
     print("\nSaving predictions...")
     save_checkpoint(model, args, accuracies)
