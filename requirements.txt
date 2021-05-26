@@ -13,3 +13,4 @@ pygeos
 scikit-learn>=0.18
 scipy
 shapely
+xarray[io]

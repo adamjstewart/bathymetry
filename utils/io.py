@@ -11,6 +11,7 @@ import geopandas as gpd
 import pandas as pd
 from shapely.geometry import box, mapping
 from sklearn.base import BaseEstimator
+import xarray as xr
 
 
 def save_pickle(data: Any, directory: str, filename: str) -> None:
@@ -50,7 +51,7 @@ def save_csv(data: pd.Series, directory: str, filename: str) -> None:
     Parameters:
         data: the pandas Series to save
         directory: the directory to save to
-        model: the filename to save to
+        filename: the filename to save to
     """
     path = os.path.join(directory, filename + ".csv")
     print(f"Writing {path}...")
@@ -71,6 +72,35 @@ def load_csv(directory: str, filename: str) -> pd.Series:
     path = os.path.join(directory, filename + ".csv")
     print(f"Reading {path}...")
     return pd.read_csv(path)
+
+
+def save_netcdf(data: xr.Dataset, directory: str, filename: str) -> None:
+    """Save an xarray Dataset as a NetCDF file.
+
+    Parameters:
+        data: the pandas Series to save
+        directory: the directory to save to
+        filename: the filename to save to
+    """
+    path = os.path.join(directory, filename + ".nc")
+    print(f"Writing {path}...")
+    os.makedirs(directory, exist_ok=True)
+    data.to_netcdf(path)
+
+
+def load_netcdf(directory: str, filename: str) -> xr.Dataset:
+    """Load a NetCDF file as an xarray Dataset.
+
+    Parameters:
+        directory: the directory to load from
+        filename: the filename to load from
+
+    Returns:
+        the xarray Dataset
+    """
+    path = os.path.join(directory, filename + ".nc")
+    print(f"Reading {path}...")
+    return xr.open_dataset(path, engine="netcdf4")  # type: ignore
 
 
 def save_checkpoint(
@@ -109,3 +139,5 @@ def save_prediction(
         resolution=(-1, 1),
         geom=json.dumps(mapping(box(-180, -90, 180, 90))),
     )
+
+    save_netcdf(data, args.checkpoint_dir, filename)
