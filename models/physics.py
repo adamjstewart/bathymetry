@@ -32,7 +32,7 @@ class HS(BaseEstimator, RegressorMixin):
         Returns:
             the prediction
         """
-        t = X["age", "age"].values * 3.154e13
+        t = X["age"].values * 3.154e13
         rho_0 = 3300
         rho_w = 1000
         alpha = 4e-5
@@ -73,7 +73,7 @@ class PSM(BaseEstimator, RegressorMixin):
         Returns:
             the prediction
         """
-        t = X["age", "age"].values
+        t = X["age"].values
 
         depth: np.ndarray = np.where(
             t < 70,
@@ -110,7 +110,7 @@ class GDH1(BaseEstimator, RegressorMixin):
         Returns:
             the prediction
         """
-        t = X["age", "age"].values
+        t = X["age"].values
 
         depth: np.ndarray = np.where(
             t < 20,
@@ -146,7 +146,7 @@ class H13(BaseEstimator, RegressorMixin):
         Returns:
             the prediction
         """
-        t = X["age", "age"].values
+        t = X["age"].values
 
         # Ridge depth is average of 2.424 and 2.514 km
         depth: np.ndarray = 2.469 + np.where(

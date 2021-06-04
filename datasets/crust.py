@@ -5,12 +5,12 @@ https://igppweb.ucsd.edu/~gabi/crust1.html
 
 import os
 
-import geopandas
+import geopandas as gpd
 import numpy as np
 import pandas as pd
 
 
-def read_crust(data_dir: str) -> geopandas.GeoDataFrame:
+def read_crust(data_dir: str) -> gpd.GeoDataFrame:
     """Read CRUST 1.0 dataset.
 
     Parameters:
@@ -19,7 +19,7 @@ def read_crust(data_dir: str) -> geopandas.GeoDataFrame:
     Returns:
         the data
     """
-    data_dir = os.path.join(data_dir, "CRUST1.0")
+    data_dir = os.path.join(data_dir, "crust1.0")
     assert os.path.isdir(data_dir)
 
     kwargs = {
@@ -68,18 +68,9 @@ def read_crust(data_dir: str) -> geopandas.GeoDataFrame:
     ctype = ctype.flatten()
     ctype = pd.DataFrame(ctype, columns=["crust type"])
 
-    # Age
-    # This file is downsampled from EarthByte
-    # TODO: directly use EarthByte dataset with a different data loader
-    kwargs.pop("widths")
-    kwargs["names"] = ["longitude", "latitude", "age"]
-    fname = os.path.join(data_dir, "age1.txt")
-    print(f"Reading {fname}...")
-    age = pd.read_table(fname, **kwargs)
-
     # Combine data
-    data = pd.concat(
-        [bnds, vp, vs, rho, ctype, age],
+    df = pd.concat(
+        [bnds, vp, vs, rho, ctype],
         axis=1,
         keys=[
             "boundary topograpy",
@@ -87,21 +78,21 @@ def read_crust(data_dir: str) -> geopandas.GeoDataFrame:
             "s-wave velocity",
             "density",
             "crust type",
-            "age",
         ],
         sort=False,
     )
 
+    lat = np.linspace(89.5, -89.5, 180)
+    lon = np.linspace(-179.5, 179.5, 360)
+    x, y = np.meshgrid(lon, lat)
+
     # Convert to GeoDataFrame
     # https://github.com/geopandas/geopandas/issues/1763
-    data["geom"] = geopandas.points_from_xy(
-        data["age", "longitude"], data["age", "latitude"]
-    )
-    data = geopandas.GeoDataFrame(
-        data,
+    df["geom"] = gpd.points_from_xy(x.flatten(), y.flatten())
+    gdf = gpd.GeoDataFrame(
+        df,
         crs="EPSG:4326",
         geometry="geom",
     )
-    data.drop(columns=[("age", "longitude"), ("age", "latitude")], inplace=True)
 
-    return data
+    return gdf

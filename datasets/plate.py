@@ -5,10 +5,10 @@ https://github.com/fraxen/tectonicplates
 
 import os
 
-import geopandas
+import geopandas as gpd
 
 
-def read_plate(data_dir: str) -> geopandas.GeoDataFrame:
+def read_plate(data_dir: str) -> gpd.GeoDataFrame:
     """Read world tectonic plates and boundaries dataset.
 
     Parameters:
@@ -21,4 +21,4 @@ def read_plate(data_dir: str) -> geopandas.GeoDataFrame:
     assert os.path.exists(path)
 
     print(f"Reading {path}...")
-    return geopandas.read_file(path)
+    return gpd.read_file(path)

@@ -11,9 +11,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+from datasets.age import read_age
 from datasets.crust import read_crust
 from models.physics import GDH1, H13, HS, PSM
 from preprocessing.filter import filter_crust_type, filter_nans
+from preprocessing.map import spatial_join
 from utils.io import load_netcdf
 from utils.plotting import plot_world
 
@@ -58,7 +60,15 @@ def set_up_parser() -> argparse.ArgumentParser:
     )
 
     # Plot styles
-    subparsers.add_parser("2d", help="2d cross-section")
+    twod_parser = subparsers.add_parser("2d", help="2d cross-section")
+    twod_parser.add_argument(
+        "-y",
+        "--year",
+        default=2020,
+        type=int,
+        choices=[2020, 2019, 2016, 2013, 2008],
+        help="year of seafloor age dataset to use",
+    )
 
     world_parser = subparsers.add_parser("world", help="world map")
     world_parser.add_argument(
@@ -88,18 +98,20 @@ def main_2d(args: argparse.Namespace) -> None:
     Parameters:
         args: command-line arguments
     """
-    print("\nReading dataset...")
-    data = read_crust(args.data_dir)
+    print("\nReading datasets...")
+    age = read_age(args.data_dir, args.year)
+    crust = read_crust(args.data_dir)
 
     print("\nPreprocessing...")
+    data = spatial_join(crust, age)
     data = filter_nans(data)
     data = filter_crust_type(data)
     X, y = data, -data["boundary topograpy", "upper crystalline crust"]
 
     print("\nPredicting...")
-    x = X["age", "age"]
+    x = X["age"]
     x_all = np.linspace(0, np.max(x))
-    x_all = pd.DataFrame(x_all, columns=pd.MultiIndex.from_product([["age"], ["age"]]))
+    x_all = pd.DataFrame({"age": x_all})
     y_hs = HS().predict(x_all)
     y_psm = PSM().predict(x_all)
     y_gdh1 = GDH1().predict(x_all)

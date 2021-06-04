@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import LeaveOneGroupOut
 
+from datasets.age import read_age
 from datasets.crust import read_crust
 from datasets.plate import read_plate
 from metrics import evaluate
@@ -43,6 +44,14 @@ def set_up_parser() -> argparse.ArgumentParser:
         default="checkpoints",
         help="directory to save checkpoints to",
         metavar="DIR",
+    )
+    parser.add_argument(
+        "-y",
+        "--year",
+        default=2020,
+        type=int,
+        choices=[2020, 2019, 2016, 2013, 2008],
+        help="year of seafloor age dataset to use",
     )
     parser.add_argument(
         "-a",
@@ -147,11 +156,12 @@ def main(args: argparse.Namespace) -> None:
         args: command-line arguments
     """
     print("\nReading datasets...")
-    data = read_crust(args.data_dir)
+    age = read_age(args.data_dir, args.year)
+    crust = read_crust(args.data_dir)
     plate = read_plate(args.data_dir)
 
     print("\nPreprocessing...")
-    X, y, geom, groups = preprocess(data, plate, args)
+    X, y, geom, groups = preprocess(age, crust, plate, args)
 
     print("\nCross-validation...")
     cv = LeaveOneGroupOut()
@@ -180,6 +190,7 @@ def main(args: argparse.Namespace) -> None:
         # Make predictions
         y_pred_test = pd.Series(model.predict(X_test), index=y_test.index)
         y_test, y_pred_test = inverse_standardize(y_test, y_pred_test, y_scaler)
+        y_pred_test = y_pred_test.clip(0)
         y_test = gpd.GeoDataFrame({"depth": y_test.values}, geometry=geom_test.values)
         y_pred_test = gpd.GeoDataFrame(
             {"depth": y_pred_test.values}, geometry=geom_test.values

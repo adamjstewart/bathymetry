@@ -7,23 +7,30 @@ import geopandas as gpd
 import pandas as pd
 
 from .filter import filter_crust_type, filter_nans
-from .map import boundary_to_thickness, groupby_plate, merge_plates
+from .map import boundary_to_thickness, groupby_plate, merge_plates, spatial_join
 from .reduce import ablation_study, reduce_attributes
 
 
 def preprocess(
-    data: gpd.GeoDataFrame, plate: gpd.GeoDataFrame, args: argparse.Namespace
+    age: gpd.GeoDataFrame,
+    crust: gpd.GeoDataFrame,
+    plate: gpd.GeoDataFrame,
+    args: argparse.Namespace,
 ) -> Tuple[pd.DataFrame, pd.Series, pd.Series, pd.Series]:
     """Preprocess the dataset.
 
     Parameters:
-        data: crust data
+        age: seafloor age
+        crust: crust data
         plate: plate boundaries
         args: the command-line arguments
 
     Returns:
         a subset of the dataset
     """
+    # Join crust and age datasets
+    data = spatial_join(crust, age)
+
     # Filter out data we don't want to train on
     data = filter_nans(data)
     data = filter_crust_type(data)

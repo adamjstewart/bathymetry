@@ -25,10 +25,18 @@ $ pip install -r requirements.txt
 
 ## Data
 
-This model is trained on the [CRUST 1.0](https://igppweb.ucsd.edu/~gabi/crust1.html) dataset. In order to reproduce this work, you will need to download both the [basic model](http://igppweb.ucsd.edu/~gabi/crust1/crust1.0.tar.gz) and the [add-on](http://igppweb.ucsd.edu/~gabi/crust1/crust1.0-addon.tar.gz) that includes the crustal type file. Then, extract the tarballs in a `data/CRUST1.0` folder, or specify a different directory with `--data-dir` when you run the model.
+### CRUST 1.0
 
-The ground truth labels for this model come from [EarthByte](https://www.earthbyte.org/category/resources/data-models/seafloor-age/). The `age1.txt` file is downsampled from this dataset.
+This model is trained on the [CRUST 1.0](https://igppweb.ucsd.edu/~gabi/crust1.html) dataset. In order to reproduce this work, you will need to download both the [basic model](http://igppweb.ucsd.edu/~gabi/crust1/crust1.0.tar.gz) and the [add-on](http://igppweb.ucsd.edu/~gabi/crust1/crust1.0-addon.tar.gz) that includes the crustal type file. Then, extract the tarballs in a `data/crust1.0` folder, or specify a different directory with `--data-dir` when you run the model.
 
-TODO: provide script to directly read and downsample EarthByte seafloor age data.
+### Seafloor Age
 
-The plate boundaries shapefiles can be downloaded from the [World tectonic plates and boundaries](https://github.com/fraxen/tectonicplates).
+Seafloor age data can be found at [EarthByte](https://www.earthbyte.org/category/resources/data-models/seafloor-age/). For this model, we downsample all seafloor age data to 1-degree resolution. We test with several different seafloor age datasets:
+
+* [age2020](https://www.earthbyte.org/webdav/ftp/earthbyte/agegrid/2020/Grids/age.2020.1.GTS2012.6m.nc)
+
+Each of these files should be placed in their respective directories.
+
+### Plate Boundaries
+
+The plate boundaries shapefiles can be downloaded from the [World tectonic plates and boundaries](https://github.com/fraxen/tectonicplates). Download and extract a zip file of the entire repository.

@@ -12,6 +12,36 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
 
+def spatial_join(crust: gpd.GeoDataFrame, age: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
+    """Join two datasets.
+
+    Parameters:
+        crust: crust data
+        age: seafloor age
+
+    Returns:
+        a single joined dataset
+    """
+    # Flatten multi-index
+    # https://github.com/geopandas/geopandas/issues/1764
+    crust.columns = crust.columns.to_flat_index()
+    crust = crust.set_geometry(("geom", ""))
+
+    # Perform spatial join
+    combined = gpd.sjoin(crust, age, how="inner", op="intersects")
+    combined = combined.drop(columns=["index_right"])
+
+    # Reconstruct multi-index
+    combined = combined.rename(
+        columns={
+            "age": ("age", ""),
+        }
+    )
+    combined.columns = pd.MultiIndex.from_tuples(combined.columns)
+
+    return combined
+
+
 def groupby_plate(data: gpd.GeoDataFrame, plate: gpd.GeoDataFrame) -> pd.DataFrame:
     """Group dataset by tectonic plate.
 
