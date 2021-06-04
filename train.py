@@ -68,7 +68,7 @@ def set_up_parser() -> argparse.ArgumentParser:
     )
     svr_parser.add_argument(
         "--kernel",
-        default="poly",
+        default="rbf",
         choices=["linear", "poly", "rbf", "sigmoid", "precomputed"],
         help="kernel type",
     )
@@ -76,19 +76,19 @@ def set_up_parser() -> argparse.ArgumentParser:
         "--degree", default=3, type=int, help="degree of poly kernel"
     )
     svr_parser.add_argument(
-        "--gamma", default="auto", help="rbf/poly/sigmoid kernel coefficient"
+        "--gamma", default="scale", help="rbf/poly/sigmoid kernel coefficient"
     )
     svr_parser.add_argument(
         "--coef0",
-        default=0.1,
+        default=0.001,
         type=float,
         help="independent term in poly/sigmoid kernel",
     )
     svr_parser.add_argument(
-        "--tol", default=1e-3, type=float, help="tolerance for stopping criterion"
+        "--tol", default=0.001, type=float, help="tolerance for stopping criterion"
     )
     svr_parser.add_argument(
-        "--c", default=4, type=float, help="regularization parameter"
+        "--c", default=10, type=float, help="regularization parameter"
     )
     svr_parser.add_argument(
         "--epsilon", default=0.1, type=float, help="epsilon in the epsilon-SVR model"
@@ -112,13 +112,13 @@ def set_up_parser() -> argparse.ArgumentParser:
         help="solver for weight optimization",
     )
     mlp_parser.add_argument(
-        "--alpha", default=0.0001, type=float, help="L2 penalty parameter"
+        "--alpha", default=0.1, type=float, help="L2 penalty parameter"
     )
     mlp_parser.add_argument(
         "--batch-size", default=200, type=int, help="size of minibatches"
     )
     mlp_parser.add_argument(
-        "--hidden-layers", default=7, type=int, help="number of hidden layers"
+        "--hidden-layers", default=5, type=int, help="number of hidden layers"
     )
     mlp_parser.add_argument(
         "--hidden-size", default=512, type=int, help="size of hidden units"
