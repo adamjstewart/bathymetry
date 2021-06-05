@@ -25,9 +25,11 @@ $ pip install -r requirements.txt
 
 ## Data
 
+All data should be stored in the same root directory. The default is `data`, but a different directory can be specified with `--data-dir`.
+
 ### CRUST 1.0
 
-This model is trained on the [CRUST 1.0](https://igppweb.ucsd.edu/~gabi/crust1.html) dataset. In order to reproduce this work, you will need to download both the [basic model](http://igppweb.ucsd.edu/~gabi/crust1/crust1.0.tar.gz) and the [add-on](http://igppweb.ucsd.edu/~gabi/crust1/crust1.0-addon.tar.gz) that includes the crustal type file. Then, extract the tarballs in a `data/crust1.0` folder, or specify a different directory with `--data-dir` when you run the model.
+This model is trained on the [CRUST 1.0](https://igppweb.ucsd.edu/~gabi/crust1.html) dataset. In order to reproduce this work, you will need to download both the [basic model](http://igppweb.ucsd.edu/~gabi/crust1/crust1.0.tar.gz) and the [add-on](http://igppweb.ucsd.edu/~gabi/crust1/crust1.0-addon.tar.gz) that includes the crustal type file. Then, extract the tarballs in a `crust1.0` directory within the data directory.
 
 ### Seafloor Age
 
@@ -39,8 +41,8 @@ Seafloor age data can be found at [EarthByte](https://www.earthbyte.org/category
 * [age2013](https://www.earthbyte.org/webdav/ftp/papers/Muller_etal_OceanChemistry/Grids/agegrid_0.nc)
 * [age2008](https://www.earthbyte.org/webdav/ftp/Data_Collections/Muller_etal_2008_G3/Seafloor_ages/age.3.6.unscaled.nc)
 
-Each of these files should be placed in their respective directories.
+Each of these files should be placed in their respective directories within the data directory.
 
 ### Plate Boundaries
 
-The plate boundaries shapefiles can be downloaded from the [World tectonic plates and boundaries](https://github.com/fraxen/tectonicplates). Download and extract a zip file of the entire repository.
+The plate boundaries shapefiles can be downloaded from the [World tectonic plates and boundaries](https://github.com/fraxen/tectonicplates). Download and extract a zip file of the entire repository within the data directory.
