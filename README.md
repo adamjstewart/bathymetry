@@ -34,6 +34,10 @@ This model is trained on the [CRUST 1.0](https://igppweb.ucsd.edu/~gabi/crust1.h
 Seafloor age data can be found at [EarthByte](https://www.earthbyte.org/category/resources/data-models/seafloor-age/). For this model, we downsample all seafloor age data to 1-degree resolution. We test with several different seafloor age datasets:
 
 * [age2020](https://www.earthbyte.org/webdav/ftp/earthbyte/agegrid/2020/Grids/age.2020.1.GTS2012.6m.nc)
+* [age2019](https://www.earthbyte.org/webdav/ftp/Data_Collections/Muller_etal_2019_Tectonics/Muller_etal_2019_Agegrids/Muller_etal_2019_Tectonics_v2.0_PresentDay_AgeGrid.nc)
+* [age2016](https://www.earthbyte.org/webdav/ftp/Data_Collections/Muller_etal_2016_AREPS/Muller_etal_2016_AREPS_Agegrids/Muller_etal_2016_AREPS_Agegrids_v1.17/Muller_etal_2016_AREPS_v1.17_PresentDay_AgeGrid.nc)
+* [age2013](https://www.earthbyte.org/webdav/ftp/papers/Muller_etal_OceanChemistry/Grids/agegrid_0.nc)
+* [age2008](https://www.earthbyte.org/webdav/ftp/Data_Collections/Muller_etal_2008_G3/Seafloor_ages/age.3.6.unscaled.nc)
 
 Each of these files should be placed in their respective directories.
 

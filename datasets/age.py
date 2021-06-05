@@ -25,16 +25,14 @@ def read_age(data_dir: str, year: int) -> gpd.GeoDataFrame:
     assert os.path.isdir(data_dir)
 
     # Load data
-    if year == 2020:
-        ds = load_netcdf(data_dir, "age.2020.1.GTS2012.6m")
-    elif year == 2019:
-        pass
-    elif year == 2016:
-        pass
-    elif year == 2013:
-        pass
-    elif year == 2008:
-        pass
+    filename = {
+        2020: "age.2020.1.GTS2012.6m",
+        2019: "Muller_etal_2019_Tectonics_v2.0_PresentDay_AgeGrid",
+        2016: "Muller_etal_2016_AREPS_v1.17_PresentDay_AgeGrid",
+        2013: "agegrid_0",
+        2008: "age.3.6.unscaled",
+    }
+    ds = load_netcdf(data_dir, filename[year])
 
     # Downsample to 1-degree resolution
     lat = np.linspace(89.5, -89.5, 180)
