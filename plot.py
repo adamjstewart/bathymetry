@@ -134,7 +134,7 @@ def main_2d(args: argparse.Namespace) -> None:
 
     # Save figure
     os.makedirs(args.results_dir, exist_ok=True)
-    filename = os.path.join(args.results_dir, "2d.png")
+    filename = os.path.join(args.results_dir, f"2d_{args.year}.png")
     print(f"Writing {filename}...")
     plt.savefig(filename, dpi=300, bbox_inches="tight")
 
