@@ -3,11 +3,11 @@
 #SBATCH --account=geol-ljliu-group
 #SBATCH --job-name=mlp
 #SBATCH --mail-type=ALL
-#SBATCH --nodes=16
+#SBATCH --nodes=12
 #SBATCH --ntasks-per-node=32
 #SBATCH --cpus-per-task=1
 #SBATCH --partition=ljliu
-#SBATCH --time=2-00:00:00
+#SBATCH --time=6-00:00:00
 
 spack --color=never env activate ~/bathymetry
 
