@@ -89,7 +89,7 @@ def set_up_parser() -> argparse.ArgumentParser:
     )
     svr_parser.add_argument(
         "--coef0",
-        default=0.001,
+        default=0.0001,
         type=float,
         help="independent term in poly/sigmoid kernel",
     )
@@ -110,7 +110,7 @@ def set_up_parser() -> argparse.ArgumentParser:
     )
     mlp_parser.add_argument(
         "--activation",
-        default="relu",
+        default="tanh",
         choices=["identity", "logistic", "tanh", "relu"],
         help="activation function for the hidden layer",
     )
@@ -127,13 +127,13 @@ def set_up_parser() -> argparse.ArgumentParser:
         "--batch-size", default=200, type=int, help="size of minibatches"
     )
     mlp_parser.add_argument(
-        "--hidden-layers", default=5, type=int, help="number of hidden layers"
+        "--hidden-layers", default=6, type=int, help="number of hidden layers"
     )
     mlp_parser.add_argument(
-        "--hidden-size", default=512, type=int, help="size of hidden units"
+        "--hidden-size", default=256, type=int, help="size of hidden units"
     )
     mlp_parser.add_argument(
-        "--learning-rate", default=0.0001, type=float, help="initial learning rate"
+        "--learning-rate", default=0.001, type=float, help="initial learning rate"
     )
 
     # Physical models
