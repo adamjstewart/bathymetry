@@ -73,7 +73,7 @@ def read_crust(data_dir: str) -> gpd.GeoDataFrame:
         [bnds, vp, vs, rho, ctype],
         axis=1,
         keys=[
-            "boundary topograpy",
+            "boundary topography",
             "p-wave velocity",
             "s-wave velocity",
             "density",

@@ -162,7 +162,7 @@ def boundary_to_thickness(data: pd.DataFrame) -> pd.DataFrame:
     Returns:
         the modified dataset
     """
-    bnds = data.pop("boundary topograpy")
+    bnds = data.pop("boundary topography")
     thickness = bnds.diff(periods=-1, axis=1)
     thickness = pd.concat([thickness], axis=1, keys=["thickness"], sort=False)
     return pd.concat([thickness, data], axis=1, sort=False)

@@ -41,7 +41,7 @@ def preprocess(
 
     # Separate X from y
     X = data
-    y = -data["boundary topograpy", "upper crystalline crust"]
+    y = -data["boundary topography", "upper crystalline crust"]
     geom = data["geom"]
     groups = data["plate index"]
 
