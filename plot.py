@@ -4,12 +4,15 @@
 
 import argparse
 from functools import partial, reduce
+import json
 import operator
 import os
 
+from geocube.api.core import make_geocube
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from shapely.geometry import box, mapping
 
 from datasets.age import read_age
 from datasets.crust import read_crust
@@ -89,6 +92,9 @@ def set_up_parser() -> argparse.ArgumentParser:
         help="layers to subtract",
     )
 
+    layer_parser = subparsers.add_parser("layer", help="layer attributes")
+    layer_parser.add_argument("layer", choices=["sediments", "moho"])
+
     return parser
 
 
@@ -157,6 +163,42 @@ def main_world(args: argparse.Namespace) -> None:
     data = reduce(operator.sub, layers)
 
     print("\nPlotting...")
+    plot_world(args.results_dir, data["depth"].values, title, legend)
+
+
+def main_layer(args: argparse.Namespace) -> None:
+    """Plot layer attributes.
+
+    ``args.layers`` can either be:
+
+    * 'sediments': plot sediment thickness
+    * 'moho': plot moho depth
+
+    Parameters:
+        args: command-line arguments
+    """
+    print("\nReading datasets...")
+    crust = read_crust(args.data_dir)
+    crust["geometry"] = crust["geom"]
+
+    print("\nPreprocessing...")
+    data = make_geocube(
+        vector_data=crust,
+        resolution=(-1, 1),
+        geom=json.dumps(mapping(box(-180, -90, 180, 90))),
+    )
+    if args.layer == "sediments":
+        bottom = crust["boundary topography", "lower sediments"]
+        top = crust["boundary topography", "ice"]
+        data = bottom - top
+        title = "Sediment thickness"
+        legend = "thickness (km)"
+    elif args.layer == "moho":
+        data = crust["boundary topography", "moho"]
+        title = "Moho depth"
+        legend = "depth (km)"
+
+    print("\nPlotting...")
     plot_world(args.results_dir, data, title, legend)
 
 
@@ -169,3 +211,5 @@ if __name__ == "__main__":
         main_2d(args)
     elif args.style == "world":
         main_world(args)
+    elif args.style == "layer":
+        main_layer(args)

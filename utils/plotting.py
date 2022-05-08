@@ -7,10 +7,9 @@ import cmocean
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import numpy as np
-import xarray as xr
 
 
-def plot_world(directory: str, data: xr.Dataset, title: str, legend: str) -> None:
+def plot_world(directory: str, data: np.ndarray, title: str, legend: str) -> None:
     """Plot a world map with data.
 
     Parameters:
@@ -23,14 +22,17 @@ def plot_world(directory: str, data: xr.Dataset, title: str, legend: str) -> Non
         # Plotting the difference
         std = np.nanstd(data["depth"].values)
         kwargs = {"cmap": cmocean.cm.balance, "vmin": -std, "vmax": +std}
-    elif "bathymetry" in legend:
+    elif "bathymetry" in legend or "depth" in legend:
         # Plotting the absolute bathymetry
         kwargs = {"cmap": cmocean.cm.deep, "vmin": 0, "vmax": 7.5}
+    else:
+        # Plotting thickness of sediments
+        kwargs = {}
 
     # Plotting
     fig = plt.figure()
     ax = plt.axes(projection=ccrs.Mollweide())
-    z = ax.imshow(data["depth"], transform=ccrs.PlateCarree(), **kwargs)
+    z = ax.imshow(data, transform=ccrs.PlateCarree(), **kwargs)
     ax.coastlines()
 
     # Add colorbar (with correct size)

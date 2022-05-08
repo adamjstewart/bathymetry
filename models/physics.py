@@ -78,7 +78,7 @@ class PSM(BaseEstimator, RegressorMixin):
         depth: np.ndarray = np.where(
             t < 70,
             # Young crust
-            2.5 + 0.35 * t ** 0.5,
+            2.5 + 0.35 * t**0.5,
             # Old crust
             6.4 - 3.2 * np.exp(-t / 62.8),
         )
@@ -115,7 +115,7 @@ class GDH1(BaseEstimator, RegressorMixin):
         depth: np.ndarray = np.where(
             t < 20,
             # Young crust
-            2.6 + 0.365 * t ** 0.5,
+            2.6 + 0.365 * t**0.5,
             # Old crust
             5.651 - 2.473 * np.exp(-0.0278 * t),
         )
@@ -152,7 +152,7 @@ class H13(BaseEstimator, RegressorMixin):
         depth: np.ndarray = 2.469 + np.where(
             t <= 17.4,
             # Young crust
-            0.4145 * t ** 0.5,
+            0.4145 * t**0.5,
             # Old crust
             3.109 - 2.520 * np.exp(-0.034607 * t),
         )
