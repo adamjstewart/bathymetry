@@ -25,7 +25,9 @@ jobs:
         python-version: 3.9
     - name: Install dependencies
       run: |
-        sudo apt-get install libgeos-dev proj-bin gdal-bin
+        sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
+        sudo apt-get update
+        sudo apt-get install gdal geos proj
         pip install -r requirements.txt
     - name: Run mypy checks
       run: mypy .
