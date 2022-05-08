@@ -24,6 +24,8 @@ jobs:
       with:
         python-version: 3.9
     - name: Install dependencies
-      run: pip install -r requirements.txt
+      run: |
+        sudo apt-get install geos-bin proj-bin gdal-bin
+        pip install -r requirements.txt
     - name: Run mypy checks
       run: mypy .
