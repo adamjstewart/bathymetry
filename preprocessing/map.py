@@ -87,7 +87,7 @@ def merge_plates(data: pd.DataFrame) -> pd.DataFrame:
     Returns:
         the modified dataset
     """
-    all_to_subset = np.array(
+    all_to_subset: np.typing.NDArray[np.int_] = np.array(
         [
             0,  # Africa
             1,  # Antarctica

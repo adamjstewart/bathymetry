@@ -11,7 +11,7 @@ spack:
   - py-geopandas
   - py-matplotlib
   - py-mypy
-  - 'py-numpy@1.8:'
+  - 'py-numpy@1.21:'
   - 'py-pandas@0.24:'
   - py-pygeos
   - py-rtree

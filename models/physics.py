@@ -23,7 +23,7 @@ class HS(BaseEstimator, RegressorMixin):
     def fit(self, X: pd.DataFrame, y: pd.Series) -> BaseEstimator:
         return self
 
-    def predict(self, X: pd.DataFrame) -> np.ndarray:
+    def predict(self, X: pd.DataFrame) -> np.typing.NDArray[np.float_]:
         """Predict bathymetry based on age.
 
         Parameters:
@@ -39,7 +39,7 @@ class HS(BaseEstimator, RegressorMixin):
         kappa = 8e-7
         T_1 = 1220
 
-        depth: np.ndarray = 2.5 + (
+        depth: np.typing.NDArray[np.float_] = 2.5 + (
             (2 * rho_0 * alpha * T_1)
             / (rho_0 - rho_w)
             * np.sqrt(kappa * t / np.pi)
@@ -64,7 +64,7 @@ class PSM(BaseEstimator, RegressorMixin):
     def fit(self, X: pd.DataFrame, y: pd.Series) -> BaseEstimator:
         return self
 
-    def predict(self, X: pd.DataFrame) -> np.ndarray:
+    def predict(self, X: pd.DataFrame) -> np.typing.NDArray[np.float_]:
         """Predict bathymetry based on age.
 
         Parameters:
@@ -75,7 +75,7 @@ class PSM(BaseEstimator, RegressorMixin):
         """
         t = X["age"].values
 
-        depth: np.ndarray = np.where(
+        depth: np.typing.NDArray[np.float_] = np.where(
             t < 70,
             # Young crust
             2.5 + 0.35 * t**0.5,
@@ -101,7 +101,7 @@ class GDH1(BaseEstimator, RegressorMixin):
     def fit(self, X: pd.DataFrame, y: pd.Series) -> BaseEstimator:
         return self
 
-    def predict(self, X: pd.DataFrame) -> np.ndarray:
+    def predict(self, X: pd.DataFrame) -> np.typing.NDArray[np.float_]:
         """Predict bathymetry based on age.
 
         Parameters:
@@ -112,7 +112,7 @@ class GDH1(BaseEstimator, RegressorMixin):
         """
         t = X["age"].values
 
-        depth: np.ndarray = np.where(
+        depth: np.typing.NDArray[np.float_] = np.where(
             t < 20,
             # Young crust
             2.6 + 0.365 * t**0.5,
@@ -137,7 +137,7 @@ class H13(BaseEstimator, RegressorMixin):
     def fit(self, X: pd.DataFrame, y: pd.Series) -> BaseEstimator:
         return self
 
-    def predict(self, X: pd.DataFrame) -> np.ndarray:
+    def predict(self, X: pd.DataFrame) -> np.typing.NDArray[np.float_]:
         """Predict bathymetry based on age.
 
         Parameters:
@@ -148,14 +148,16 @@ class H13(BaseEstimator, RegressorMixin):
         """
         t = X["age"].values
 
-        # Ridge depth is average of 2.424 and 2.514 km
-        depth: np.ndarray = 2.469 + np.where(
+        depth: np.typing.NDArray[np.float_] = np.where(
             t <= 17.4,
             # Young crust
             0.4145 * t**0.5,
             # Old crust
             3.109 - 2.520 * np.exp(-0.034607 * t),
         )
+
+        # Ridge depth is average of 2.424 and 2.514 km
+        depth += 2.469
 
         return depth
 
@@ -185,27 +187,45 @@ class Isostasy(BaseEstimator, RegressorMixin):
 
         # Densities
         self.rho_i = X["density", "ice"]
-        self.rho_i = np.ma.masked_values(self.rho_i, 0).mean()
+        self.rho_i = np.ma.masked_values(  # type: ignore[no-untyped-call]
+            self.rho_i, 0
+        ).mean()
 
         self.rho_w = X["density", "water"]
-        self.rho_w = np.ma.masked_values(self.rho_w, 0).mean()
+        self.rho_w = np.ma.masked_values(  # type: ignore[no-untyped-call]
+            self.rho_w, 0
+        ).mean()
 
         self.rho_s1 = X["density", "upper sediments"]
         self.rho_s2 = X["density", "middle sediments"]
         self.rho_s3 = X["density", "lower sediments"]
-        self.rho_s1 = np.ma.masked_values(self.rho_s1, 0).mean()
-        self.rho_s2 = np.ma.masked_values(self.rho_s2, 0).mean()
-        self.rho_s3 = np.ma.masked_values(self.rho_s3, 0).mean()
+        self.rho_s1 = np.ma.masked_values(  # type: ignore[no-untyped-call]
+            self.rho_s1, 0
+        ).mean()
+        self.rho_s2 = np.ma.masked_values(  # type: ignore[no-untyped-call]
+            self.rho_s2, 0
+        ).mean()
+        self.rho_s3 = np.ma.masked_values(  # type: ignore[no-untyped-call]
+            self.rho_s3, 0
+        ).mean()
 
         self.rho_c1 = X["density", "upper crystalline crust"]
         self.rho_c2 = X["density", "middle crystalline crust"]
         self.rho_c3 = X["density", "lower crystalline crust"]
-        self.rho_c1 = np.ma.masked_values(self.rho_c1, 0).mean()
-        self.rho_c2 = np.ma.masked_values(self.rho_c2, 0).mean()
-        self.rho_c3 = np.ma.masked_values(self.rho_c3, 0).mean()
+        self.rho_c1 = np.ma.masked_values(  # type: ignore[no-untyped-call]
+            self.rho_c1, 0
+        ).mean()
+        self.rho_c2 = np.ma.masked_values(  # type: ignore[no-untyped-call]
+            self.rho_c2, 0
+        ).mean()
+        self.rho_c3 = np.ma.masked_values(  # type: ignore[no-untyped-call]
+            self.rho_c3, 0
+        ).mean()
 
         self.rho_m = X["density", "moho"]
-        self.rho_m = np.ma.masked_values(self.rho_m, 0).mean()
+        self.rho_m = np.ma.masked_values(  # type: ignore[no-untyped-call]
+            self.rho_m, 0
+        ).mean()
 
         # Calculations
         self.numerator = (
@@ -221,7 +241,7 @@ class Isostasy(BaseEstimator, RegressorMixin):
 
         return self
 
-    def predict(self, X: pd.DataFrame) -> np.ndarray:
+    def predict(self, X: pd.DataFrame) -> np.typing.NDArray[np.float_]:
         """Predict bathymetry based on isostasy.
 
         Parameters:
@@ -273,7 +293,7 @@ class Isostasy(BaseEstimator, RegressorMixin):
 
         w = numerator / denominator
 
-        depth: np.ndarray = w + s1 + s2 + s3
+        depth: np.typing.NDArray[np.float_] = w + s1 + s2 + s3
 
         return depth
 
@@ -288,12 +308,12 @@ class Isostasy2(BaseEstimator, RegressorMixin):
             X: the dataset
             y: the depths
         """
-        p0 = np.array([0.0, 0.0])
+        p0: np.typing.NDArray[np.float_] = np.array([0.0, 0.0])
         self.popt, _ = opt.curve_fit(isostasy, X, y, p0)
 
         return self
 
-    def predict(self, X: pd.DataFrame) -> np.ndarray:
+    def predict(self, X: pd.DataFrame) -> np.typing.NDArray[np.float_]:
         """Predict bathymetry based on isostasy.
 
         Parameters:
@@ -305,7 +325,7 @@ class Isostasy2(BaseEstimator, RegressorMixin):
         return isostasy(X, *self.popt)
 
 
-def isostasy(X: pd.DataFrame, a: float, b: float) -> np.ndarray:
+def isostasy(X: pd.DataFrame, a: float, b: float) -> np.typing.NDArray[np.float_]:
     """Predict y based on X, a, and b.
 
     Parameters:
@@ -343,7 +363,7 @@ def isostasy(X: pd.DataFrame, a: float, b: float) -> np.ndarray:
     rho_m = X["density", "moho"].values
 
     # Calculations
-    depth: np.ndarray = (
+    depth: np.typing.NDArray[np.float_] = (
         a
         + rho_m * c1
         + rho_m * c2

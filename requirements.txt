@@ -7,7 +7,7 @@ geocube
 geopandas
 matplotlib
 mypy
-numpy>=1.8
+numpy>=1.21
 pandas>=0.24
 pygeos
 scikit-learn>=0.18

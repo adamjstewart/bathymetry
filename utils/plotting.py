@@ -9,7 +9,9 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 import numpy as np
 
 
-def plot_world(directory: str, data: np.ndarray, title: str, legend: str) -> None:
+def plot_world(
+    directory: str, data: np.typing.NDArray[np.float_], title: str, legend: str
+) -> None:
     """Plot a world map with data.
 
     Parameters:

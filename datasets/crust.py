@@ -64,7 +64,7 @@ def read_crust(data_dir: str) -> gpd.GeoDataFrame:
     # This file comes with the CRUST 1.0 add-on
     fname = os.path.join(data_dir, "CNtype1-1.txt")
     print(f"Reading {fname}...")
-    ctype = np.loadtxt(fname, dtype=object)
+    ctype: np.typing.NDArray[np.object_] = np.loadtxt(fname, dtype=object)
     ctype = ctype.flatten()
     ctype = pd.DataFrame(ctype, columns=["crust type"])
 
