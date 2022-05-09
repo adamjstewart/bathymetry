@@ -127,7 +127,7 @@ def save_checkpoint(
 def save_prediction(
     prediction: gpd.GeoDataFrame, args: argparse.Namespace, filename: str
 ) -> None:
-    """Save prediction to a CSV file.
+    """Save prediction to a NetCDF file.
 
     Parameters:
         prediction: predicted bathymetry
