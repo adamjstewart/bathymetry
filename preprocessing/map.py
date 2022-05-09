@@ -234,10 +234,15 @@ def inverse_standardize(
     if scaler is None:
         return test, predict
 
+    # Must be a 2D array, pd.Series won't work
+    test = test.to_frame()
+    predict = predict.to_frame()
+
     test_arr = scaler.inverse_transform(test)
     predict_arr = scaler.inverse_transform(predict)
 
-    test = pd.Series(test_arr, index=test.index)
-    predict = pd.Series(predict_arr, index=predict.index)
+    # Convert back to pd.Series
+    test = pd.Series(test_arr.flatten(), index=test.index)
+    predict = pd.Series(predict_arr.flatten(), index=predict.index)
 
     return test, predict

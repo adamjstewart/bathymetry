@@ -195,8 +195,8 @@ def main(args: argparse.Namespace) -> None:
         y_pred_test = gpd.GeoDataFrame(
             {"depth": y_pred_test.values}, geometry=geom_test.values
         )
-        y_true = y_true.append(y_test)
-        y_pred = y_pred.append(y_pred_test)
+        y_true = pd.concat([y_true, y_test])
+        y_pred = pd.concat([y_pred, y_pred_test])
 
     print("\nEvaluating...")
     accuracies = evaluate(y_true["depth"], y_pred["depth"])
