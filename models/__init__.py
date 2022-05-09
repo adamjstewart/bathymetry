@@ -20,9 +20,7 @@ def get_model(args: argparse.Namespace) -> BaseEstimator:
         the model
     """
     if args.model == "linear":
-        return LinearRegression(
-            fit_intercept=False, normalize=False, copy_X=True, n_jobs=-1
-        )
+        return LinearRegression(fit_intercept=False, copy_X=True, n_jobs=-1)
     elif args.model == "svr":
         return SVR(
             kernel=args.kernel,
