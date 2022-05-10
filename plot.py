@@ -122,6 +122,7 @@ def main_2d(args: argparse.Namespace) -> None:
     y_psm = PSM().predict(x_all)
     y_gdh1 = GDH1().predict(x_all)
     y_h13 = H13().predict(x_all)
+    x_all = x_all.to_numpy()
 
     print("\nPlotting...")
     plt.figure()
