@@ -28,7 +28,7 @@ def spatial_join(crust: gpd.GeoDataFrame, age: gpd.GeoDataFrame) -> gpd.GeoDataF
     crust = crust.set_geometry(("geom", ""))
 
     # Perform spatial join
-    combined = gpd.sjoin(crust, age, how="inner", op="intersects")
+    combined = gpd.sjoin(crust, age, how="inner", predicate="intersects")
     combined = combined.drop(columns=["index_right"])
 
     # Reconstruct multi-index
@@ -58,7 +58,7 @@ def groupby_plate(data: gpd.GeoDataFrame, plate: gpd.GeoDataFrame) -> pd.DataFra
     data = data.set_geometry(("geom", ""))
 
     # Perform spatial join
-    combined = gpd.sjoin(data, plate, how="inner", op="within")
+    combined = gpd.sjoin(data, plate, how="inner", predicate="within")
 
     # Reconstruct multi-index
     combined = combined.rename(
