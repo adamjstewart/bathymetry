@@ -112,7 +112,7 @@ def main_2d(args: argparse.Namespace) -> None:
     data = spatial_join(crust, age)
     data = filter_nans(data)
     data = filter_crust_type(data)
-    X, y = data, -data["boundary topograpy", "upper crystalline crust"]
+    X, y = data, -data["boundary topography", "upper crystalline crust"]
 
     print("\nPredicting...")
     x = X["age"]
