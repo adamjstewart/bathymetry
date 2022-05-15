@@ -198,7 +198,7 @@ def main_layer(args: argparse.Namespace) -> None:
         resolution=(-1, 1),
         geom=json.dumps(mapping(box(-180, -90, 180, 90))),
     )
-    data = df.to_numpy()
+    data = ds["layer"].to_numpy()
 
     print("\nPlotting...")
     plot_world(args.results_dir, data, title, legend)
