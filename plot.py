@@ -116,23 +116,22 @@ def main_2d(args: argparse.Namespace) -> None:
 
     print("\nPredicting...")
     x = X["age"]
-    x_all = np.linspace(0, np.max(x))
-    x_all = pd.DataFrame({"age": x_all})
+    x_all_arr = np.linspace(0, np.max(x))
+    x_all = pd.DataFrame({"age": x_all_arr})
     y_hs = HS().predict(x_all)
     y_psm = PSM().predict(x_all)
     y_gdh1 = GDH1().predict(x_all)
     y_h13 = H13().predict(x_all)
-    x_all = x_all.to_numpy()
 
     print("\nPlotting...")
     plt.figure()
     plt.xlim(0, 185)
     plt.ylim(0, 14)
     plt.scatter(x, y, s=1)
-    hs = plt.plot(x_all, y_hs, "tab:orange")[0]
-    psm = plt.plot(x_all, y_psm, "tab:green")[0]
-    gdh1 = plt.plot(x_all, y_gdh1, "tab:red")[0]
-    h13 = plt.plot(x_all, y_h13, "tab:purple")[0]
+    hs = plt.plot(x_all_arr, y_hs, "tab:orange")[0]
+    psm = plt.plot(x_all_arr, y_psm, "tab:green")[0]
+    gdh1 = plt.plot(x_all_arr, y_gdh1, "tab:red")[0]
+    h13 = plt.plot(x_all_arr, y_h13, "tab:purple")[0]
     plt.title("Comparison of physical models")
     plt.xlabel("Age (Ma)")
     plt.ylabel("Depth (km)")
