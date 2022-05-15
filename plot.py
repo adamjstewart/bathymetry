@@ -84,6 +84,7 @@ def set_up_parser() -> argparse.ArgumentParser:
             "gdh1",
             "h13",
             "linear",
+            "ridge",
             "svr",
             "mlp",
             "isostasy",

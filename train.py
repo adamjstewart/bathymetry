@@ -68,8 +68,19 @@ def set_up_parser() -> argparse.ArgumentParser:
     )
 
     # Machine learning models
-    # TODO: switch to ridge regression to deal with outliers
     subparsers.add_parser("linear", help="linear regression")
+
+    ridge_parser = subparsers.add_parser(
+        "ridge",
+        help="ridge regression",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+    ridge_parser.add_argument(
+        "--alpha",
+        default=1,
+        type=float,
+        help="L2 penalty term",
+    )
 
     svr_parser = subparsers.add_parser(
         "svr",

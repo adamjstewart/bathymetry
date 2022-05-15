@@ -3,7 +3,7 @@
 import argparse
 
 from sklearn.base import BaseEstimator
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression, Ridge
 from sklearn.neural_network import MLPRegressor
 from sklearn.svm import SVR
 
@@ -20,7 +20,9 @@ def get_model(args: argparse.Namespace) -> BaseEstimator:
         the model
     """
     if args.model == "linear":
-        return LinearRegression(fit_intercept=False, copy_X=True, n_jobs=-1)
+        return LinearRegression(fit_intercept=False, n_jobs=-1)
+    elif args.model == "ridge":
+        return Ridge(alpha=args.alpha, fit_intercept=False, random_state=args.seed)
     elif args.model == "svr":
         return SVR(
             kernel=args.kernel,
@@ -40,6 +42,7 @@ def get_model(args: argparse.Namespace) -> BaseEstimator:
             alpha=args.alpha,
             batch_size=args.batch_size,
             learning_rate_init=args.learning_rate,
+            random_state=args.seed,
             verbose=True,
         )
     elif args.model == "hs":

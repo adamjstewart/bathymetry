@@ -188,7 +188,7 @@ def standardize(
         standardized testing data
         standardization scaler
     """
-    if args.model not in ["linear", "svr", "mlp"]:
+    if args.model not in ["linear", "ridge", "svr", "mlp"]:
         return train, test, None
 
     is_series = isinstance(train, pd.Series)
