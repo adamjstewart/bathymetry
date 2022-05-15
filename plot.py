@@ -179,24 +179,26 @@ def main_layer(args: argparse.Namespace) -> None:
     """
     print("\nReading datasets...")
     crust = read_crust(args.data_dir)
-    crust["geometry"] = crust["geom"]
 
     print("\nPreprocessing...")
-    data = make_geocube(
-        vector_data=crust,
-        resolution=(-1, 1),
-        geom=json.dumps(mapping(box(-180, -90, 180, 90))),
-    )
     if args.layer == "sediments":
         bottom = crust["boundary topography", "lower sediments"]
         top = crust["boundary topography", "ice"]
-        data = bottom - top
+        layer = bottom - top
         title = "Sediment thickness"
         legend = "thickness (km)"
     elif args.layer == "moho":
-        data = crust["boundary topography", "moho"]
+        layer = crust["boundary topography", "moho"]
         title = "Moho depth"
         legend = "depth (km)"
+
+    df = pd.DataFrame({"layer": layer, "geometry": crust["geom"]})
+    ds = make_geocube(
+        vector_data=df,
+        resolution=(-1, 1),
+        geom=json.dumps(mapping(box(-180, -90, 180, 90))),
+    )
+    data = df.to_numpy()
 
     print("\nPlotting...")
     plot_world(args.results_dir, data, title, legend)
