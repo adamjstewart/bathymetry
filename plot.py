@@ -3,15 +3,15 @@
 """plotting tools for visualizing models."""
 
 import argparse
-from functools import partial, reduce
 import json
 import operator
 import os
+from functools import partial, reduce
 
-from geocube.api.core import make_geocube
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from geocube.api.core import make_geocube
 from shapely.geometry import box, mapping
 
 from datasets.age import read_age

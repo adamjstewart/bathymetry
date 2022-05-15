@@ -20,6 +20,12 @@ exclude = '''
 )/
 '''
 
+[tool.isort]
+profile = "black"
+known_first_party = ["datasets", "metrics", "models", "preprocessing", "utils"]
+skip_gitignore = true
+color_output = true
+
 [tool.mypy]
 show_error_codes = true
 exclude = "(.github|checkpoints|data|jobs|results)/"

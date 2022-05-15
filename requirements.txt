@@ -5,6 +5,7 @@ flake8
 flake8-import-order
 geocube
 geopandas>=0.10
+isort[color]
 matplotlib
 mypy
 netcdf4

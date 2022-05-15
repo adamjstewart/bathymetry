@@ -2,7 +2,6 @@
 
 import glob
 
-
 matches = []
 for f in glob.iglob("checkpoints/checkpoint-mlp-*"):
     parts = f.split("-")

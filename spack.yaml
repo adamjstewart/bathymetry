@@ -9,6 +9,7 @@ spack:
   - py-flake8-import-order
   - py-geocube
   - 'py-geopandas@0.10:'
+  - py-isort+colors
   - py-matplotlib
   - py-mypy
   - py-netcdf4

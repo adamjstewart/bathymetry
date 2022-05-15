@@ -1,10 +1,10 @@
 # bathymetry
 :ocean: Machine learning model for predicting ocean bathymetry
 
-[![mypy](https://github.com/adamjstewart/bathymetry/workflows/mypy/badge.svg)](https://github.com/adamjstewart/bathymetry/actions)
-[![flake8](https://github.com/adamjstewart/bathymetry/workflows/flake8/badge.svg)](https://github.com/adamjstewart/bathymetry/actions)
-[![black](https://github.com/adamjstewart/bathymetry/workflows/black/badge.svg)](https://github.com/adamjstewart/bathymetry/actions)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![black](https://github.com/adamjstewart/bathymetry/actions/workflows/black.yaml/badge.svg)](https://github.com/adamjstewart/bathymetry/actions/workflows/black.yaml)
+[![flake8](https://github.com/adamjstewart/bathymetry/actions/workflows/flake8.yaml/badge.svg)](https://github.com/adamjstewart/bathymetry/actions/workflows/flake8.yaml)
+[![isort](https://github.com/adamjstewart/bathymetry/actions/workflows/isort.yaml/badge.svg)](https://github.com/adamjstewart/bathymetry/actions/workflows/isort.yaml)
+[![mypy](https://github.com/adamjstewart/bathymetry/actions/workflows/mypy.yaml/badge.svg)](https://github.com/adamjstewart/bathymetry/actions/workflows/mypy.yaml)
 
 ## Installation
 

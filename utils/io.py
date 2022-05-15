@@ -6,12 +6,12 @@ import os
 import pickle
 from typing import Any, Dict
 
-from geocube.api.core import make_geocube
 import geopandas as gpd
 import pandas as pd
+import xarray as xr
+from geocube.api.core import make_geocube
 from shapely.geometry import box, mapping
 from sklearn.base import BaseEstimator
-import xarray as xr
 
 
 def save_pickle(data: Any, directory: str, filename: str) -> None:

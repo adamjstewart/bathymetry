@@ -68,6 +68,7 @@ def set_up_parser() -> argparse.ArgumentParser:
     )
 
     # Machine learning models
+    # TODO: switch to ridge regression to deal with outliers
     subparsers.add_parser("linear", help="linear regression")
 
     svr_parser = subparsers.add_parser(
