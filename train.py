@@ -77,7 +77,7 @@ def set_up_parser() -> argparse.ArgumentParser:
     )
     ridge_parser.add_argument(
         "--alpha",
-        default=1,
+        default=100,
         type=float,
         help="L2 penalty term",
     )
