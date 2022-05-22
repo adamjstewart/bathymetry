@@ -56,15 +56,7 @@ def set_up_parser() -> argparse.ArgumentParser:
         help="directory to save results to",
         metavar="DIR",
     )
-
-    # Style subparser
-    subparsers = parser.add_subparsers(
-        dest="style", required=True, help="style of plot to produce"
-    )
-
-    # Plot styles
-    twod_parser = subparsers.add_parser("2d", help="2d cross-section")
-    twod_parser.add_argument(
+    parser.add_argument(
         "-y",
         "--year",
         default=2020,
@@ -72,6 +64,14 @@ def set_up_parser() -> argparse.ArgumentParser:
         choices=[2020, 2019, 2016, 2013, 2008],
         help="year of seafloor age dataset to use",
     )
+
+    # Style subparser
+    subparsers = parser.add_subparsers(
+        dest="style", required=True, help="style of plot to produce"
+    )
+
+    # Plot styles
+    subparsers.add_parser("2d", help="2d cross-section")
 
     world_parser = subparsers.add_parser("world", help="world map")
     world_parser.add_argument(
