@@ -1,10 +1,17 @@
 #!/usr/bin/env bash
 
-python plot.py 2d
+for year in 2020 2019 2016 2013 2008
+do
+    # Physical
+    python plot.py -y $year 2d
+done
 
 for model in hs psm gdh1 h13 linear ridge svr mlp
 do
+    # Bathymetry
     python plot.py world $model
+
+    # Residual
     python plot.py world $model truth
 done
 
@@ -12,6 +19,19 @@ for ml in linear ridge svr mlp
 do
     for physics in hs psm gdh1 h13
     do
+        # Residual
         python plot.py world $ml $physics
+    done
+done
+
+# Features
+python plot.py feature age age
+
+for layer in water ice sediments crust moho
+do
+    for feature in thickness p s density
+    do
+        # Features
+        python plot.py feature $layer $feature
     done
 done

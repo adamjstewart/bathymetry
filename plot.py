@@ -18,7 +18,7 @@ from datasets.age import read_age
 from datasets.crust import read_crust
 from models.physics import GDH1, H13, HS, PSM
 from preprocessing.filter import filter_crust_type, filter_nans
-from preprocessing.map import spatial_join
+from preprocessing.map import boundary_to_thickness, spatial_join
 from utils.io import load_netcdf
 from utils.plotting import plot_world
 
@@ -94,7 +94,16 @@ def set_up_parser() -> argparse.ArgumentParser:
     )
 
     feature_parser = subparsers.add_parser("feature", help="features")
-    feature_parser.add_argument("layer", choices=["sediments", "moho"])
+    feature_parser.add_argument(
+        "layer",
+        choices=["water", "ice", "sediments", "crust", "moho", "age"],
+        help="layer to plot",
+    )
+    feature_parser.add_argument(
+        "feature",
+        choices=["thickness", "p", "s", "density", "age"],
+        help="feature to plot",
+    )
 
     return parser
 
@@ -140,8 +149,9 @@ def main_2d(args: argparse.Namespace) -> None:
     plt.legend([hs, psm, gdh1, h13], ["HS", "PSM", "GDH1", "H13"])
 
     # Save figure
-    os.makedirs(args.results_dir, exist_ok=True)
-    filename = os.path.join(args.results_dir, f"2d_{args.year}.png")
+    directory = os.path.join(args.results_dir, "physical")
+    os.makedirs(directory, exist_ok=True)
+    filename = os.path.join(directory, f"2d_{args.year}.png")
     print(f"Writing {filename}...")
     plt.savefig(filename, dpi=300, bbox_inches="tight")
 
@@ -155,8 +165,10 @@ def main_world(args: argparse.Namespace) -> None:
     title = " - ".join(args.layers)
     if len(args.layers) > 1:
         legend = "difference (km)"
+        directory = os.path.join(args.results_dir, "residual")
     else:
         legend = "bathymetry (km)"
+        directory = os.path.join(args.results_dir, "bathymetry")
 
     print("\nReading layer(s)...")
     load_netcdfs = partial(load_netcdf, args.checkpoint_dir)
@@ -164,7 +176,7 @@ def main_world(args: argparse.Namespace) -> None:
     data = reduce(operator.sub, layers)
 
     print("\nPlotting...")
-    plot_world(args.results_dir, data["depth"].values, title, legend)
+    plot_world(directory, data["depth"].values, title, legend)
 
 
 def main_feature(args: argparse.Namespace) -> None:
@@ -174,30 +186,70 @@ def main_feature(args: argparse.Namespace) -> None:
         args: command-line arguments
     """
     print("\nReading datasets...")
+    age = read_age(args.data_dir, args.year)
     crust = read_crust(args.data_dir)
 
     print("\nPreprocessing...")
-    if args.layer == "sediments":
-        bottom = crust["boundary topography", "lower sediments"]
-        top = crust["boundary topography", "ice"]
-        layer = bottom - top
-        title = "Sediment thickness"
-        legend = "thickness (km)"
-    elif args.layer == "moho":
-        layer = crust["boundary topography", "moho"]
-        title = "Moho depth"
-        legend = "depth (km)"
+    df = spatial_join(crust, age)
+    df = boundary_to_thickness(df)
 
-    df = pd.DataFrame({"layer": layer, "geometry": crust["geom"]})
+    # Feature
+    feature = args.feature
+    feature_map = {
+        "p": "p-wave velocity",
+        "s": "s-wave velocity",
+    }
+    if args.feature in feature_map:
+        feature = feature_map[args.feature]
+
+    # Layer
+    layer = args.layer
+    if layer in ["water", "ice", "moho"]:
+        s = df[feature, layer]
+    elif layer == "sediments":
+        s = (
+            df[feature, "upper sediments"]
+            + df[feature, "middle sediments"]
+            + df[feature, "lower sediments"]
+        )
+        if feature != "thickness":
+            s /= 3
+    elif layer == "crust":
+        s = (
+            df[feature, "upper crystalline crust"]
+            + df[feature, "middle crystalline crust"]
+            + df[feature, "lower crystalline crust"]
+        )
+        if feature != "thickness":
+            s /= 3
+    elif layer == "age":
+        s = df[feature, ""]
+
+    # Vector to matrix
+    df = pd.DataFrame({"feature": s, "geometry": df["geom"]})
     ds = make_geocube(
         vector_data=df,
         resolution=(-1, 1),
         geom=json.dumps(mapping(box(-180, -90, 180, 90))),
     )
-    data = ds["layer"].to_numpy()
+    data = ds["feature"].to_numpy()
+
+    # Title
+    title = "_".join([layer, feature])
+
+    # Legend
+    legend_map = {
+        "thickness": "thickness (km)",
+        "p": "velocity (km/s)",
+        "s": "velocity (km/s)",
+        "density": "density (g/cm^3)",
+        "age": "age (Ma)",
+    }
+    legend = legend_map[args.feature]
 
     print("\nPlotting...")
-    plot_world(args.results_dir, data, title, legend)
+    directory = os.path.join(args.results_dir, "features")
+    plot_world(directory, data, title, legend)
 
 
 if __name__ == "__main__":

@@ -20,16 +20,27 @@ def plot_world(
         title: the figure title
         legend: the legend label
     """
+    kwargs = {}
+
+    # Colormap
+    cmap_map = {
+        "difference": cmocean.cm.balance,
+        "bathymetry": cmocean.cm.deep,
+        "velocity": cmocean.cm.speed,
+        "density": cmocean.cm.dense,
+        "age": plt.get_cmap("gist_rainbow"),
+    }
+    for key, value in cmap_map.items():
+        if key in legend:
+            kwargs.update({"cmap": value})
+            break
+
+    # Min/max values
     if "difference" in legend:
-        # Plotting the difference
         std = np.nanstd(data)
-        kwargs = {"cmap": cmocean.cm.balance, "vmin": -std, "vmax": +std}
-    elif "bathymetry" in legend or "depth" in legend:
-        # Plotting the absolute bathymetry
-        kwargs = {"cmap": cmocean.cm.deep, "vmin": 0, "vmax": 7.5}
-    else:
-        # Plotting thickness of sediments
-        kwargs = {}
+        kwargs.update({"vmin": -std, "vmax": +std})
+    elif "bathymetry" in legend:
+        kwargs.update({"vmin": 0, "vmax": 7.5})
 
     # Plotting
     fig = plt.figure()
