@@ -38,7 +38,7 @@ do
     echo "${features[i]}"
     echo "${names[i]}"
     python train.py --ablation "${features[i]}" $model
-    cp "checkpoints/$model.pickle" "checkpoints/${names[i]}-$model.pickle"
+    cp "checkpoints/$model.nc" "checkpoints/${names[i]}-$model.nc"
     python plot.py world $model truth
     cp "results/$model-truth.png" "results/${names[i]}-$model-truth.png"
 done
