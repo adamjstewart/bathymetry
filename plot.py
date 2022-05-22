@@ -93,8 +93,8 @@ def set_up_parser() -> argparse.ArgumentParser:
         help="layers to subtract",
     )
 
-    layer_parser = subparsers.add_parser("layer", help="layer attributes")
-    layer_parser.add_argument("layer", choices=["sediments", "moho"])
+    feature_parser = subparsers.add_parser("feature", help="features")
+    feature_parser.add_argument("layer", choices=["sediments", "moho"])
 
     return parser
 
@@ -167,13 +167,8 @@ def main_world(args: argparse.Namespace) -> None:
     plot_world(args.results_dir, data["depth"].values, title, legend)
 
 
-def main_layer(args: argparse.Namespace) -> None:
-    """Plot layer attributes.
-
-    ``args.layers`` can either be:
-
-    * 'sediments': plot sediment thickness
-    * 'moho': plot moho depth
+def main_feature(args: argparse.Namespace) -> None:
+    """Plot features.
 
     Parameters:
         args: command-line arguments
@@ -214,5 +209,5 @@ if __name__ == "__main__":
         main_2d(args)
     elif args.style == "world":
         main_world(args)
-    elif args.style == "layer":
-        main_layer(args)
+    elif args.style == "feature":
+        main_feature(args)
