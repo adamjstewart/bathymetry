@@ -22,7 +22,7 @@ def plot_world(
     """
     if "difference" in legend:
         # Plotting the difference
-        std = np.nanstd(data["depth"].values)
+        std = np.nanstd(data)
         kwargs = {"cmap": cmocean.cm.balance, "vmin": -std, "vmax": +std}
     elif "bathymetry" in legend or "depth" in legend:
         # Plotting the absolute bathymetry
