@@ -31,6 +31,11 @@ for layer in water ice sediments crust moho
 do
     for feature in thickness p s density
     do
+        if [[ $layer == moho && $feature == thickness ]]
+        then
+            continue
+        fi
+
         # Features
         python plot.py feature $layer $feature
     done

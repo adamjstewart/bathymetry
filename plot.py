@@ -242,7 +242,7 @@ def main_feature(args: argparse.Namespace) -> None:
         "thickness": "thickness (km)",
         "p": "velocity (km/s)",
         "s": "velocity (km/s)",
-        "density": "density (g/cm^3)",
+        "density": "density (g/cm$^3$)",
         "age": "age (Ma)",
     }
     legend = legend_map[args.feature]
