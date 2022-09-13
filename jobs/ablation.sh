@@ -43,5 +43,5 @@ do
     python3 train.py --ablation "${features[i]}" $model
     python3 plot.py world $model truth
     mv "checkpoints/$model.nc" "checkpoints/ablation/${names[i]}-$model.nc"
-    mv "results/$model-truth.png" "results/ablation/${names[i]}-$model-truth.png"
+    mv "results/residual/$model-truth.png" "results/ablation/${names[i]}-$model-truth.png"
 done
