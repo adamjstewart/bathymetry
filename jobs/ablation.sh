@@ -32,13 +32,16 @@ names=(
     'no-moho'
 )
 
+mkdir -p 'checkpoints/ablation'
+mkdir -p 'results/ablation'
+
 for i in ${!features[*]}
 do
     echo $i
     echo "${features[i]}"
     echo "${names[i]}"
-    python train.py --ablation "${features[i]}" $model
-    cp "checkpoints/$model.nc" "checkpoints/${names[i]}-$model.nc"
-    python plot.py world $model truth
-    cp "results/$model-truth.png" "results/${names[i]}-$model-truth.png"
+    python3 train.py --ablation "${features[i]}" $model
+    python3 plot.py world $model truth
+    mv "checkpoints/$model.nc" "checkpoints/ablation/${names[i]}-$model.nc"
+    mv "results/$model-truth.png" "results/ablation/${names[i]}-$model-truth.png"
 done
