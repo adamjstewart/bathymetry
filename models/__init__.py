@@ -7,7 +7,7 @@ from sklearn.linear_model import LinearRegression, Ridge
 from sklearn.neural_network import MLPRegressor
 from sklearn.svm import SVR
 
-from .plate import GDH1, H13, HS, PSM, Isostasy, Isostasy2
+from .plate import GDH1, H13, HS, PSM
 
 
 def get_model(args: argparse.Namespace) -> BaseEstimator:
@@ -53,7 +53,3 @@ def get_model(args: argparse.Namespace) -> BaseEstimator:
         return GDH1()
     elif args.model == "h13":
         return H13()
-    elif args.model == "isostasy":
-        return Isostasy()
-    elif args.model == "isostasy2":
-        return Isostasy2()

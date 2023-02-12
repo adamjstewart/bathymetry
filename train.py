@@ -153,8 +153,6 @@ def set_up_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("psm", help="parsons and sclater model")
     subparsers.add_parser("gdh1", help="global depth and heat flow model")
     subparsers.add_parser("h13", help="hasterok model")
-    subparsers.add_parser("isostasy", help="pure isostasy prediction")
-    subparsers.add_parser("isostasy2", help="pure isostasy prediction")
 
     return parser
 

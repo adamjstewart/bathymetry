@@ -87,8 +87,6 @@ def set_up_parser() -> argparse.ArgumentParser:
             "ridge",
             "svr",
             "mlp",
-            "isostasy",
-            "isostasy2",
         ],
         help="layers to subtract",
     )
