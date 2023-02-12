@@ -2,7 +2,7 @@
 
 for year in 2020 2019 2016 2013 2008
 do
-    # Physical
+    # Plate
     python plot.py -y $year 2d
 done
 
@@ -17,10 +17,10 @@ done
 
 for ml in linear ridge svr mlp
 do
-    for physics in hs psm gdh1 h13
+    for plate in hs psm gdh1 h13
     do
         # Residual
-        python plot.py world $ml $physics
+        python plot.py world $ml $plate
     done
 done
 

@@ -148,7 +148,7 @@ def set_up_parser() -> argparse.ArgumentParser:
         "--learning-rate", default=0.001, type=float, help="initial learning rate"
     )
 
-    # Physical models
+    # Plate models
     subparsers.add_parser("hs", help="half-space cooling model")
     subparsers.add_parser("psm", help="parsons and sclater model")
     subparsers.add_parser("gdh1", help="global depth and heat flow model")

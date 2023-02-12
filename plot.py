@@ -16,7 +16,7 @@ from shapely.geometry import box, mapping
 
 from datasets.age import read_age
 from datasets.crust import read_crust
-from models.physics import GDH1, H13, HS, PSM
+from models.plate import GDH1, H13, HS, PSM
 from preprocessing.filter import filter_crust_type, filter_nans
 from preprocessing.map import boundary_to_thickness, spatial_join
 from utils.io import load_netcdf
@@ -140,14 +140,14 @@ def main_2d(args: argparse.Namespace) -> None:
     psm = plt.plot(x_all_arr, y_psm, "tab:green")[0]
     gdh1 = plt.plot(x_all_arr, y_gdh1, "tab:red")[0]
     h13 = plt.plot(x_all_arr, y_h13, "tab:purple")[0]
-    plt.title("Comparison of physical models")
+    plt.title("Comparison of plate models")
     plt.xlabel("Age (Ma)")
     plt.ylabel("Depth (km)")
     plt.gca().invert_yaxis()
     plt.legend([hs, psm, gdh1, h13], ["HS", "PSM", "GDH1", "H13"])
 
     # Save figure
-    directory = os.path.join(args.results_dir, "physical")
+    directory = os.path.join(args.results_dir, "plate")
     os.makedirs(directory, exist_ok=True)
     filename = os.path.join(directory, f"2d_{args.year}.png")
     print(f"Writing {filename}...")
