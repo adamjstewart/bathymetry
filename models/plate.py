@@ -5,7 +5,6 @@ https://scikit-learn.org/stable/developers/develop.html
 
 import numpy as np
 import pandas as pd
-import scipy.optimize as opt
 from sklearn.base import BaseEstimator, RegressorMixin
 
 
