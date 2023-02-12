@@ -38,11 +38,11 @@ def plot_world(
     # Min/max values
     if "difference" in legend:
         std = np.nanstd(data)
-        kwargs.update({"vmin": -std, "vmax": +std})
+        kwargs.update({"vmin": -2 * std, "vmax": +2 * std})
     elif "thickness" in legend or "velocity" in legend or "density" in legend:
         mean = np.nanmean(data)
         std = np.nanstd(data)
-        kwargs.update({"vmin": mean - std, "vmax": mean + std})
+        kwargs.update({"vmin": mean - 2 * std, "vmax": mean + 2 * std})
     elif "bathymetry" in legend:
         kwargs.update({"vmin": 0, "vmax": 7.5})
 

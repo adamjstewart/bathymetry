@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-for year in 2020 2019 2016 2013 2008
-do
-    # Plate
-    python plot.py -y $year 2d
-done
+# for year in 2020 2019 2016 2013 2008
+# do
+#     # Plate
+#     python plot.py -y $year 2d
+# done
 
 for model in hs psm gdh1 h13 linear ridge svr mlp
 do
