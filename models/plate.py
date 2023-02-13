@@ -31,10 +31,10 @@ class PlateModel(BaseEstimator, RegressorMixin):
         h_us = X["thickness", "upper sediments"].values
         h_ms = X["thickness", "middle sediments"].values
         h_ls = X["thickness", "lower sediments"].values
-        h_2 = h_us + h_ms + h_ls
+        h_s = h_us + h_ms + h_ls
 
         factor: np.typing.NDArray[np.float_] = (
-            rho_us * h_us + rho_ms * h_ms + rho_ls * h_ls - rho_w * h_2
+            rho_us * h_us + rho_ms * h_ms + rho_ls * h_ls - rho_w * h_s
         ) / (rho_m - rho_w)
         return factor
 
