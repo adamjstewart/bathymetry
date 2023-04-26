@@ -11,7 +11,6 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
-
 SUBPLATE_TO_SUPERPLATE: np.typing.NDArray[np.int_] = np.array(
     [
         0,  # Africa
