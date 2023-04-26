@@ -3,7 +3,10 @@
 This process is known as data reduction.
 """
 
+import geopandas as gpd
 import pandas as pd
+
+from .map import SUBPLATE_TO_SUPERPLATE, SUPERPLATE_TO_NAME
 
 
 def reduce_attributes(data: pd.DataFrame) -> pd.DataFrame:
@@ -53,3 +56,22 @@ def ablation_study(data: pd.DataFrame, labels: str) -> pd.DataFrame:
             data = data.drop(columns=label, level=level)
 
     return data
+
+
+def merge_plates(data: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
+    """Merge smaller plates into larger plates.
+
+    Args:
+        data: all tectonic plates
+
+    Returns:
+        only the largest tectonic plates
+    """
+    data["superplate"] = SUBPLATE_TO_SUPERPLATE
+    data["superplate"] = data["superplate"].replace(SUPERPLATE_TO_NAME)
+    plates = []
+    names = list(SUPERPLATE_TO_NAME.values())
+    for name in names:
+        polygons = data.loc[data["superplate"] == name]
+        plates.append(polygons["geometry"].unary_union)
+    return gpd.GeoDataFrame({"name": names, "geometry": plates})

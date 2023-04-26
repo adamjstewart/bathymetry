@@ -28,6 +28,7 @@ from preprocessing.map import (
     boundary_to_thickness,
     spatial_join,
 )
+from preprocessing.reduce import merge_plates
 from utils.io import load_netcdf
 from utils.plotting import plot_world
 
@@ -198,14 +199,7 @@ def main_plate(args: argparse.Namespace) -> None:
     plate = read_plate(args.data_dir)
 
     print("\nPreprocessing...")
-    plate["superplate"] = SUBPLATE_TO_SUPERPLATE
-    plate["superplate"] = plate["superplate"].replace(SUPERPLATE_TO_NAME)
-    data = []
-    names = list(SUPERPLATE_TO_NAME.values())
-    for name in names:
-        polygons = plate.loc[plate["superplate"] == name]
-        data.append(polygons["geometry"].unary_union)
-    plate = gpd.GeoDataFrame({"name": names, "geometry": data})
+    plate = merge_plates(plate)
 
     print("\nPlotting...")
     fig = plt.figure(figsize=(8, 5))
