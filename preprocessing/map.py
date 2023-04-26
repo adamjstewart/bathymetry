@@ -12,6 +12,76 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
 
+SUBPLATE_TO_SUPERPLATE: np.typing.NDArray[np.int_] = np.array(
+    [
+        0,  # Africa
+        1,  # Antarctica
+        0,  # Somalia -> Africa
+        4,  # India -> Australia
+        4,  # Australia
+        5,  # Eurasia
+        6,  # North America
+        7,  # South America
+        7,  # Nazca -> South America
+        9,  # Pacific
+        0,  # Arabia -> Africa
+        5,  # Sunda -> Eurasia
+        5,  # Timor -> Eurasia
+        4,  # Kermadec -> Australia
+        4,  # Kermadec -> Australia
+        4,  # Tonga -> Australia
+        4,  # Niuafo'ou -> Australia
+        4,  # Woodlark -> Australia
+        4,  # Maoke -> Australia
+        4,  # South Bismarck -> Australia
+        4,  # Solomon Sea -> Australia
+        4,  # North Bismarck -> Australia
+        4,  # New Hebrides -> Australia
+        6,  # Caribbean -> North America
+        7,  # Cocos -> South America
+        5,  # Okhotsk -> Eurasia
+        6,  # Juan de Fuca -> North America
+        7,  # Altiplano -> South America
+        7,  # North Andes -> South America
+        5,  # Okinawa -> Eurasia
+        5,  # Philippine Sea -> Eurasia
+        5,  # Amur -> Eurasia
+        4,  # Caroline -> Australia
+        5,  # Mariana -> Eurasia
+        4,  # Futuna -> Australia
+        7,  # Scotia -> South America
+        7,  # Shetland -> South America
+        5,  # Aegean Sea -> Eurasia
+        5,  # Anatolia -> Eurasia
+        5,  # Yangtze -> Eurasia
+        4,  # Burma -> Australia
+        6,  # Rivera -> North America
+        5,  # Birds Head -> Eurasia
+        5,  # Molucca Sea -> Eurasia
+        5,  # Banda Sea -> Eurasia
+        4,  # Manus -> Australia
+        4,  # Conway Reef -> Australia
+        4,  # Balmoral Reef -> Australia
+        4,  # Balmoral Reef -> Australia
+        7,  # Easter -> South America
+        7,  # Juan Fernandez -> South America
+        7,  # Galapagos -> South America
+        7,  # Sandwich -> South America
+        6,  # Panama -> North America
+    ]
+)
+
+SUPERPLATE_TO_NAME = {
+    0: "Africa",
+    1: "Antarctica",
+    4: "Australia",
+    5: "Eurasia",
+    6: "North America",
+    7: "South America",
+    9: "Pacific",
+}
+
+
 def spatial_join(crust: gpd.GeoDataFrame, age: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
     """Join two datasets.
 
@@ -87,66 +157,8 @@ def merge_plates(data: pd.DataFrame) -> pd.DataFrame:
     Returns:
         the modified dataset
     """
-    all_to_subset: np.typing.NDArray[np.int_] = np.array(
-        [
-            0,  # Africa
-            1,  # Antarctica
-            0,  # Somalia -> Africa
-            4,  # India -> Australia
-            4,  # Australia
-            5,  # Eurasia
-            6,  # North America
-            7,  # South America
-            7,  # Nazca -> South America
-            9,  # Pacific
-            0,  # Arabia -> Africa
-            5,  # Sunda -> Eurasia
-            5,  # Timor -> Eurasia
-            4,  # Kermadec -> Australia
-            4,  # Kermadec -> Australia
-            4,  # Tonga -> Australia
-            4,  # Niuafo'ou -> Australia
-            4,  # Woodlark -> Australia
-            4,  # Maoke -> Australia
-            4,  # South Bismarck -> Australia
-            4,  # Solomon Sea -> Australia
-            4,  # North Bismarck -> Australia
-            4,  # New Hebrides -> Australia
-            6,  # Caribbean -> North America
-            7,  # Cocos -> South America
-            5,  # Okhotsk -> Eurasia
-            6,  # Juan de Fuca -> North America
-            7,  # Altiplano -> South America
-            7,  # North Andes -> South America
-            5,  # Okinawa -> Eurasia
-            5,  # Philippine Sea -> Eurasia
-            5,  # Amur -> Eurasia
-            4,  # Caroline -> Australia
-            5,  # Mariana -> Eurasia
-            4,  # Futuna -> Australia
-            7,  # Scotia -> South America
-            7,  # Shetland -> South America
-            5,  # Aegean Sea -> Eurasia
-            5,  # Anatolia -> Eurasia
-            5,  # Yangtze -> Eurasia
-            4,  # Burma -> Australia
-            6,  # Rivera -> North America
-            5,  # Birds Head -> Eurasia
-            5,  # Molucca Sea -> Eurasia
-            5,  # Banda Sea -> Eurasia
-            4,  # Manus -> Australia
-            4,  # Conway Reef -> Australia
-            4,  # Balmoral Reef -> Australia
-            4,  # Balmoral Reef -> Australia
-            7,  # Easter -> South America
-            7,  # Juan Fernandez -> South America
-            7,  # Galapagos -> South America
-            7,  # Sandwich -> South America
-            6,  # Panama -> North America
-        ]
-    )
 
-    data["plate index"] = all_to_subset[data["plate index"]]
+    data["plate index"] = SUBPLATE_TO_SUPERPLATE[data["plate index"]]
 
     # print(data.value_counts(["plate index"]))
 

@@ -8,17 +8,26 @@ import operator
 import os
 from functools import partial, reduce
 
+import cartopy.crs as ccrs
+import geopandas as gpd
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from geocube.api.core import make_geocube
+from matplotlib.colors import ListedColormap
 from shapely.geometry import box, mapping
 
 from datasets.age import read_age
 from datasets.crust import read_crust
+from datasets.plate import read_plate
 from models.plate import GDH1, H13, HS, PSM
 from preprocessing.filter import filter_crust_type, filter_nans
-from preprocessing.map import boundary_to_thickness, spatial_join
+from preprocessing.map import (
+    SUBPLATE_TO_SUPERPLATE,
+    SUPERPLATE_TO_NAME,
+    boundary_to_thickness,
+    spatial_join,
+)
 from utils.io import load_netcdf
 from utils.plotting import plot_world
 
@@ -90,6 +99,8 @@ def set_up_parser() -> argparse.ArgumentParser:
         ],
         help="layers to subtract",
     )
+
+    subparsers.add_parser("plate", help="cross-validation map")
 
     feature_parser = subparsers.add_parser("feature", help="features")
     feature_parser.add_argument(
@@ -177,6 +188,69 @@ def main_world(args: argparse.Namespace) -> None:
     plot_world(directory, data["depth"].values, title, legend)
 
 
+def main_plate(args: argparse.Namespace) -> None:
+    """Plot cross-validation plate boundaries.
+
+    Parameters:
+        args: command-line arguments
+    """
+    print("\nReading datasets...")
+    plate = read_plate(args.data_dir)
+
+    print("\nPreprocessing...")
+    plate["superplate"] = SUBPLATE_TO_SUPERPLATE
+    plate["superplate"] = plate["superplate"].replace(SUPERPLATE_TO_NAME)
+    data = []
+    names = list(SUPERPLATE_TO_NAME.values())
+    for name in names:
+        polygons = plate.loc[plate["superplate"] == name]
+        data.append(polygons["geometry"].unary_union)
+    plate = gpd.GeoDataFrame({"name": names, "geometry": data})
+
+    print("\nPlotting...")
+    fig = plt.figure(figsize=(8, 5))
+    ax = plt.axes(projection=ccrs.PlateCarree())
+    pos = ax.get_position()
+    ax.set_position([pos.x0, pos.y0 - 0.2, pos.width, pos.height])
+    kwargs = {
+        "bbox_to_anchor": (0.5, -0.15),
+        "borderaxespad": 0,
+        "loc": "lower center",
+        "ncols": 4,
+    }
+    cmap = ListedColormap(
+        np.array(
+            [
+                [252, 154, 122],
+                [139, 157, 190],
+                [252, 180, 130],
+                [127, 161, 113],
+                [172, 141, 127],
+                [254, 230, 170],
+                [172, 130, 176],
+            ]
+        )
+        / 255
+    )
+    ax = plate.plot(
+        column="name",
+        cmap=cmap,
+        ax=ax,
+        legend=True,
+        legend_kwds=kwargs,
+        edgecolor="white",
+        linewidth=2,
+    )
+    ax.coastlines()
+    fig.tight_layout()
+
+    directory = os.path.join(args.results_dir, "plate")
+    os.makedirs(directory, exist_ok=True)
+    filename = os.path.join(directory, "plate.png")
+    print(f"Writing {filename}...")
+    plt.savefig(filename, dpi=300, bbox_inches="tight")
+
+
 def main_feature(args: argparse.Namespace) -> None:
     """Plot features.
 
@@ -259,5 +333,7 @@ if __name__ == "__main__":
         main_2d(args)
     elif args.style == "world":
         main_world(args)
+    elif args.style == "plate":
+        main_plate(args)
     elif args.style == "feature":
         main_feature(args)
