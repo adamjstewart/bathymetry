@@ -13,7 +13,7 @@ from .plate import GDH1, H13, HS, PSM
 def get_model(args: argparse.Namespace) -> BaseEstimator:
     """Initialize a new regression model.
 
-    Parameters:
+    Args:
         args: command-line arguments
 
     Returns:

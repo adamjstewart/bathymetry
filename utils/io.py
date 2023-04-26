@@ -17,7 +17,7 @@ from sklearn.base import BaseEstimator
 def save_pickle(data: Any, directory: str, filename: str) -> None:
     """Write the pickled representation of data to filename.
 
-    Parameters:
+    Args:
         data: the data to save
         directory: the directory to save to
         filename: the filename to save to
@@ -32,7 +32,7 @@ def save_pickle(data: Any, directory: str, filename: str) -> None:
 def load_pickle(directory: str, filename: str) -> Any:
     """Read the pickled representation of data from filename.
 
-    Parameters:
+    Args:
         directory: the directory to load from
         filename: the filename to load from
 
@@ -48,7 +48,7 @@ def load_pickle(directory: str, filename: str) -> Any:
 def save_csv(data: pd.Series, directory: str, filename: str) -> None:
     """Save a pandas Series as a CSV file.
 
-    Parameters:
+    Args:
         data: the pandas Series to save
         directory: the directory to save to
         filename: the filename to save to
@@ -62,7 +62,7 @@ def save_csv(data: pd.Series, directory: str, filename: str) -> None:
 def load_csv(directory: str, filename: str) -> pd.Series:
     """Load a CSV file as a pandas Series.
 
-    Parameters:
+    Args:
         directory: the directory to load from
         filename: the filename to load from
 
@@ -77,7 +77,7 @@ def load_csv(directory: str, filename: str) -> pd.Series:
 def save_netcdf(data: xr.Dataset, directory: str, filename: str) -> None:
     """Save an xarray Dataset as a NetCDF file.
 
-    Parameters:
+    Args:
         data: the pandas Series to save
         directory: the directory to save to
         filename: the filename to save to
@@ -91,7 +91,7 @@ def save_netcdf(data: xr.Dataset, directory: str, filename: str) -> None:
 def load_netcdf(directory: str, filename: str) -> xr.Dataset:
     """Load a NetCDF file as an xarray Dataset.
 
-    Parameters:
+    Args:
         directory: the directory to load from
         filename: the filename to load from
 
@@ -110,7 +110,7 @@ def save_checkpoint(
 ) -> None:
     """Save a checkpoint for hyperparameter tuning.
 
-    Parameters:
+    Args:
         model: the trained model
         args: the hyperparameters
         accuracies: the performance metrics
@@ -129,7 +129,7 @@ def save_prediction(
 ) -> None:
     """Save prediction to a NetCDF file.
 
-    Parameters:
+    Args:
         prediction: predicted bathymetry
         args: command-line arguments
         filename: filename to save to

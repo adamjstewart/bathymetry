@@ -14,7 +14,7 @@ from utils.io import load_netcdf
 def read_age(data_dir: str, year: int) -> gpd.GeoDataFrame:
     """Read seafloor age dataset.
 
-    Parameters:
+    Args:
         data_dir: directory containing datasets
         year: year of data to use
 

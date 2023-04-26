@@ -13,7 +13,7 @@ import pandas as pd
 def read_crust(data_dir: str) -> gpd.GeoDataFrame:
     """Read CRUST 1.0 dataset.
 
-    Parameters:
+    Args:
         data_dir: directory containing datasets
 
     Returns:

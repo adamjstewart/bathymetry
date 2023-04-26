@@ -84,7 +84,7 @@ SUPERPLATE_TO_NAME = {
 def spatial_join(crust: gpd.GeoDataFrame, age: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
     """Join two datasets.
 
-    Parameters:
+    Args:
         crust: crust data
         age: seafloor age
 
@@ -114,7 +114,7 @@ def spatial_join(crust: gpd.GeoDataFrame, age: gpd.GeoDataFrame) -> gpd.GeoDataF
 def groupby_plate(data: gpd.GeoDataFrame, plate: gpd.GeoDataFrame) -> pd.DataFrame:
     """Group dataset by tectonic plate.
 
-    Parameters:
+    Args:
         data: crust data
         plate: plate boundaries
 
@@ -150,7 +150,7 @@ def merge_plates(data: pd.DataFrame) -> pd.DataFrame:
 
     https://en.wikipedia.org/wiki/List_of_tectonic_plates
 
-    Parameters:
+    Args:
         data: the entire dataset
 
     Returns:
@@ -167,7 +167,7 @@ def merge_plates(data: pd.DataFrame) -> pd.DataFrame:
 def boundary_to_thickness(data: pd.DataFrame) -> pd.DataFrame:
     """Convert boundary topography to layer thickness.
 
-    Parameters:
+    Args:
         data: the entire dataset
 
     Returns:
@@ -189,7 +189,7 @@ def standardize(
     """Standardize the dataset by subtracting the mean and dividing by the
     standard deviation.
 
-    Parameters:
+    Args:
         train: training data
         test: testing data
         args: command-line arguments
@@ -234,7 +234,7 @@ def inverse_standardize(
 ) -> pd.Series:
     """Scale the predictions back to the original representation.
 
-    Parameters:
+    Args:
         test: testing data
         predict: predicted data
         scaler: the standardization scaler

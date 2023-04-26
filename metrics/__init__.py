@@ -10,7 +10,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 def evaluate(labels: pd.Series, predictions: pd.Series) -> Dict[str, float]:
     """Prints the model performance evaluation.
 
-    Parameters:
+    Args:
         labels: the ground truth labels
         predictions: the model predictions
 

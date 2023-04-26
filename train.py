@@ -162,7 +162,7 @@ def main(args: argparse.Namespace) -> None:
 
     Trains the model and evaluates performance.
 
-    Parameters:
+    Args:
         args: command-line arguments
     """
     print("\nReading datasets...")

@@ -120,7 +120,7 @@ def set_up_parser() -> argparse.ArgumentParser:
 def main_2d(args: argparse.Namespace) -> None:
     """Plot a 2d cross-section.
 
-    Parameters:
+    Args:
         args: command-line arguments
     """
     print("\nReading datasets...")
@@ -168,7 +168,7 @@ def main_2d(args: argparse.Namespace) -> None:
 def main_world(args: argparse.Namespace) -> None:
     """Plot a world map.
 
-    Parameters:
+    Args:
         args: command-line arguments
     """
     title = " - ".join(args.layers)
@@ -191,7 +191,7 @@ def main_world(args: argparse.Namespace) -> None:
 def main_plate(args: argparse.Namespace) -> None:
     """Plot cross-validation plate boundaries.
 
-    Parameters:
+    Args:
         args: command-line arguments
     """
     print("\nReading datasets...")
@@ -254,7 +254,7 @@ def main_plate(args: argparse.Namespace) -> None:
 def main_feature(args: argparse.Namespace) -> None:
     """Plot features.
 
-    Parameters:
+    Args:
         args: command-line arguments
     """
     print("\nReading datasets...")

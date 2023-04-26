@@ -9,7 +9,7 @@ import pandas as pd
 def filter_nans(data: pd.DataFrame) -> pd.DataFrame:
     """Filter out data points containing NaN values.
 
-    Parameters:
+    Args:
         data: the entire dataset
 
     Returns:
@@ -25,7 +25,7 @@ def filter_crust_type(data: pd.DataFrame) -> pd.DataFrame:
     * A0: oceans 3 Myrs and younger
     * A1: normal oceanic
 
-    Parameters:
+    Args:
         data: the entire dataset
 
     Returns:

@@ -9,7 +9,7 @@ import pandas as pd
 def reduce_attributes(data: pd.DataFrame) -> pd.DataFrame:
     """Remove attributes that we don't want to train on.
 
-    Parameters:
+    Args:
         data: the entire dataset
 
     Returns:
@@ -31,7 +31,7 @@ def reduce_attributes(data: pd.DataFrame) -> pd.DataFrame:
 def ablation_study(data: pd.DataFrame, labels: str) -> pd.DataFrame:
     """Remove attributes to perform an ablation study.
 
-    Parameters:
+    Args:
         data: the entire dataset
         labels: sections to drop
 

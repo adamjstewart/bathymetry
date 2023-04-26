@@ -31,7 +31,7 @@ def main(args: argparse.Namespace) -> None:
 
     Compare hyperparameter performance.
 
-    Parameters:
+    Args:
         args: command-line arguments
     """
     best_rmse = float("inf")

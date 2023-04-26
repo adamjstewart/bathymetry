@@ -11,7 +11,7 @@ import geopandas as gpd
 def read_plate(data_dir: str) -> gpd.GeoDataFrame:
     """Read world tectonic plates and boundaries dataset.
 
-    Parameters:
+    Args:
         data_dir: directory containing datasets
 
     Returns:

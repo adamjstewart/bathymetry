@@ -14,7 +14,7 @@ def plot_world(
 ) -> None:
     """Plot a world map with data.
 
-    Parameters:
+    Args:
         directory: the directory to save the file to
         data: the data to display
         title: the figure title

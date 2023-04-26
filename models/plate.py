@@ -17,7 +17,7 @@ class PlateModel(BaseEstimator, RegressorMixin):
     def predict(self, X: pd.DataFrame) -> np.typing.NDArray[np.float_]:
         """Sediment correction factor.
 
-        Parameters:
+        Args:
             X: the dataset
 
         Returns:
@@ -53,7 +53,7 @@ class HS(PlateModel):
     def predict(self, X: pd.DataFrame) -> np.typing.NDArray[np.float_]:
         """Predict bathymetry based on age.
 
-        Parameters:
+        Args:
             X: the dataset
 
         Returns:
@@ -91,7 +91,7 @@ class PSM(PlateModel):
     def predict(self, X: pd.DataFrame) -> np.typing.NDArray[np.float_]:
         """Predict bathymetry based on age.
 
-        Parameters:
+        Args:
             X: the dataset
 
         Returns:
@@ -125,7 +125,7 @@ class GDH1(PlateModel):
     def predict(self, X: pd.DataFrame) -> np.typing.NDArray[np.float_]:
         """Predict bathymetry based on age.
 
-        Parameters:
+        Args:
             X: the dataset
 
         Returns:
@@ -158,7 +158,7 @@ class H13(PlateModel):
     def predict(self, X: pd.DataFrame) -> np.typing.NDArray[np.float_]:
         """Predict bathymetry based on age.
 
-        Parameters:
+        Args:
             X: the dataset
 
         Returns:

@@ -19,7 +19,7 @@ def preprocess(
 ) -> Tuple[pd.DataFrame, pd.Series, pd.Series, pd.Series]:
     """Preprocess the dataset.
 
-    Parameters:
+    Args:
         age: seafloor age
         crust: crust data
         plate: plate boundaries
