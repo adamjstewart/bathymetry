@@ -4,13 +4,18 @@ import os
 
 import cartopy.crs as ccrs
 import cmocean
+import geopandas as gpd
 import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 
 def plot_world(
-    directory: str, data: np.typing.NDArray[np.float_], title: str, legend: str
+    directory: str,
+    data: np.typing.NDArray[np.float_],
+    title: str,
+    legend: str,
+    plate: gpd.GeoDataFrame,
 ) -> None:
     """Plot a world map with data.
 
@@ -19,6 +24,7 @@ def plot_world(
         data: the data to display
         title: the figure title
         legend: the legend label
+        plate: plate boundaries
     """
     kwargs = {}
 
@@ -51,6 +57,13 @@ def plot_world(
     ax = plt.axes(projection=ccrs.Mollweide())
     z = ax.imshow(data, transform=ccrs.PlateCarree(), **kwargs)
     ax.coastlines()
+    ax = plate.plot(
+        ax=ax,
+        facecolor="none",
+        edgecolor="black",
+        linewidth=2,
+        transform=ccrs.PlateCarree(),
+    )
 
     # Add colorbar (with correct size)
     divider = make_axes_locatable(ax)

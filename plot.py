@@ -9,7 +9,6 @@ import os
 from functools import partial, reduce
 
 import cartopy.crs as ccrs
-import geopandas as gpd
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -22,12 +21,7 @@ from datasets.crust import read_crust
 from datasets.plate import read_plate
 from models.plate import GDH1, H13, HS, PSM
 from preprocessing.filter import filter_crust_type, filter_nans
-from preprocessing.map import (
-    SUBPLATE_TO_SUPERPLATE,
-    SUPERPLATE_TO_NAME,
-    boundary_to_thickness,
-    spatial_join,
-)
+from preprocessing.map import boundary_to_thickness, spatial_join
 from preprocessing.reduce import merge_plates
 from utils.io import load_netcdf
 from utils.plotting import plot_world
@@ -83,6 +77,8 @@ def set_up_parser() -> argparse.ArgumentParser:
     # Plot styles
     subparsers.add_parser("2d", help="2d cross-section")
 
+    subparsers.add_parser("plate", help="cross-validation map")
+
     world_parser = subparsers.add_parser("world", help="world map")
     world_parser.add_argument(
         "layers",
@@ -100,8 +96,6 @@ def set_up_parser() -> argparse.ArgumentParser:
         ],
         help="layers to subtract",
     )
-
-    subparsers.add_parser("plate", help="cross-validation map")
 
     feature_parser = subparsers.add_parser("feature", help="features")
     feature_parser.add_argument(
@@ -166,29 +160,6 @@ def main_2d(args: argparse.Namespace) -> None:
     plt.savefig(filename, dpi=300, bbox_inches="tight")
 
 
-def main_world(args: argparse.Namespace) -> None:
-    """Plot a world map.
-
-    Args:
-        args: command-line arguments
-    """
-    title = " - ".join(args.layers)
-    if len(args.layers) > 1:
-        legend = "difference (km)"
-        directory = os.path.join(args.results_dir, "residual")
-    else:
-        legend = "bathymetry (km)"
-        directory = os.path.join(args.results_dir, "bathymetry")
-
-    print("\nReading layer(s)...")
-    load_netcdfs = partial(load_netcdf, args.checkpoint_dir)
-    layers = map(load_netcdfs, args.layers)
-    data = reduce(operator.sub, layers)
-
-    print("\nPlotting...")
-    plot_world(directory, data["depth"].values, title, legend)
-
-
 def main_plate(args: argparse.Namespace) -> None:
     """Plot cross-validation plate boundaries.
 
@@ -245,6 +216,33 @@ def main_plate(args: argparse.Namespace) -> None:
     plt.savefig(filename, dpi=300, bbox_inches="tight")
 
 
+def main_world(args: argparse.Namespace) -> None:
+    """Plot a world map.
+
+    Args:
+        args: command-line arguments
+    """
+    title = " - ".join(args.layers)
+    if len(args.layers) > 1:
+        legend = "difference (km)"
+        directory = os.path.join(args.results_dir, "residual")
+    else:
+        legend = "bathymetry (km)"
+        directory = os.path.join(args.results_dir, "bathymetry")
+
+    print("\nReading layer(s)...")
+    load_netcdfs = partial(load_netcdf, args.checkpoint_dir)
+    layers = map(load_netcdfs, args.layers)
+    data = reduce(operator.sub, layers)
+    plate = read_plate(args.data_dir)
+
+    print("\nPreprocessing...")
+    plate = merge_plates(plate)
+
+    print("\nPlotting...")
+    plot_world(directory, data["depth"].values, title, legend, plate)
+
+
 def main_feature(args: argparse.Namespace) -> None:
     """Plot features.
 
@@ -254,10 +252,12 @@ def main_feature(args: argparse.Namespace) -> None:
     print("\nReading datasets...")
     age = read_age(args.data_dir, args.year)
     crust = read_crust(args.data_dir)
+    plate = read_plate(args.data_dir)
 
     print("\nPreprocessing...")
     df = spatial_join(crust, age)
     df = boundary_to_thickness(df)
+    plate = merge_plates(plate)
 
     # Feature
     feature = args.feature
@@ -315,7 +315,7 @@ def main_feature(args: argparse.Namespace) -> None:
 
     print("\nPlotting...")
     directory = os.path.join(args.results_dir, "features")
-    plot_world(directory, data, title, legend)
+    plot_world(directory, data, title, legend, plate)
 
 
 if __name__ == "__main__":
@@ -325,9 +325,9 @@ if __name__ == "__main__":
 
     if args.style == "2d":
         main_2d(args)
-    elif args.style == "world":
-        main_world(args)
     elif args.style == "plate":
         main_plate(args)
+    elif args.style == "world":
+        main_world(args)
     elif args.style == "feature":
         main_feature(args)
