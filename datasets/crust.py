@@ -1,4 +1,4 @@
-"""Data loader for CRUST 1.0 dataset.
+"""Data loader for CRUST1.0 dataset.
 
 https://igppweb.ucsd.edu/~gabi/crust1.html
 """
@@ -11,7 +11,7 @@ import pandas as pd
 
 
 def read_crust(data_dir: str) -> gpd.GeoDataFrame:
-    """Read CRUST 1.0 dataset.
+    """Read CRUST1.0 dataset.
 
     Args:
         data_dir: directory containing datasets
@@ -40,7 +40,7 @@ def read_crust(data_dir: str) -> gpd.GeoDataFrame:
     }
 
     # Boundary topography
-    # These files come with the CRUST 1.0 base model
+    # These files come with the CRUST1.0 base model
     fname = os.path.join(data_dir, "crust1.bnds")
     print(f"Reading {fname}...")
     bnds = pd.read_fwf(fname, **kwargs)
@@ -61,7 +61,7 @@ def read_crust(data_dir: str) -> gpd.GeoDataFrame:
     rho = pd.read_fwf(fname, **kwargs)
 
     # Crust type
-    # This file comes with the CRUST 1.0 add-on
+    # This file comes with the CRUST1.0 add-on
     fname = os.path.join(data_dir, "CNtype1-1.txt")
     print(f"Reading {fname}...")
     ctype: np.typing.NDArray[np.object_] = np.loadtxt(fname, dtype=object)

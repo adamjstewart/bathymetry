@@ -27,9 +27,9 @@ $ pip install -r requirements.txt
 
 All data should be stored in the same root directory. The default is `data`, but a different directory can be specified with `--data-dir`.
 
-### CRUST 1.0
+### CRUST1.0
 
-This model is trained on the [CRUST 1.0](https://igppweb.ucsd.edu/~gabi/crust1.html) dataset. In order to reproduce this work, you will need to download both the [basic model](http://igppweb.ucsd.edu/~gabi/crust1/crust1.0.tar.gz) and the [add-on](http://igppweb.ucsd.edu/~gabi/crust1/crust1.0-addon.tar.gz) that includes the crustal type file. Then, extract the tarballs in a `crust1.0` directory within the data directory.
+This model is trained on the [CRUST1.0](https://igppweb.ucsd.edu/~gabi/crust1.html) dataset. In order to reproduce this work, you will need to download both the [basic model](http://igppweb.ucsd.edu/~gabi/crust1/crust1.0.tar.gz) and the [add-on](http://igppweb.ucsd.edu/~gabi/crust1/crust1.0-addon.tar.gz) that includes the crustal type file. Then, extract the tarballs in a `crust1.0` directory within the data directory.
 
 ### Seafloor Age
 
