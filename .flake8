@@ -16,5 +16,3 @@ exclude =
     # Spack
     .spack-env
 max-line-length = 88
-application-import-names = datasets,metrics,models,plot,preprocessing,train,tune,utils
-import-order-style = google

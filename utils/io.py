@@ -100,7 +100,7 @@ def load_netcdf(directory: str, filename: str) -> xr.Dataset:
     """
     path = os.path.join(directory, filename + ".nc")
     print(f"Reading {path}...")
-    return xr.open_dataset(path, engine="netcdf4")  # type: ignore
+    return xr.open_dataset(path, engine="netcdf4")
 
 
 def save_checkpoint(
