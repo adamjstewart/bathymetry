@@ -6,7 +6,6 @@ spack:
   - py-cartopy
   - py-cmocean
   - py-flake8
-  - py-flake8-import-order
   - py-geocube
   - 'py-geopandas@0.10:'
   - py-isort+colors
@@ -16,9 +15,9 @@ spack:
   - 'py-numpy@1.21:'
   - 'py-pandas@0.24:'
   - py-pygeos
-  - py-rtree
   - 'py-scikit-learn@0.18:'
   - py-scipy
   - py-shapely
   - py-xarray
-  concretization: together
+  concretizer:
+    unify: true
