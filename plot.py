@@ -9,6 +9,7 @@ import os
 from functools import partial, reduce
 
 import cartopy.crs as ccrs
+import cmocean
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -78,6 +79,8 @@ def set_up_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("2d", help="2d cross-section")
 
     subparsers.add_parser("plate", help="cross-validation map")
+
+    subparsers.add_parser("sed_age", help="sediment thickness vs. seafloor age map")
 
     world_parser = subparsers.add_parser("world", help="world map")
     world_parser.add_argument(
@@ -216,6 +219,89 @@ def main_plate(args: argparse.Namespace) -> None:
     plt.savefig(filename, dpi=300, bbox_inches="tight")
 
 
+def main_sed_age(args: argparse.Namespace) -> None:
+    """Plot sediment thickness vs. seafloor age.
+
+    Args:
+        args: command-line arguments
+    """
+    print("\nReading datasets...")
+    age = read_age(args.data_dir, args.year)
+    crust = read_crust(args.data_dir)
+
+    print("\nPreprocessing...")
+    df = spatial_join(crust, age)
+    df = boundary_to_thickness(df)
+    thickness = df["thickness"]
+    df[("thickness", "sediments")] = (
+        thickness["upper sediments"]
+        + thickness["middle sediments"]
+        + thickness["lower sediments"]
+    )
+
+    # Vector to matrix
+    df = pd.DataFrame(
+        {
+            "age": df["age"],
+            "sediments": df[("thickness", "sediments")],
+            "geometry": df["geom"],
+        }
+    )
+    ds = make_geocube(
+        vector_data=df,
+        resolution=(-1, 1),
+        geom=json.dumps(mapping(box(-180, -90, 180, 90))),
+    )
+
+    print("\nPlotting...")
+    # Seafloor sediments
+    fig = plt.figure()
+    ax = plt.axes(projection=ccrs.PlateCarree())
+    ax.set_global()
+    ax.coastlines(color="white")
+    im = ax.imshow(
+        ds["sediments"].to_numpy(),
+        cmap=cmocean.cm.deep_r,
+        vmin=0,
+        vmax=10,
+        extent=(-180, 180, -90, 90),
+        transform=ccrs.PlateCarree(),
+    )
+    ax.set_xticks([])
+    ax.set_yticks([])
+    fig.colorbar(im, location="bottom", aspect=40, pad=0.05)
+    fig.tight_layout()
+
+    directory = os.path.join(args.results_dir, "sed_age")
+    os.makedirs(directory, exist_ok=True)
+    filename = os.path.join(directory, "sed.png")
+    print(f"Writing {filename}...")
+    plt.savefig(filename, dpi=300, bbox_inches="tight")
+
+    # Seafloor age
+    fig = plt.figure()
+    ax = plt.axes(projection=ccrs.PlateCarree())
+    ax.set_global()
+    ax.coastlines()
+    im = ax.imshow(
+        ds["age"].to_numpy(),
+        cmap="gist_rainbow",
+        vmin=0,
+        vmax=200,
+        extent=(-180, 180, -90, 90),
+        transform=ccrs.PlateCarree(),
+    )
+    ax.set_xticks([])
+    ax.set_yticks([])
+    fig.colorbar(im, location="bottom", aspect=40, pad=0.05)
+
+    directory = os.path.join(args.results_dir, "sed_age")
+    os.makedirs(directory, exist_ok=True)
+    filename = os.path.join(directory, "age.png")
+    print(f"Writing {filename}...")
+    plt.savefig(filename, dpi=300, bbox_inches="tight")
+
+
 def main_world(args: argparse.Namespace) -> None:
     """Plot a world map.
 
@@ -327,6 +413,8 @@ if __name__ == "__main__":
         main_2d(args)
     elif args.style == "plate":
         main_plate(args)
+    elif args.style == "sed_age":
+        main_sed_age(args)
     elif args.style == "world":
         main_world(args)
     elif args.style == "feature":
