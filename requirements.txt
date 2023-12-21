@@ -4,7 +4,7 @@ cmocean==3.0.3
 flake8==6.1.0
 geocube==0.4.2
 geopandas==0.14.1
-isort[color]==5.13.2
+isort[colors]==5.13.2
 matplotlib==3.8.2
 mypy==1.7.1
 netcdf4==1.6.5
