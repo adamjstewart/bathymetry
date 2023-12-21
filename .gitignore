@@ -1,3 +1,6 @@
+# Journal
+*.pdf
+
 # Slurm
 slurm-*
 
