@@ -1,17 +1,5 @@
 name: mypy
-on:
-  push:
-    paths:
-    - '**.py'
-    - 'mypy.ini'
-    - 'requirements.txt'
-    - '.github/workflows/mypy.yaml'
-  pull_request:
-    paths:
-    - '**.py'
-    - 'mypy.ini'
-    - 'requirements.txt'
-    - '.github/workflows/mypy.yaml'
+on: [push, pull_request]
 jobs:
   mypy:
     name: mypy

@@ -1,15 +1,5 @@
 name: isort
-on:
-  push:
-    paths:
-    - '**.py'
-    - 'pyproject.toml'
-    - '.github/workflows/isort.yaml'
-  pull_request:
-    paths:
-    - '**.py'
-    - 'pyproject.toml'
-    - '.github/workflows/isort.yaml'
+on: [push, pull_request]
 jobs:
   isort:
     name: isort
