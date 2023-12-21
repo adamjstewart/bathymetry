@@ -7,6 +7,7 @@ import cmocean
 import geopandas as gpd
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.axes import Axes
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 
@@ -56,7 +57,7 @@ def plot_world(
     fig = plt.figure()
     ax = plt.axes(projection=ccrs.Mollweide())
     z = ax.imshow(data, transform=ccrs.PlateCarree(), **kwargs)
-    ax.coastlines()
+    ax.coastlines()  # type: ignore[attr-defined]
     ax = plate.plot(
         ax=ax,
         facecolor="none",
@@ -67,7 +68,7 @@ def plot_world(
 
     # Add colorbar (with correct size)
     divider = make_axes_locatable(ax)
-    ax_cb = divider.new_horizontal(size="5%", pad=0.1, axes_class=plt.Axes)
+    ax_cb = divider.new_horizontal(size="5%", pad=0.1, axes_class=Axes)
     fig.add_axes(ax_cb)
     cbar = fig.colorbar(z, cax=ax_cb)
 

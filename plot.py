@@ -179,7 +179,7 @@ def main_plate(args: argparse.Namespace) -> None:
     fig = plt.figure(figsize=(8, 5))
     ax = plt.axes(projection=ccrs.PlateCarree())
     pos = ax.get_position()
-    ax.set_position([pos.x0, pos.y0 - 0.2, pos.width, pos.height])
+    ax.set_position((pos.x0, pos.y0 - 0.2, pos.width, pos.height))
     kwargs = {
         "bbox_to_anchor": (0.5, -0.15),
         "borderaxespad": 0,
@@ -209,7 +209,7 @@ def main_plate(args: argparse.Namespace) -> None:
         edgecolor="white",
         linewidth=2,
     )
-    ax.coastlines()
+    ax.coastlines()  # type: ignore[attr-defined]
     fig.tight_layout()
 
     directory = os.path.join(args.results_dir, "plate")
@@ -257,8 +257,8 @@ def main_sed_age(args: argparse.Namespace) -> None:
     # Seafloor sediments
     fig = plt.figure()
     ax = plt.axes(projection=ccrs.PlateCarree())
-    ax.set_global()
-    ax.coastlines(color="white")
+    ax.set_global()  # type: ignore[attr-defined]
+    ax.coastlines(color="white")  # type: ignore[attr-defined]
     im = ax.imshow(
         ds["sediments"].to_numpy(),
         cmap=cmocean.cm.deep_r,
@@ -281,8 +281,8 @@ def main_sed_age(args: argparse.Namespace) -> None:
     # Seafloor age
     fig = plt.figure()
     ax = plt.axes(projection=ccrs.PlateCarree())
-    ax.set_global()
-    ax.coastlines()
+    ax.set_global()  # type: ignore[attr-defined]
+    ax.coastlines()  # type: ignore[attr-defined]
     im = ax.imshow(
         ds["age"].to_numpy(),
         cmap="gist_rainbow",
