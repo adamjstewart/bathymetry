@@ -22,6 +22,6 @@ jobs:
       with:
         python-version: 3.11
     - name: Install dependencies
-      run: pip install flake8
+      run: pip install -r requirements.txt
     - name: Run flake8 checks
       run: flake8
