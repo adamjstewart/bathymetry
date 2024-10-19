@@ -14,7 +14,7 @@ class PlateModel(BaseEstimator, RegressorMixin):
     def fit(self, X: pd.DataFrame, y: pd.Series) -> BaseEstimator:
         return self
 
-    def predict(self, X: pd.DataFrame) -> np.typing.NDArray[np.float_]:
+    def predict(self, X: pd.DataFrame) -> np.typing.NDArray[np.float64]:
         """Sediment correction factor.
 
         Args:
@@ -33,7 +33,7 @@ class PlateModel(BaseEstimator, RegressorMixin):
         h_ls = X["thickness", "lower sediments"].values
         h_s = h_us + h_ms + h_ls
 
-        factor: np.typing.NDArray[np.float_] = (
+        factor: np.typing.NDArray[np.float64] = (
             rho_us * h_us + rho_ms * h_ms + rho_ls * h_ls - rho_w * h_s
         ) / (rho_m - rho_w)
         return factor
@@ -50,7 +50,7 @@ class HS(PlateModel):
     http://osu-wams-blogs-uploads.s3.amazonaws.com/blogs.dir/2281/files/2015/08/DavisLister_EPSL74.pdf
     """
 
-    def predict(self, X: pd.DataFrame) -> np.typing.NDArray[np.float_]:
+    def predict(self, X: pd.DataFrame) -> np.typing.NDArray[np.float64]:
         """Predict bathymetry based on age.
 
         Args:
@@ -66,7 +66,7 @@ class HS(PlateModel):
         kappa = 8e-7
         T_1 = 1220
 
-        depth: np.typing.NDArray[np.float_] = 2.5 + (
+        depth: np.typing.NDArray[np.float64] = 2.5 + (
             (2 * rho_0 * alpha * T_1)
             / (rho_0 - rho_w)
             * np.sqrt(kappa * t / np.pi)
@@ -88,7 +88,7 @@ class PSM(PlateModel):
     https://pdfs.semanticscholar.org/a67e/9d46e6b1cd7a956e8e5976d87b64b5f1f7df.pdf
     """
 
-    def predict(self, X: pd.DataFrame) -> np.typing.NDArray[np.float_]:
+    def predict(self, X: pd.DataFrame) -> np.typing.NDArray[np.float64]:
         """Predict bathymetry based on age.
 
         Args:
@@ -99,7 +99,7 @@ class PSM(PlateModel):
         """
         t = X["age"].values
 
-        depth: np.typing.NDArray[np.float_] = np.where(
+        depth: np.typing.NDArray[np.float64] = np.where(
             t < 70,
             # Young crust
             2.5 + 0.35 * t**0.5,
@@ -122,7 +122,7 @@ class GDH1(PlateModel):
     https://physics.unm.edu/Courses/Roy/Phys480_581Fa14/papers/Stein_Stein_359123a0.pdf
     """
 
-    def predict(self, X: pd.DataFrame) -> np.typing.NDArray[np.float_]:
+    def predict(self, X: pd.DataFrame) -> np.typing.NDArray[np.float64]:
         """Predict bathymetry based on age.
 
         Args:
@@ -133,7 +133,7 @@ class GDH1(PlateModel):
         """
         t = X["age"].values
 
-        depth: np.typing.NDArray[np.float_] = np.where(
+        depth: np.typing.NDArray[np.float64] = np.where(
             t < 20,
             # Young crust
             2.6 + 0.365 * t**0.5,
@@ -155,7 +155,7 @@ class H13(PlateModel):
     https://www.academia.edu/download/50241193/Hasterok2013.pdf
     """
 
-    def predict(self, X: pd.DataFrame) -> np.typing.NDArray[np.float_]:
+    def predict(self, X: pd.DataFrame) -> np.typing.NDArray[np.float64]:
         """Predict bathymetry based on age.
 
         Args:
@@ -166,7 +166,7 @@ class H13(PlateModel):
         """
         t = X["age"].values
 
-        depth: np.typing.NDArray[np.float_] = np.where(
+        depth: np.typing.NDArray[np.float64] = np.where(
             t <= 17.4,
             # Young crust
             0.4145 * t**0.5,

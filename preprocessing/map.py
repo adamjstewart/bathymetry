@@ -101,11 +101,7 @@ def spatial_join(crust: gpd.GeoDataFrame, age: gpd.GeoDataFrame) -> gpd.GeoDataF
     combined = combined.drop(columns=["index_right"])
 
     # Reconstruct multi-index
-    combined = combined.rename(
-        columns={
-            "age": ("age", ""),
-        }
-    )
+    combined = combined.rename(columns={"age": ("age", "")})
     combined.columns = pd.MultiIndex.from_tuples(combined.columns)
 
     return combined
@@ -156,7 +152,6 @@ def merge_plates(data: pd.DataFrame) -> pd.DataFrame:
     Returns:
         the modified dataset
     """
-
     data["plate index"] = SUBPLATE_TO_SUPERPLATE[data["plate index"]]
 
     # print(data.value_counts(["plate index"]))

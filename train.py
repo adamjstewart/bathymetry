@@ -76,10 +76,7 @@ def set_up_parser() -> argparse.ArgumentParser:
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     ridge_parser.add_argument(
-        "--alpha",
-        default=100,
-        type=float,
-        help="L2 penalty term",
+        "--alpha", default=100, type=float, help="L2 penalty term"
     )
 
     svr_parser = subparsers.add_parser(

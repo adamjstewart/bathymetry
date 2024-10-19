@@ -21,7 +21,6 @@ The versions listed below are what was used in our paper. Newer or older version
 * netcdf4 1.6.5
 * numpy 1.26.2
 * pandas 2.1.4
-* pygeos 0.14
 * scikit-learn 1.3.2
 * scipy 1.11.4
 * shapely 2.0.2

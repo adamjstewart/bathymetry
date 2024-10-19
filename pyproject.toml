@@ -1,31 +1,3 @@
-[tool.black]
-target-version = ['py37', 'py38']
-exclude = '''
-/(
-    # Data
-      checkpoints
-    | data
-    | results
-
-    # Spack
-    | \.spack-env
-
-    # Python
-    |  __pycache__
-    | \.pytest_cache
-    | \.mypy_cache
-
-    # Git
-    | \.git
-)/
-'''
-
-[tool.isort]
-profile = "black"
-known_first_party = ["datasets", "metrics", "models", "preprocessing", "utils"]
-skip_gitignore = true
-color_output = true
-
 [tool.mypy]
 show_error_codes = true
 exclude = "(.github|checkpoints|data|jobs|results)/"
@@ -46,3 +18,16 @@ warn_unused_ignores = true
 warn_return_any = true
 no_implicit_reexport = true
 strict_equality = true
+
+# https://docs.astral.sh/ruff/settings/
+[tool.ruff]
+fix = true
+
+[tool.ruff.format]
+skip-magic-trailing-comma = true
+
+[tool.ruff.lint]
+extend-select = ["I"]
+
+[tool.ruff.lint.isort]
+split-on-trailing-comma = false

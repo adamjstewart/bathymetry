@@ -86,17 +86,7 @@ def set_up_parser() -> argparse.ArgumentParser:
     world_parser.add_argument(
         "layers",
         nargs="+",
-        choices=[
-            "truth",
-            "hs",
-            "psm",
-            "gdh1",
-            "h13",
-            "linear",
-            "ridge",
-            "svr",
-            "mlp",
-        ],
+        choices=["truth", "hs", "psm", "gdh1", "h13", "linear", "ridge", "svr", "mlp"],
         help="layers to subtract",
     )
 
@@ -347,10 +337,7 @@ def main_feature(args: argparse.Namespace) -> None:
 
     # Feature
     feature = args.feature
-    feature_map = {
-        "p": "p-wave velocity",
-        "s": "s-wave velocity",
-    }
+    feature_map = {"p": "p-wave velocity", "s": "s-wave velocity"}
     if args.feature in feature_map:
         feature = feature_map[args.feature]
 

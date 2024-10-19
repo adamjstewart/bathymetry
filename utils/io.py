@@ -104,9 +104,7 @@ def load_netcdf(directory: str, filename: str) -> xr.Dataset:
 
 
 def save_checkpoint(
-    model: BaseEstimator,
-    args: argparse.Namespace,
-    accuracies: Dict[str, float],
+    model: BaseEstimator, args: argparse.Namespace, accuracies: Dict[str, float]
 ) -> None:
     """Save a checkpoint for hyperparameter tuning.
 

@@ -89,10 +89,6 @@ def read_crust(data_dir: str) -> gpd.GeoDataFrame:
     # Convert to GeoDataFrame
     # https://github.com/geopandas/geopandas/issues/1763
     df["geom"] = gpd.points_from_xy(x.flatten(), y.flatten())
-    gdf = gpd.GeoDataFrame(
-        df,
-        crs="EPSG:4326",
-        geometry="geom",
-    )
+    gdf = gpd.GeoDataFrame(df, crs="EPSG:4326", geometry="geom")
 
     return gdf

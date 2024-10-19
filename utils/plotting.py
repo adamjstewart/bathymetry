@@ -13,7 +13,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 def plot_world(
     directory: str,
-    data: np.typing.NDArray[np.float_],
+    data: np.typing.NDArray[np.float64],
     title: str,
     legend: str,
     plate: gpd.GeoDataFrame,
