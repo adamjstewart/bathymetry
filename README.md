@@ -1,9 +1,7 @@
 # bathymetry
 :ocean: Machine learning model for predicting ocean bathymetry
 
-[![black](https://github.com/adamjstewart/bathymetry/actions/workflows/black.yaml/badge.svg)](https://github.com/adamjstewart/bathymetry/actions/workflows/black.yaml)
-[![flake8](https://github.com/adamjstewart/bathymetry/actions/workflows/flake8.yaml/badge.svg)](https://github.com/adamjstewart/bathymetry/actions/workflows/flake8.yaml)
-[![isort](https://github.com/adamjstewart/bathymetry/actions/workflows/isort.yaml/badge.svg)](https://github.com/adamjstewart/bathymetry/actions/workflows/isort.yaml)
+[![ruff](https://github.com/adamjstewart/bathymetry/actions/workflows/ruff.yaml/badge.svg)](https://github.com/adamjstewart/bathymetry/actions/workflows/ruff.yaml)
 [![mypy](https://github.com/adamjstewart/bathymetry/actions/workflows/mypy.yaml/badge.svg)](https://github.com/adamjstewart/bathymetry/actions/workflows/mypy.yaml)
 
 ## System Requirements
