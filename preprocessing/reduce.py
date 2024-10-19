@@ -23,10 +23,7 @@ def reduce_attributes(data: pd.DataFrame) -> pd.DataFrame:
         ("thickness", "moho"),  # this is all NaNs after the pd.diff
         ("crust type", "crust type"),
         ("geom", ""),
-        ("plate index", ""),
-        ("layer", ""),
-        ("code", ""),
-        ("plate name", ""),
+        ("grid cell", ""),
     ]
     return data.drop(columns=labels)
 

@@ -9,6 +9,7 @@ from typing import Tuple, Union
 import geopandas as gpd
 import numpy as np
 import pandas as pd
+import shapely
 from sklearn.preprocessing import StandardScaler
 
 SUBPLATE_TO_SUPERPLATE: np.typing.NDArray[np.int_] = np.array(
@@ -102,6 +103,41 @@ def spatial_join(crust: gpd.GeoDataFrame, age: gpd.GeoDataFrame) -> gpd.GeoDataF
 
     # Reconstruct multi-index
     combined = combined.rename(columns={"age": ("age", "")})
+    combined.columns = pd.MultiIndex.from_tuples(combined.columns)
+
+    return combined
+
+
+def groupby_grid(data: gpd.GeoDataFrame, grid_size: int) -> gpd.GeoDataFrame:
+    """Overlay grid on data to create cross validation splits.
+
+    Args:
+        data: crust data
+        grid_size: height and width of each grid cell
+
+    Returns:
+        the dataset with cross validation splits
+    """
+    # Flatten multi-index
+    # https://github.com/geopandas/geopandas/issues/1764
+    data.columns = data.columns.to_flat_index()
+    data = data.set_geometry(("geom", ""))
+
+    # Create grid cells
+    cells = []
+    for minx in np.arange(-180, 180, grid_size):
+        for miny in np.arange(-90, 90, grid_size):
+            maxx = minx + grid_size
+            maxy = miny + grid_size
+            cells.append(shapely.geometry.box(minx, miny, maxx, maxy))
+
+    grid = gpd.GeoDataFrame(cells, columns=["geometry"], crs="EPSG:4326")
+
+    # Perform spatial join
+    combined = gpd.sjoin(data, grid, how="inner", predicate="within")
+
+    # Reconstruct multi-index
+    combined = combined.rename(columns={"index_right": ("grid cell", "")})
     combined.columns = pd.MultiIndex.from_tuples(combined.columns)
 
     return combined

@@ -7,7 +7,7 @@ import argparse
 import geopandas as gpd
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import LeaveOneGroupOut
+from sklearn.model_selection import GroupKFold
 
 from datasets.age import read_age
 from datasets.crust import read_crust
@@ -52,6 +52,13 @@ def set_up_parser() -> argparse.ArgumentParser:
         type=int,
         choices=[2020, 2019, 2016, 2013, 2008],
         help="year of seafloor age dataset to use",
+    )
+    parser.add_argument(
+        "-g",
+        "--grid-size",
+        default=10,
+        type=int,
+        help="size of grid cells (in degrees) for cross validation splitting",
     )
     parser.add_argument(
         "-a",
@@ -171,7 +178,7 @@ def main(args: argparse.Namespace) -> None:
     X, y, geom, groups = preprocess(age, crust, plate, args)
 
     print("\nCross-validation...")
-    cv = LeaveOneGroupOut()
+    cv = GroupKFold()
     i = 1
     y_pred = gpd.GeoDataFrame()
     y_true = gpd.GeoDataFrame()

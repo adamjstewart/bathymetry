@@ -7,7 +7,7 @@ import geopandas as gpd
 import pandas as pd
 
 from .filter import filter_crust_type, filter_nans
-from .map import boundary_to_thickness, groupby_plate, merge_plates, spatial_join
+from .map import boundary_to_thickness, groupby_grid, spatial_join
 from .reduce import ablation_study, reduce_attributes
 
 
@@ -35,15 +35,14 @@ def preprocess(
     data = filter_nans(data)
     data = filter_crust_type(data)
 
-    # Group by tectonic plate
-    data = groupby_plate(data, plate)
-    data = merge_plates(data)
+    # Group by grid
+    data = groupby_grid(data, args.grid_size)
 
     # Separate X from y
     X = data
     y = -data["boundary topography", "upper crystalline crust"]
     geom = data["geom"]
-    groups = data["plate index"]
+    groups = data["grid cell"]
 
     # Transform and reduce data attributes
     X = boundary_to_thickness(X)
