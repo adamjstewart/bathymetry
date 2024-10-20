@@ -12,7 +12,7 @@ from sklearn.model_selection import GroupKFold
 from datasets.age import read_age
 from datasets.crust import read_crust
 from datasets.plate import read_plate
-from metrics import evaluate
+from metrics import evaluate, weights
 from models import get_model
 from preprocessing import preprocess
 from preprocessing.map import inverse_standardize, standardize
@@ -179,16 +179,15 @@ def main(args: argparse.Namespace) -> None:
 
     print("\nCross-validation...")
     cv = GroupKFold()
-    i = 1
     y_pred = gpd.GeoDataFrame()
     y_true = gpd.GeoDataFrame()
-    for train_idx, test_idx in cv.split(X, y, groups):
+    for i, (train_idx, test_idx) in enumerate(cv.split(X, y, groups)):
         print(f"Group {i}")
-        i += 1
 
         # Split data
         X_train = X.iloc[train_idx]
         y_train = y.iloc[train_idx]
+        geom_train = geom.iloc[train_idx]
         X_test = X.iloc[test_idx]
         y_test = y.iloc[test_idx]
         geom_test = geom.iloc[test_idx]
@@ -199,12 +198,15 @@ def main(args: argparse.Namespace) -> None:
 
         # Train model
         model = get_model(args)
-        model.fit(X_train, y_train)
+        model.fit(X_train, y_train, weights(geom_train))
 
         # Make predictions
         y_pred_test = pd.Series(model.predict(X_test), index=y_test.index)
+
+        # Reverse standardization
         y_test, y_pred_test = inverse_standardize(y_test, y_pred_test, y_scaler)
         y_pred_test = y_pred_test.clip(0)
+
         y_test = gpd.GeoDataFrame({"depth": y_test.values}, geometry=geom_test.values)
         y_pred_test = gpd.GeoDataFrame(
             {"depth": y_pred_test.values}, geometry=geom_test.values
@@ -213,7 +215,7 @@ def main(args: argparse.Namespace) -> None:
         y_pred = pd.concat([y_pred, y_pred_test])
 
     print("\nEvaluating...")
-    accuracies = evaluate(y_true["depth"], y_pred["depth"])
+    accuracies = evaluate(y_true["depth"], y_pred["depth"], weights(geom))
 
     print("\nSaving predictions...")
     save_checkpoint(model, args, accuracies)
