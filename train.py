@@ -198,7 +198,7 @@ def main(args: argparse.Namespace) -> None:
 
         # Train model
         model = get_model(args)
-        model.fit(X_train, y_train, weights(geom_train))
+        model.fit(X_train, y_train, sample_weight=weights(geom_train))
 
         # Make predictions
         y_pred_test = pd.Series(model.predict(X_test), index=y_test.index)
