@@ -1,11 +1,10 @@
 """Regression metrics for model evaluation."""
 
-import math
 from typing import Dict
 
 import numpy as np
 import pandas as pd
-from sklearn.metrics import root_mean_squared_error, r2_score
+from sklearn.metrics import r2_score, root_mean_squared_error
 
 
 def evaluate(
