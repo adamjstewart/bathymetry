@@ -2,18 +2,16 @@ spack:
   specs:
   - parallel
   - 'python@3.7:'
-  - py-black
   - py-cartopy
   - py-cmocean
-  - py-flake8
   - py-geocube
   - 'py-geopandas@0.10:'
-  - py-isort+colors
   - py-matplotlib
   - py-mypy
   - py-netcdf4
   - 'py-numpy@1.21:'
   - 'py-pandas@0.24:'
+  - py-ruff
   - 'py-scikit-learn@1.4:'
   - py-scipy
   - py-shapely
