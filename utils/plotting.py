@@ -35,6 +35,7 @@ def plot_world(
         "bathymetry": cmocean.cm.deep,
         "velocity": cmocean.cm.speed,
         "density": cmocean.cm.dense,
+        "std dev": plt.get_cmap("viridis"),
         "age": plt.get_cmap("gist_rainbow"),
     }
     for key, value in cmap_map.items():
@@ -50,6 +51,10 @@ def plot_world(
         mean = np.nanmean(data)
         std = np.nanstd(data)
         kwargs.update({"vmin": mean - 2 * std, "vmax": mean + 2 * std})
+    elif "std dev" in legend:
+        mean = np.nanmean(data)
+        std = np.nanstd(data)
+        kwargs.update({"vmin": 0, "vmax": mean + 2 * std})
     elif "bathymetry" in legend:
         kwargs.update({"vmin": 0, "vmax": 7.5})
 

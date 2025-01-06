@@ -90,6 +90,15 @@ def set_up_parser() -> argparse.ArgumentParser:
         help="layers to subtract",
     )
 
+    seed_parser = subparsers.add_parser("seed", help="random seed")
+    seed_parser.add_argument(
+        "-g",
+        "--grid-size",
+        default=10,
+        type=int,
+        help="size of grid cells (in degrees) for cross validation splitting",
+    )
+
     feature_parser = subparsers.add_parser("feature", help="features")
     feature_parser.add_argument(
         "layer",
@@ -319,6 +328,29 @@ def main_world(args: argparse.Namespace) -> None:
     plot_world(directory, data["depth"].values, title, legend, plate)
 
 
+def main_seed(args: argparse.Namespace) -> None:
+    """Plot the mean and std dev from random seed experiments.
+
+    Args:
+        args: command-line arguments
+    """
+    print("\nReading checkpoints...")
+    directory = os.path.join(args.checkpoint_dir, "seed")
+    checkpoints = []
+    for seed in range(1, 11):
+        filename = f"{args.grid_size}-{seed}-mlp"
+        checkpoints.append(load_netcdf(directory, filename)["depth"])
+    plate = read_plate(args.data_dir)
+
+    print("\nPostprocessing...")
+    checkpoint = np.stack(checkpoints)
+    std = np.std(checkpoint, axis=0)
+
+    print("\nPlotting...")
+    directory = os.path.join(args.results_dir, "seed")
+    plot_world(directory, std, "std dev", "std dev (km)", plate)
+
+
 def main_feature(args: argparse.Namespace) -> None:
     """Plot features.
 
@@ -404,5 +436,7 @@ if __name__ == "__main__":
         main_sed_age(args)
     elif args.style == "world":
         main_world(args)
+    elif args.style == "seed":
+        main_seed(args)
     elif args.style == "feature":
         main_feature(args)
