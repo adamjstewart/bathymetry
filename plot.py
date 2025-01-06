@@ -348,7 +348,7 @@ def main_seed(args: argparse.Namespace) -> None:
 
     print("\nPlotting...")
     directory = os.path.join(args.results_dir, "seed")
-    plot_world(directory, std, "std dev", "std dev (km)", plate)
+    plot_world(directory, std, f"std dev {args.grid_size}", "std dev (km)", plate)
 
 
 def main_feature(args: argparse.Namespace) -> None:

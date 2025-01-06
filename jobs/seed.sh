@@ -38,4 +38,6 @@ do
         mv "checkpoints/$model.nc" "checkpoints/seed/$g-$s-$model.nc"
         mv "results/residual/$model-truth.png" "results/seed/$g-$s-$model-truth.png"
     done
+
+    python3 plot.py seed -g $g
 done
