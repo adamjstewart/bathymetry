@@ -12,7 +12,7 @@ spack:
   - 'py-numpy@1.21:'
   - 'py-pandas@0.24:'
   - py-ruff
-  - 'py-scikit-learn@1.4:'
+  - 'py-scikit-learn@1.6.mlp2'
   - py-scipy
   - py-shapely
   - py-xarray

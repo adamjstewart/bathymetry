@@ -8,7 +8,7 @@ netcdf4==1.7.1.post2
 numpy==2.1.1
 pandas==2.2.3
 ruff==0.6.5
-scikit-learn==1.5.2
+scikit-learn==1.6.0
 scipy==1.14.1
 shapely==2.0.6
 xarray==2024.7.0

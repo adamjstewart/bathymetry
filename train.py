@@ -178,7 +178,7 @@ def main(args: argparse.Namespace) -> None:
     X, y, geom, groups = preprocess(age, crust, plate, args)
 
     print("\nCross-validation...")
-    cv = GroupKFold()
+    cv = GroupKFold(shuffle=True, random_state=args.seed)
     y_pred = gpd.GeoDataFrame()
     y_true = gpd.GeoDataFrame()
     for i, (train_idx, test_idx) in enumerate(cv.split(X, y, groups)):
