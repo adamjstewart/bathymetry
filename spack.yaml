@@ -1,6 +1,5 @@
 spack:
   specs:
-  - parallel
   - 'python@3.7:'
   - py-cartopy
   - py-cmocean

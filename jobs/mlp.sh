@@ -1,18 +1,24 @@
 #!/usr/bin/env bash
 
-#SBATCH --job-name=mlp
-#SBATCH --time=2-00:00:00
-#SBATCH --nodes=12
-#SBATCH --ntasks-per-node=56
-#SBATCH --cpus-per-task=1
-#SBATCH --partition=normal
-#SBATCH --mail-type=ALL
-#SBATCH --mail-user=adamjs5@illinois.edu
+set -euo pipefail
 
-spack --color=never env activate ~/bathymetry
-module load launcher
-
-export LAUNCHER_WORKDIR=~/bathymetry
-export LAUNCHER_JOB_FILE=mlp-job-file.txt
-
-${LAUNCHER_DIR}/paramrun
+for activation in logistic tanh relu
+do
+    for solver in lbfgs sgd adam
+    do
+        for alpha in 0.001 0.01 0.1 1 10
+        do
+            for hidden_layers in 3 4 5 6 7
+            do
+                for hidden_size in 128 256 512 1024 2056
+                do
+                    for learning_rate in 0.01 0.001 0.0001 0.00001 0.000001
+                    do
+                        echo activation: $activation, solver: $solver, alpha: $alpha, layers: $hidden_layers, size: $hidden_size, lr: $learning_rate
+                        python3 $HOME/bathymetry/train.py mlp --activation $activation --solver $solver --alpha $alpha --hidden-layers $hidden_layers --hidden-size $hidden_size --learning-rate $learning_rate
+                    done
+                done
+            done
+        done
+    done
+done

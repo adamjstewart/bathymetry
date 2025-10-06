@@ -1,18 +1,21 @@
 #!/usr/bin/env bash
 
-#SBATCH --job-name=svr
-#SBATCH --time=2-00:00:00
-#SBATCH --nodes=12
-#SBATCH --ntasks-per-node=56
-#SBATCH --cpus-per-task=1
-#SBATCH --partition=normal
-#SBATCH --mail-type=ALL
-#SBATCH --mail-user=adamjs5@illinois.edu
+set -euo pipefail
 
-spack --color=never env activate ~/bathymetry
-module load launcher
-
-export LAUNCHER_WORKDIR=~/bathymetry
-export LAUNCHER_JOB_FILE=svr-job-file.txt
-
-${LAUNCHER_DIR}/paramrun
+for kernel in linear poly rbf sigmoid
+do
+    for gamma in scale auto
+    do
+        for coef0 in 0 0.0001 0.001 0.01 0.1
+        do
+            for c in 0.1 1 10 100 1000
+            do
+                for epsilon in 0 0.01 0.1 1 10
+                do
+                    echo kernel: $kernel, gamma: $gamma, coef0: $coef0, C: $c, epsilon: $epsilon
+                    python3 $HOME/bathymetry/train.py svr --kernel $kernel --gamma $gamma --coef0 $coef0 --c $c --epsilon $epsilon
+                done
+            done
+        done
+    done
+done
