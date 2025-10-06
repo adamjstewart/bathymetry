@@ -10,23 +10,23 @@ The versions listed below are what was used in our paper. Newer or older version
 
 ### Software Dependencies
 
-* Python 3.11.7
-* cartopy 0.22.0
-* cmocean 3.0.3
-* geocube 0.4.2
-* geopandas 0.14.1
-* matplotlib 3.8.2
-* netcdf4 1.6.5
-* numpy 1.26.2
-* pandas 2.1.4
-* scikit-learn 1.3.2
-* scipy 1.11.4
-* shapely 2.0.2
-* xarray 2023.12.0
+* Python 3.13.7
+* cartopy 0.25.0
+* cmocean 4.0.3
+* geocube 0.7.1
+* geopandas 1.1.1
+* matplotlib 3.10.6
+* netcdf4 1.7.2
+* numpy 2.3.3
+* pandas 2.3.3
+* scikit-learn 1.7.2
+* scipy 1.16.2
+* shapely 2.1.2
+* xarray 2025.9.1
 
 ### Operating Systems
 
-* macOS 14.1.2
+* macOS 15.6.1
 * Ubuntu 22.04.3
 
 ### Hardware Requirements
