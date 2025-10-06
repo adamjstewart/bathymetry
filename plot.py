@@ -208,7 +208,7 @@ def main_plate(args: argparse.Namespace) -> None:
         edgecolor="white",
         linewidth=2,
     )
-    ax.coastlines()  # type: ignore[attr-defined]
+    ax.coastlines()
     fig.tight_layout()
 
     directory = os.path.join(args.results_dir, "plate")
