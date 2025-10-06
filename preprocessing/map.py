@@ -125,8 +125,9 @@ def groupby_grid(data: gpd.GeoDataFrame, grid_size: int) -> gpd.GeoDataFrame:
 
     # Create grid cells
     cells = []
-    for minx in np.arange(-180, 180, grid_size):
-        for miny in np.arange(-90, 90, grid_size):
+    shift = np.random.randint(grid_size)
+    for minx in np.arange(-180 - shift, 180 + grid_size - shift, grid_size):
+        for miny in np.arange(-90 - shift, 90 + grid_size - shift, grid_size):
             maxx = minx + grid_size
             maxy = miny + grid_size
             cells.append(shapely.geometry.box(minx, miny, maxx, maxy))
