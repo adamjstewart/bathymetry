@@ -94,7 +94,7 @@ def set_up_parser() -> argparse.ArgumentParser:
     seed_parser.add_argument(
         "-g",
         "--grid-size",
-        default=10,
+        default=30,
         type=int,
         help="size of grid cells (in degrees) for cross validation splitting",
     )
