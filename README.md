@@ -111,7 +111,7 @@ This should only take a few seconds to run. Replace "ridge" with other models to
 
 To reproduce all experimental results from our paper, see the scripts in the `jobs` directory. Specifically:
 
-* `ridge*.sh`, `svr*.sh`, `mlp*.sh`: find optimal hyperparameters for all models
+* `ridge.sh`, `svr.sh`, `mlp.sh`: find optimal hyperparameters for all models
 * `train.sh`: reproduce results with optimal hyperparameters
 * `ablation.sh`: feature and layer ablation study
 * `plot.sh`: generate some basic maps of the results
